@@ -14,7 +14,7 @@ Core::Core()
 void Core::Step(float t)
 {
 	//qDebug() << "step " << t ;
-
+/*
 //collide
 	int size = m_objects.size();
 	for (int i = 0; i < size; ++i)
@@ -50,7 +50,7 @@ void Core::Step(float t)
 				}			
 			}
 		}
-
+*/
 
 //step
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();

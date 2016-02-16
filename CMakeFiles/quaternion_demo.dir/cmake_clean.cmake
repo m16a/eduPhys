@@ -1,6 +1,7 @@
 FILE(REMOVE_RECURSE
   "quaternion_demo.moc"
   "CMakeFiles/quaternion_demo.dir/gpuhelper.o"
+  "CMakeFiles/quaternion_demo.dir/box.o"
   "CMakeFiles/quaternion_demo.dir/icosphere.o"
   "CMakeFiles/quaternion_demo.dir/camera.o"
   "CMakeFiles/quaternion_demo.dir/trackball.o"

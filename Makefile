@@ -112,6 +112,21 @@ quaternion_demo/fast:
 .PHONY : quaternion_demo/fast
 
 # target to build an object file
+box.o:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.o
+.PHONY : box.o
+
+# target to preprocess a source file
+box.i:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.i
+.PHONY : box.i
+
+# target to generate assembly for a file
+box.s:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.s
+.PHONY : box.s
+
+# target to build an object file
 camera.o:
 	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/camera.o
 .PHONY : camera.o
@@ -240,6 +255,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... quaternion_demo"
 	@echo "... rebuild_cache"
+	@echo "... box.o"
+	@echo "... box.i"
+	@echo "... box.s"
 	@echo "... camera.o"
 	@echo "... camera.i"
 	@echo "... camera.s"

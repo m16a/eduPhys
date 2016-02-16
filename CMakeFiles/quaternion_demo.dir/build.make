@@ -77,9 +77,32 @@ CMakeFiles/quaternion_demo.dir/gpuhelper.o.provides: CMakeFiles/quaternion_demo.
 
 CMakeFiles/quaternion_demo.dir/gpuhelper.o.provides.build: CMakeFiles/quaternion_demo.dir/gpuhelper.o
 
+CMakeFiles/quaternion_demo.dir/box.o: CMakeFiles/quaternion_demo.dir/flags.make
+CMakeFiles/quaternion_demo.dir/box.o: box.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/box.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/box.o -c /home/m16a/Documents/phys/eduPhys/box.cpp
+
+CMakeFiles/quaternion_demo.dir/box.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/quaternion_demo.dir/box.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/m16a/Documents/phys/eduPhys/box.cpp > CMakeFiles/quaternion_demo.dir/box.i
+
+CMakeFiles/quaternion_demo.dir/box.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/quaternion_demo.dir/box.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/m16a/Documents/phys/eduPhys/box.cpp -o CMakeFiles/quaternion_demo.dir/box.s
+
+CMakeFiles/quaternion_demo.dir/box.o.requires:
+.PHONY : CMakeFiles/quaternion_demo.dir/box.o.requires
+
+CMakeFiles/quaternion_demo.dir/box.o.provides: CMakeFiles/quaternion_demo.dir/box.o.requires
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.o.provides.build
+.PHONY : CMakeFiles/quaternion_demo.dir/box.o.provides
+
+CMakeFiles/quaternion_demo.dir/box.o.provides.build: CMakeFiles/quaternion_demo.dir/box.o
+
 CMakeFiles/quaternion_demo.dir/icosphere.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/icosphere.o: icosphere.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/icosphere.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/icosphere.o -c /home/m16a/Documents/phys/eduPhys/icosphere.cpp
 
@@ -102,7 +125,7 @@ CMakeFiles/quaternion_demo.dir/icosphere.o.provides.build: CMakeFiles/quaternion
 
 CMakeFiles/quaternion_demo.dir/camera.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/camera.o: camera.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/camera.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/camera.o -c /home/m16a/Documents/phys/eduPhys/camera.cpp
 
@@ -125,7 +148,7 @@ CMakeFiles/quaternion_demo.dir/camera.o.provides.build: CMakeFiles/quaternion_de
 
 CMakeFiles/quaternion_demo.dir/trackball.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/trackball.o: trackball.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/trackball.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/trackball.o -c /home/m16a/Documents/phys/eduPhys/trackball.cpp
 
@@ -149,7 +172,7 @@ CMakeFiles/quaternion_demo.dir/trackball.o.provides.build: CMakeFiles/quaternion
 CMakeFiles/quaternion_demo.dir/quaternion_demo.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/quaternion_demo.o: quaternion_demo.cpp
 CMakeFiles/quaternion_demo.dir/quaternion_demo.o: quaternion_demo.moc
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/quaternion_demo.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/quaternion_demo.o -c /home/m16a/Documents/phys/eduPhys/quaternion_demo.cpp
 
@@ -172,7 +195,7 @@ CMakeFiles/quaternion_demo.dir/quaternion_demo.o.provides.build: CMakeFiles/quat
 
 CMakeFiles/quaternion_demo.dir/sphere.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/sphere.o: sphere.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/sphere.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/sphere.o -c /home/m16a/Documents/phys/eduPhys/sphere.cpp
 
@@ -195,7 +218,7 @@ CMakeFiles/quaternion_demo.dir/sphere.o.provides.build: CMakeFiles/quaternion_de
 
 CMakeFiles/quaternion_demo.dir/core.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/core.o: core.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/core.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/core.o -c /home/m16a/Documents/phys/eduPhys/core.cpp
 
@@ -218,7 +241,7 @@ CMakeFiles/quaternion_demo.dir/core.o.provides.build: CMakeFiles/quaternion_demo
 
 CMakeFiles/quaternion_demo.dir/geometry.o: CMakeFiles/quaternion_demo.dir/flags.make
 CMakeFiles/quaternion_demo.dir/geometry.o: geometry.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/geometry.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/geometry.o -c /home/m16a/Documents/phys/eduPhys/geometry.cpp
 
@@ -242,6 +265,7 @@ CMakeFiles/quaternion_demo.dir/geometry.o.provides.build: CMakeFiles/quaternion_
 # Object files for target quaternion_demo
 quaternion_demo_OBJECTS = \
 "CMakeFiles/quaternion_demo.dir/gpuhelper.o" \
+"CMakeFiles/quaternion_demo.dir/box.o" \
 "CMakeFiles/quaternion_demo.dir/icosphere.o" \
 "CMakeFiles/quaternion_demo.dir/camera.o" \
 "CMakeFiles/quaternion_demo.dir/trackball.o" \
@@ -254,6 +278,7 @@ quaternion_demo_OBJECTS = \
 quaternion_demo_EXTERNAL_OBJECTS =
 
 quaternion_demo: CMakeFiles/quaternion_demo.dir/gpuhelper.o
+quaternion_demo: CMakeFiles/quaternion_demo.dir/box.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/icosphere.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/camera.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/trackball.o
@@ -280,6 +305,7 @@ CMakeFiles/quaternion_demo.dir/build: quaternion_demo
 .PHONY : CMakeFiles/quaternion_demo.dir/build
 
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/gpuhelper.o.requires
+CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/box.o.requires
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/icosphere.o.requires
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/camera.o.requires
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/trackball.o.requires
