@@ -4,12 +4,13 @@
 #include <vector>
 
 class Sphere;
+class IPhysEnt;
 
 class Core
 {
 public:
 	Core();
-	std::vector<Sphere*> m_objects;
+	std::vector<IPhysEnt*> m_objects;
 
 
 	void Draw();

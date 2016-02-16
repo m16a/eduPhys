@@ -20,8 +20,8 @@ void Core::Step(float t)
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
 		{
-			Sphere *a = m_objects[i];
-			Sphere *b = m_objects[j];
+			Sphere *a = static_cast<Sphere*>(m_objects[i]);
+			Sphere *b = static_cast<Sphere*>(m_objects[j]);
 
 			if (a->m_id < b->m_id)
 			{
@@ -53,7 +53,7 @@ void Core::Step(float t)
 
 
 //step
-	std::vector<Sphere*>::iterator it = m_objects.begin();
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
 	{
 		(*it)->Step(t);
@@ -62,7 +62,7 @@ void Core::Step(float t)
 
 void Core::Draw()
 {
-	std::vector<Sphere*>::iterator it = m_objects.begin();
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 
 	for (; it != m_objects.end(); ++it)
 	{

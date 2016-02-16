@@ -142,6 +142,21 @@ core.s:
 .PHONY : core.s
 
 # target to build an object file
+geometry.o:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.o
+.PHONY : geometry.o
+
+# target to preprocess a source file
+geometry.i:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.i
+.PHONY : geometry.i
+
+# target to generate assembly for a file
+geometry.s:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.s
+.PHONY : geometry.s
+
+# target to build an object file
 gpuhelper.o:
 	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/gpuhelper.o
 .PHONY : gpuhelper.o
@@ -231,6 +246,9 @@ help:
 	@echo "... core.o"
 	@echo "... core.i"
 	@echo "... core.s"
+	@echo "... geometry.o"
+	@echo "... geometry.i"
+	@echo "... geometry.s"
 	@echo "... gpuhelper.o"
 	@echo "... gpuhelper.i"
 	@echo "... gpuhelper.s"

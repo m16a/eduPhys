@@ -7,6 +7,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/quaternion_demo.dir/quaternion_demo.o"
   "CMakeFiles/quaternion_demo.dir/sphere.o"
   "CMakeFiles/quaternion_demo.dir/core.o"
+  "CMakeFiles/quaternion_demo.dir/geometry.o"
   "quaternion_demo.pdb"
   "quaternion_demo"
 )

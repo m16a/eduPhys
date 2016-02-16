@@ -30,6 +30,7 @@
 #include <QtDebug>
 
 #include "my_eulerAngles.h"
+#include "geometry.h"
 
 using namespace Eigen;
 
@@ -586,20 +587,20 @@ QuaternionDemo::QuaternionDemo()
   mRenderingWidget = new RenderingWidget();
 
   //set phys initial world
-  Sphere* s1 = new Sphere();
+  IPhysEnt* s1 = new Sphere();
   s1->m_pos = Vector3f(25.f, 0.f, 0.f);
-  s1->m_v = Vector3f(-10.f, 0.f, 0.f);
+  //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
-  Sphere* s2 = new Sphere();
+  IPhysEnt* s2 = new Sphere();
   s2->m_pos = Vector3f(-100.f, 0.f, 0.f);
   s2->m_id = 2;
   s2->m_minv = 0.001;
   s2->m_v = Vector3f(10.f, 0.f, 0.f);
-  mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+  //mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 
-  //s1->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,10));
+  s1->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,10));
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 

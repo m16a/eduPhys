@@ -216,6 +216,29 @@ CMakeFiles/quaternion_demo.dir/core.o.provides: CMakeFiles/quaternion_demo.dir/c
 
 CMakeFiles/quaternion_demo.dir/core.o.provides.build: CMakeFiles/quaternion_demo.dir/core.o
 
+CMakeFiles/quaternion_demo.dir/geometry.o: CMakeFiles/quaternion_demo.dir/flags.make
+CMakeFiles/quaternion_demo.dir/geometry.o: geometry.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/m16a/Documents/phys/eduPhys/CMakeFiles $(CMAKE_PROGRESS_9)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/quaternion_demo.dir/geometry.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/quaternion_demo.dir/geometry.o -c /home/m16a/Documents/phys/eduPhys/geometry.cpp
+
+CMakeFiles/quaternion_demo.dir/geometry.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/quaternion_demo.dir/geometry.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/m16a/Documents/phys/eduPhys/geometry.cpp > CMakeFiles/quaternion_demo.dir/geometry.i
+
+CMakeFiles/quaternion_demo.dir/geometry.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/quaternion_demo.dir/geometry.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/m16a/Documents/phys/eduPhys/geometry.cpp -o CMakeFiles/quaternion_demo.dir/geometry.s
+
+CMakeFiles/quaternion_demo.dir/geometry.o.requires:
+.PHONY : CMakeFiles/quaternion_demo.dir/geometry.o.requires
+
+CMakeFiles/quaternion_demo.dir/geometry.o.provides: CMakeFiles/quaternion_demo.dir/geometry.o.requires
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.o.provides.build
+.PHONY : CMakeFiles/quaternion_demo.dir/geometry.o.provides
+
+CMakeFiles/quaternion_demo.dir/geometry.o.provides.build: CMakeFiles/quaternion_demo.dir/geometry.o
+
 # Object files for target quaternion_demo
 quaternion_demo_OBJECTS = \
 "CMakeFiles/quaternion_demo.dir/gpuhelper.o" \
@@ -224,7 +247,8 @@ quaternion_demo_OBJECTS = \
 "CMakeFiles/quaternion_demo.dir/trackball.o" \
 "CMakeFiles/quaternion_demo.dir/quaternion_demo.o" \
 "CMakeFiles/quaternion_demo.dir/sphere.o" \
-"CMakeFiles/quaternion_demo.dir/core.o"
+"CMakeFiles/quaternion_demo.dir/core.o" \
+"CMakeFiles/quaternion_demo.dir/geometry.o"
 
 # External object files for target quaternion_demo
 quaternion_demo_EXTERNAL_OBJECTS =
@@ -236,6 +260,7 @@ quaternion_demo: CMakeFiles/quaternion_demo.dir/trackball.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/quaternion_demo.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/sphere.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/core.o
+quaternion_demo: CMakeFiles/quaternion_demo.dir/geometry.o
 quaternion_demo: CMakeFiles/quaternion_demo.dir/build.make
 quaternion_demo: /usr/lib/x86_64-linux-gnu/libQtCore.so
 quaternion_demo: /usr/lib/x86_64-linux-gnu/libQtGui.so
@@ -261,6 +286,7 @@ CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/trackbal
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/quaternion_demo.o.requires
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/sphere.o.requires
 CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/core.o.requires
+CMakeFiles/quaternion_demo.dir/requires: CMakeFiles/quaternion_demo.dir/geometry.o.requires
 .PHONY : CMakeFiles/quaternion_demo.dir/requires
 
 CMakeFiles/quaternion_demo.dir/clean:

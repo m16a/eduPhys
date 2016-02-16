@@ -6,6 +6,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
 SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/m16a/Documents/phys/eduPhys/camera.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/camera.o"
   "/home/m16a/Documents/phys/eduPhys/core.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/core.o"
+  "/home/m16a/Documents/phys/eduPhys/geometry.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/geometry.o"
   "/home/m16a/Documents/phys/eduPhys/gpuhelper.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/gpuhelper.o"
   "/home/m16a/Documents/phys/eduPhys/icosphere.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/icosphere.o"
   "/home/m16a/Documents/phys/eduPhys/quaternion_demo.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/quaternion_demo.o"
