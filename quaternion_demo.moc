@@ -1,0 +1,170 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'quaternion_demo.h'
+**
+** Created by: The Qt Meta Object Compiler version 63 (Qt 4.8.6)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "quaternion_demo.h"
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'quaternion_demo.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 63
+#error "This file was generated using the moc from 4.8.6. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+static const uint qt_meta_data_RenderingWidget[] = {
+
+ // content:
+       6,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       8,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: signature, parameters, type, tag, flags
+      17,   16,   16,   16, 0x09,
+      27,   16,   16,   16, 0x09,
+      39,   16,   16,   16, 0x09,
+      51,   16,   16,   16, 0x09,
+      67,   16,   16,   16, 0x09,
+      83,   16,   16,   16, 0x09,
+     100,   16,   16,   16, 0x09,
+     121,   16,   16,   16, 0x09,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_RenderingWidget[] = {
+    "RenderingWidget\0\0animate()\0drawScene()\0"
+    "grabFrame()\0stopAnimation()\0setNavMode(int)\0"
+    "setLerpMode(int)\0setRotationMode(int)\0"
+    "resetCamera()\0"
+};
+
+void RenderingWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        RenderingWidget *_t = static_cast<RenderingWidget *>(_o);
+        switch (_id) {
+        case 0: _t->animate(); break;
+        case 1: _t->drawScene(); break;
+        case 2: _t->grabFrame(); break;
+        case 3: _t->stopAnimation(); break;
+        case 4: _t->setNavMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->setLerpMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->setRotationMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->resetCamera(); break;
+        default: ;
+        }
+    }
+}
+
+const QMetaObjectExtraData RenderingWidget::staticMetaObjectExtraData = {
+    0,  qt_static_metacall 
+};
+
+const QMetaObject RenderingWidget::staticMetaObject = {
+    { &QGLWidget::staticMetaObject, qt_meta_stringdata_RenderingWidget,
+      qt_meta_data_RenderingWidget, &staticMetaObjectExtraData }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &RenderingWidget::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *RenderingWidget::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *RenderingWidget::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_RenderingWidget))
+        return static_cast<void*>(const_cast< RenderingWidget*>(this));
+    return QGLWidget::qt_metacast(_clname);
+}
+
+int RenderingWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QGLWidget::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 8)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 8;
+    }
+    return _id;
+}
+static const uint qt_meta_data_QuaternionDemo[] = {
+
+ // content:
+       6,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_QuaternionDemo[] = {
+    "QuaternionDemo\0"
+};
+
+void QuaternionDemo::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObjectExtraData QuaternionDemo::staticMetaObjectExtraData = {
+    0,  qt_static_metacall 
+};
+
+const QMetaObject QuaternionDemo::staticMetaObject = {
+    { &QMainWindow::staticMetaObject, qt_meta_stringdata_QuaternionDemo,
+      qt_meta_data_QuaternionDemo, &staticMetaObjectExtraData }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &QuaternionDemo::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *QuaternionDemo::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *QuaternionDemo::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_QuaternionDemo))
+        return static_cast<void*>(const_cast< QuaternionDemo*>(this));
+    return QMainWindow::qt_metacast(_clname);
+}
+
+int QuaternionDemo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    return _id;
+}
+QT_END_MOC_NAMESPACE
