@@ -40,6 +40,7 @@
 	},
 	"file_history":
 	[
+		"/home/m16a/Documents/phys/eduPhys/core.h",
 		"/home/m16a/Documents/phys/edu/opengl/sphere.cpp",
 		"/home/m16a/Documents/phys/edu/opengl/sphere.h",
 		"/home/m16a/Documents/ode-0.13/ode/demo/demo_cyl.cpp",
@@ -264,20 +265,8 @@
 		"whole_word": false,
 		"wrap": true
 	},
-	"folders":
-	[
-		{
-			"follow_symlinks": true,
-			"path": "/home/m16a/Documents/phys/edu/opengl"
-		}
-	],
 	"groups":
 	[
-		{
-			"sheets":
-			[
-			]
-		},
 		{
 			"sheets":
 			[
@@ -301,18 +290,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -326,7 +308,7 @@
 	{
 		"height": 0.0
 	},
-	"project": "",
+	"project": "eduPhys.sublime-workspace",
 	"replace":
 	{
 		"height": 48.0
