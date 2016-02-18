@@ -589,7 +589,7 @@ QuaternionDemo::QuaternionDemo()
 
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
-  s1->m_pos = Vector3f(25.f, 0.f, 0.f);
+  s1->m_pos = Vector3f(50.f, 50.f, 0.f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
@@ -601,7 +601,7 @@ QuaternionDemo::QuaternionDemo()
   s2->m_v = Vector3f(10.f, 0.f, 0.f);
   //mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 
-  s1->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,10));
+  s1->AddImpulse(Vector3f(-5.f, -5.f, 0.f) * 100.f /*Vector3f(10,10,10)*/);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
@@ -612,7 +612,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_minv = 0.001;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
   mRenderingWidget->m_core.get()->m_objects.push_back(s3);
-  s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 500.f, Vector3f(10,10,0));
+  s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 
 
   setCentralWidget(mRenderingWidget);

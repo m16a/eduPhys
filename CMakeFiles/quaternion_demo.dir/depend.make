@@ -527,6 +527,7 @@ CMakeFiles/quaternion_demo.dir/camera.o: Eigen/src/SVD/JacobiSVD.h
 CMakeFiles/quaternion_demo.dir/camera.o: Eigen/src/SVD/JacobiSVD_MKL.h
 CMakeFiles/quaternion_demo.dir/camera.o: Eigen/src/SVD/UpperBidiagonalization.h
 
+CMakeFiles/quaternion_demo.dir/core.o: box.h
 CMakeFiles/quaternion_demo.dir/core.o: collision.h
 CMakeFiles/quaternion_demo.dir/core.o: core.cpp
 CMakeFiles/quaternion_demo.dir/core.o: core.h

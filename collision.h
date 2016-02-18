@@ -4,6 +4,7 @@
 
 
 #include "sphere.h"
+#include "box.h"
 
 struct Contact
 {
@@ -25,6 +26,43 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 		c->n.normalize();
 		out_size = 1;
 	}
+}
+
+//const bool AABBOverlapsSphere ( const AABB&	B, const SCALAR	r, VECTOR&	C ) 
+bool overlap(Sphere* a, Box* b)
+{
+	Vector3f s = b->m_rot * (a->m_pos - b->m_pos);
+
+// /	qDebug() << "TEST " << s.x();
+
+
+	if (s.x() < 0)
+		s.x() += b->m_a/2;
+	else if (s.x() > 0)
+		s.x() -= b->m_a/2;
+
+	if (s.y() < 0)
+		s.y() += b->m_b/2;
+	else if (s.y() > 0)
+		s.y() -= b->m_b/2;
+
+	if (s.z() < 0)
+		s.z() += b->m_c/2;
+	else if (s.z() > 0)
+		s.z() -= b->m_c/2;
+
+return s.dot(s) <= a->m_r*a->m_r;
+
+}
+
+
+void collide(Sphere* a, Box* b, Contact* c, int& out_size)
+{
+	assert(out_size > 0);
+	out_size = 0;
+
+	if (overlap(a,b))
+		qDebug() << "OVERLAP";
 }
 
 

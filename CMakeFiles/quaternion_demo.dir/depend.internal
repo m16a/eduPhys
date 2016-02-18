@@ -528,6 +528,7 @@ CMakeFiles/quaternion_demo.dir/camera.o
  Eigen/src/SVD/JacobiSVD_MKL.h
  Eigen/src/SVD/UpperBidiagonalization.h
 CMakeFiles/quaternion_demo.dir/core.o
+ /home/m16a/Documents/phys/eduPhys/box.h
  /home/m16a/Documents/phys/eduPhys/collision.h
  /home/m16a/Documents/phys/eduPhys/core.cpp
  /home/m16a/Documents/phys/eduPhys/core.h
