@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/m16a/Documents/phys/edu/opengl
+CMAKE_SOURCE_DIR = /home/m16a/Documents/phys/eduPhys
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/m16a/Documents/phys/edu/opengl
+CMAKE_BINARY_DIR = /home/m16a/Documents/phys/eduPhys
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/m16a/Documents/phys/edu/opengl/CMakeFiles /home/m16a/Documents/phys/edu/opengl/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/m16a/Documents/phys/eduPhys/CMakeFiles /home/m16a/Documents/phys/eduPhys/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/m16a/Documents/phys/edu/opengl/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/m16a/Documents/phys/eduPhys/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -112,6 +112,21 @@ quaternion_demo/fast:
 .PHONY : quaternion_demo/fast
 
 # target to build an object file
+box.o:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.o
+.PHONY : box.o
+
+# target to preprocess a source file
+box.i:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.i
+.PHONY : box.i
+
+# target to generate assembly for a file
+box.s:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/box.s
+.PHONY : box.s
+
+# target to build an object file
 camera.o:
 	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/camera.o
 .PHONY : camera.o
@@ -140,6 +155,21 @@ core.i:
 core.s:
 	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/core.s
 .PHONY : core.s
+
+# target to build an object file
+geometry.o:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.o
+.PHONY : geometry.o
+
+# target to preprocess a source file
+geometry.i:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.i
+.PHONY : geometry.i
+
+# target to generate assembly for a file
+geometry.s:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/geometry.s
+.PHONY : geometry.s
 
 # target to build an object file
 gpuhelper.o:
@@ -225,12 +255,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... quaternion_demo"
 	@echo "... rebuild_cache"
+	@echo "... box.o"
+	@echo "... box.i"
+	@echo "... box.s"
 	@echo "... camera.o"
 	@echo "... camera.i"
 	@echo "... camera.s"
 	@echo "... core.o"
 	@echo "... core.i"
 	@echo "... core.s"
+	@echo "... geometry.o"
+	@echo "... geometry.i"
+	@echo "... geometry.s"
 	@echo "... gpuhelper.o"
 	@echo "... gpuhelper.i"
 	@echo "... gpuhelper.s"

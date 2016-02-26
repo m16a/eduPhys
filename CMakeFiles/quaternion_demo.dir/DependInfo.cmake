@@ -4,13 +4,15 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/m16a/Documents/phys/edu/opengl/camera.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/camera.o"
-  "/home/m16a/Documents/phys/edu/opengl/core.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/core.o"
-  "/home/m16a/Documents/phys/edu/opengl/gpuhelper.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/gpuhelper.o"
-  "/home/m16a/Documents/phys/edu/opengl/icosphere.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/icosphere.o"
-  "/home/m16a/Documents/phys/edu/opengl/quaternion_demo.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/quaternion_demo.o"
-  "/home/m16a/Documents/phys/edu/opengl/sphere.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/sphere.o"
-  "/home/m16a/Documents/phys/edu/opengl/trackball.cpp" "/home/m16a/Documents/phys/edu/opengl/CMakeFiles/quaternion_demo.dir/trackball.o"
+  "/home/m16a/Documents/phys/eduPhys/box.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/box.o"
+  "/home/m16a/Documents/phys/eduPhys/camera.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/camera.o"
+  "/home/m16a/Documents/phys/eduPhys/core.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/core.o"
+  "/home/m16a/Documents/phys/eduPhys/geometry.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/geometry.o"
+  "/home/m16a/Documents/phys/eduPhys/gpuhelper.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/gpuhelper.o"
+  "/home/m16a/Documents/phys/eduPhys/icosphere.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/icosphere.o"
+  "/home/m16a/Documents/phys/eduPhys/quaternion_demo.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/quaternion_demo.o"
+  "/home/m16a/Documents/phys/eduPhys/sphere.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/sphere.o"
+  "/home/m16a/Documents/phys/eduPhys/trackball.cpp" "/home/m16a/Documents/phys/eduPhys/CMakeFiles/quaternion_demo.dir/trackball.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

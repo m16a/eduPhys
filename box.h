@@ -1,5 +1,5 @@
-#ifndef _SPHERE_H_
-#define _SPHERE_H_
+#ifndef _BOX_H_
+#define _BOX_H_
 
 #include "geometry.h"
 #include "icosphere.h"
@@ -10,13 +10,13 @@ using Eigen::Quaternionf;
 using Eigen::Matrix3f;
 
 
-class Sphere : public IPhysEnt
+class Box : public IPhysEnt
 {
 
 public:
-	static IcoSphere m_icoSphere;
-	Sphere();
-	virtual ~Sphere(){};
+//	static IcoSphere m_icoSphere;
+	Box();
+	virtual ~Box(){};
 
 	virtual void Draw();
 	virtual void Step(float t);
@@ -25,7 +25,9 @@ public:
 
 public:
 
-	float m_r;
+	float m_a;
+	float m_b;
+	float m_c;
 
 };
 

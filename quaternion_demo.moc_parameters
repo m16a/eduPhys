@@ -8,5 +8,5 @@
 -DQT_GUI_LIB
 -DQT_CORE_LIB
 -o
-/home/m16a/Documents/phys/edu/opengl/quaternion_demo.moc
-/home/m16a/Documents/phys/edu/opengl/quaternion_demo.h
+/home/m16a/Documents/phys/eduPhys/quaternion_demo.moc
+/home/m16a/Documents/phys/eduPhys/quaternion_demo.h

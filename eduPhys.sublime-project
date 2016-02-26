@@ -1,0 +1,1149 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"in",
+				"include"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "quaternion_demo.cpp",
+			"settings":
+			{
+				"buffer_size": 18565,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "geometry.h",
+			"settings":
+			{
+				"buffer_size": 559,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "geometry.cpp",
+			"settings":
+			{
+				"buffer_size": 216,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "sphere.cpp",
+			"settings":
+			{
+				"buffer_size": 1733,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "icosphere.cpp",
+			"settings":
+			{
+				"buffer_size": 3927,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 381 files for \"Sphere\" (case sensitive, whole word)\n\n/home/m16a/Documents/phys/eduPhys/.tags:\n   38  ActualRhsType	Eigen/src/Core/ProductBase.h	/^    typedef typename RhsBlasTraits::DirectLinearAccessType ActualRhsType;$/;\"	t	class:Eigen::ProductBase\n   39  ActualRows	Eigen/src/Core/products/GeneralMatrixMatrix.h	/^      ActualRows = Transpose ? MaxCols : MaxRows,$/;\"	e	enum:Eigen::internal::gemm_blocking_space::__anon206\n   40: AddAngularImpulse	sphere.cpp	/^void Sphere::AddAngularImpulse(Vector3f value)$/;\"	f	class:Sphere\n   41  AddCost	Eigen/src/Core/NumTraits.h	/^    AddCost = 1,$/;\"	e	enum:Eigen::GenericNumTraits::__anon73\n   42: AddImpulse	sphere.cpp	/^void Sphere::AddImpulse(Vector3f value, Vector3f pt)$/;\"	f	class:Sphere\n   43  AdjointReturnType	Eigen/src/Core/MatrixBase.h	/^                     >::type AdjointReturnType;$/;\"	t	class:Eigen::MatrixBase\n   44  AdjointReturnType	Eigen/src/SparseCore/SparseMatrixBase.h	/^                     >::type AdjointReturnType;$/;\"	t	class:Eigen::SparseMatrixBase\n   ..\n 1080  DoublePacket	Eigen/src/Core/products/GeneralBlockPanelKernel.h	/^  struct DoublePacket$/;\"	s	class:Eigen::internal::gebp_traits\n 1081  Draw	core.cpp	/^void Core::Draw()$/;\"	f	class:Core\n 1082: Draw	sphere.cpp	/^void Sphere::Draw()$/;\"	f	class:Sphere\n 1083  DstHasDirectAccess	Eigen/src/Core/Assign.h	/^    DstHasDirectAccess = Derived::Flags & DirectAccessBit,$/;\"	e	enum:Eigen::internal::assign_traits::__anon258\n 1084  DstHasDirectAccess	Eigen/src/Core/Assign_MKL.h	/^      DstHasDirectAccess = Dst::Flags & DirectAccessBit,$/;\"	e	enum:Eigen::internal::vml_assign_traits::__anon256\n ....\n 4308  SparseView	Eigen/src/SparseCore/SparseView.h	/^class SparseView : public SparseMatrixBase<SparseView<MatrixType> >$/;\"	c	namespace:Eigen\n 4309  Specialized	Eigen/src/Core/util/Constants.h	/^  Specialized,$/;\"	e	enum:Eigen::__anon124\n 4310: Sphere	sphere.cpp	/^Sphere::Sphere()$/;\"	f	class:Sphere\n 4311: Sphere	sphere.h	/^class Sphere$/;\"	c\n 4312  SquareMatrixType	Eigen/src/Core/MatrixBase.h	/^                          EIGEN_SIZE_MAX(RowsAtCompileTime,ColsAtCompileTime)> SquareMatrixType;$/;\"	t	class:Eigen::MatrixBase\n 4313  SquareMatrixType	Eigen/src/SparseCore/SparseMatrixBase.h	/^                          EIGEN_SIZE_MAX(RowsAtCompileTime,ColsAtCompileTime)> SquareMatrixType;$/;\"	t	class:Eigen::SparseMatrixBase\n ....\n 4318  StemFunction	Eigen/src/Core/MatrixBase.h	/^    typedef typename internal::stem_function<Scalar>::type StemFunction;$/;\"	t	class:Eigen::MatrixBase\n 4319  Step	core.cpp	/^void Core::Step(float t)$/;\"	f	class:Core\n 4320: Step	sphere.cpp	/^void Sphere::Step(float t)$/;\"	f	class:Sphere\n 4321  Storage	Eigen/src/SparseCore/SparseMatrix.h	/^    typedef internal::CompressedStorage<Scalar,Index> Storage;$/;\"	t	class:Eigen::SparseMatrix\n 4322  Storage	Eigen/src/SparseCore/SparseVector.h	/^    typedef internal::CompressedStorage<Scalar,Index> Storage;$/;\"	t	class:Eigen::SparseVector\n ....\n 5514  colblk	Eigen/src/SparseLU/SparseLU_Structs.h	/^  Index colblk; \\/\\/ The minimum column dimension for 2-D blocking to be used;$/;\"	m	struct:Eigen::internal::perfvalues\n 5515  coletree	Eigen/src/SparseCore/SparseColEtree.h	/^int coletree(const MatrixType& mat, IndexVector& parent, IndexVector& firstRowElt, typename MatrixType::Index *perm=0)$/;\"	f	namespace:Eigen::internal\n 5516: collide	collision.h	/^void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)$/;\"	f\n 5517  cols	Eigen/src/Cholesky/LDLT.h	/^    inline Index cols() const { return m_matrix.cols(); }$/;\"	f	class:Eigen::LDLT\n 5518  cols	Eigen/src/Cholesky/LLT.h	/^    inline Index cols() const { return m_matrix.cols(); }$/;\"	f	class:Eigen::LLT\n ....\n 7173  m_HPinv	Eigen/src/SPQRSupport/SuiteSparseQRSupport.h	/^    mutable Index *m_HPinv; \\/\\/ The row permutation of H$/;\"	m	class:Eigen::SPQR\n 7174  m_HTau	Eigen/src/SPQRSupport/SuiteSparseQRSupport.h	/^    mutable cholmod_dense *m_HTau; \\/\\/ The Householder coefficients$/;\"	m	class:Eigen::SPQR\n 7175: m_Jinv	sphere.h	/^	Matrix3f m_Jinv;$/;\"	m	class:Sphere\n 7176  m_LDLT	Eigen/src/SparseCholesky/SimplicialCholesky.h	/^    bool m_LDLT;$/;\"	m	class:Eigen::SimplicialCholesky\n 7177  m_Lstore	Eigen/src/SparseLU/SparseLU.h	/^    SCMatrix m_Lstore; \\/\\/ The lower triangular matrix (supernodal)$/;\"	m	class:Eigen::SparseLU\n ....\n 7397  m_hess	Eigen/src/Eigenvalues/RealSchur.h	/^    HessenbergDecomposition<MatrixType> m_hess;$/;\"	m	class:Eigen::RealSchur\n 7398  m_householder	Eigen/src/SVD/UpperBidiagonalization.h	/^    MatrixType m_householder;$/;\"	m	class:Eigen::internal::UpperBidiagonalization\n 7399: m_icoSphere	sphere.cpp	/^IcoSphere Sphere::m_icoSphere = IcoSphere();$/;\"	m	class:Sphere	file:\n 7400: m_icoSphere	sphere.h	/^	static IcoSphere m_icoSphere;$/;\"	m	class:Sphere\n 7401  m_id	Eigen/src/SparseCore/MappedSparseMatrix.h	/^    Index m_id;$/;\"	m	class:Eigen::MappedSparseMatrix::InnerIterator\n 7402  m_id	Eigen/src/SparseCore/MappedSparseMatrix.h	/^    Index m_id;$/;\"	m	class:Eigen::MappedSparseMatrix::ReverseInnerIterator\n ....\n 7406  m_id	Eigen/src/SparseCore/SparseVector.h	/^    Index m_id;$/;\"	m	class:Eigen::SparseVector::InnerIterator\n 7407  m_id	Eigen/src/SparseCore/SparseVector.h	/^    Index m_id;$/;\"	m	class:Eigen::SparseVector::ReverseInnerIterator\n 7408: m_id	sphere.h	/^	int m_id;$/;\"	m	class:Sphere\n 7409  m_idrow	Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h	/^    Index m_idrow;                          \\/\\/ Index to browse the row indices $/;\"	m	class:Eigen::internal::MappedSuperNodalMatrix::InnerIterator\n 7410  m_idval	Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h	/^    Index m_idval;                          \\/\\/ Index to browse the values in the current column$/;\"	m	class:Eigen::internal::MappedSuperNodalMatrix::InnerIterator\n ....\n 7589  m_min	Eigen/src/Eigen2Support/Geometry/AlignedBox.h	/^  VectorType m_min, m_max;$/;\"	m	class:Eigen::AlignedBox\n 7590  m_min	Eigen/src/Geometry/AlignedBox.h	/^  VectorType m_min, m_max;$/;\"	m	class:Eigen::AlignedBox\n 7591: m_minv	sphere.h	/^	float m_minv;$/;\"	m	class:Sphere\n 7592  m_mode	Eigen/src/SparseCore/AmbiVector.h	/^    Index m_mode;$/;\"	m	class:Eigen::internal::AmbiVector\n 7593  m_msglvl	Eigen/src/PardisoSupport/PardisoSupport.h	/^    Index m_type, m_msglvl;$/;\"	m	class:Eigen::PardisoImpl\n ....\n 7609  m_nzval_colptr	Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h	/^    Index* m_nzval_colptr; \\/\\/nzval_colptr[j] Stores the location in nzval[] which starts column j $/;\"	m	class:Eigen::internal::MappedSuperNodalMatrix\n 7610  m_object	Eigen/src/Core/Ref.h	/^    TPlainObjectType m_object;$/;\"	m	class:Eigen::Ref\n 7611: m_objects	core.h	/^	std::vector<Sphere*> m_objects;$/;\"	m	class:Core\n 7612  m_ordering	Eigen/src/SPQRSupport/SuiteSparseQRSupport.h	/^    int m_ordering; \\/\\/ Ordering method to use, see SPQR's manual$/;\"	m	class:Eigen::SPQR\n 7613  m_origin	Eigen/src/Eigen2Support/Geometry/ParametrizedLine.h	/^  VectorType m_origin, m_direction;$/;\"	m	class:Eigen::ParametrizedLine\n ....\n 7663  m_pivotperm	Eigen/src/SparseQR/SparseQR.h	/^    PermutationType m_pivotperm;    \\/\\/ The permutation for rank revealing$/;\"	m	class:Eigen::SparseQR\n 7664  m_pmat	Eigen/src/SparseQR/SparseQR.h	/^    QRMatrixType m_pmat;            \\/\\/ Temporary matrix$/;\"	m	class:Eigen::SparseQR\n 7665: m_pos	sphere.h	/^	Vector3f m_pos;$/;\"	m	class:Sphere\n 7666  m_precision	Eigen/src/QR/FullPivHouseholderQR.h	/^    RealScalar m_precision;$/;\"	m	class:Eigen::FullPivHouseholderQR\n 7667  m_preconditioner	Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h	/^  Preconditioner m_preconditioner;$/;\"	m	class:Eigen::IterativeSolverBase\n ....\n 7686  m_qr_precond_morecols	Eigen/src/SVD/JacobiSVD.h	/^    internal::qr_preconditioner_impl<MatrixType, QRPreconditioner, internal::PreconditionIfMoreColsThanRows> m_qr_precond_morecols;$/;\"	m	class:Eigen::JacobiSVD\n 7687  m_qr_precond_morerows	Eigen/src/SVD/JacobiSVD.h	/^    internal::qr_preconditioner_impl<MatrixType, QRPreconditioner, internal::PreconditionIfMoreRowsThanCols> m_qr_precond_morerows;$/;\"	m	class:Eigen::JacobiSVD\n 7688: m_r	sphere.h	/^	float m_r;$/;\"	m	class:Sphere\n 7689  m_rank	Eigen/src/SPQRSupport/SuiteSparseQRSupport.h	/^    mutable Index m_rank; \\/\\/ The rank of the matrix$/;\"	m	class:Eigen::SPQR\n 7690  m_rank	Eigen/src/misc/Image.h	/^    Index m_rank, m_cols;$/;\"	m	struct:Eigen::internal::image_retval_base\n ....\n 7711  m_rhs	Eigen/src/misc/SparseSolve.h	/^    typename Rhs::Nested m_rhs;$/;\"	m	struct:Eigen::internal::sparse_solve_retval_base\n 7712  m_rhsIter	Eigen/src/SparseCore/SparseCwiseBinaryOp.h	/^    RhsIterator m_rhsIter;$/;\"	m	class:Eigen::internal::sparse_cwise_binary_op_inner_iterator_selector\n 7713: m_rot	sphere.h	/^	Quaternionf m_rot;$/;\"	m	class:Sphere\n 7714  m_row	Eigen/src/Core/CommaInitializer.h	/^  Index m_row;              \\/\\/ current row id$/;\"	m	struct:Eigen::CommaInitializer\n 7715  m_row	Eigen/src/Eigen2Support/Minor.h	/^    const Index m_row, m_col;$/;\"	m	class:Eigen::Minor\n ....\n 7825  m_usePrescribedThreshold	Eigen/src/QR/FullPivHouseholderQR.h	/^    bool m_isInitialized, m_usePrescribedThreshold;$/;\"	m	class:Eigen::FullPivHouseholderQR\n 7826  m_usePrescribedThreshold	Eigen/src/SVD/JacobiSVD.h	/^    bool m_isInitialized, m_isAllocated, m_usePrescribedThreshold;$/;\"	m	class:Eigen::JacobiSVD\n 7827: m_v	sphere.h	/^	Vector3f m_v;$/;\"	m	class:Sphere\n 7828  m_value	Eigen/src/SparseCore/SparseCwiseBinaryOp.h	/^    Scalar m_value;$/;\"	m	class:Eigen::internal::sparse_cwise_binary_op_inner_iterator_selector\n 7829  m_value	Eigen/src/SparseCore/SparseMatrix.h	/^        Index m_value;$/;\"	m	class:Eigen::SparseMatrix::SingletonVector\n ....\n 7837  m_vectors	Eigen/src/Householder/HouseholderSequence.h	/^    typename VectorsType::Nested m_vectors;$/;\"	m	class:Eigen::HouseholderSequence\n 7838  m_view	Eigen/src/SparseCore/SparseView.h	/^  const SparseView& m_view;$/;\"	m	class:Eigen::SparseView::InnerIterator\n 7839: m_w	sphere.h	/^	Vector3f m_w;$/;\"	m	class:Sphere\n 7840  m_workMatrix	Eigen/src/SVD/JacobiSVD.h	/^    WorkMatrixType m_workMatrix;$/;\"	m	class:Eigen::JacobiSVD\n 7841  m_workspace	Eigen/src/Eigenvalues/RealQZ.h	/^      Matrix<Scalar,Dynamic,1> m_workspace;$/;\"	m	class:Eigen::RealQZ\n\n/home/m16a/Documents/phys/eduPhys/.tags_sorted_by_file:\n 10845  Contact	collision.h	/^struct Contact$/;\"	s\n 10846  _COLLISION_H_	collision.h	3;\"	d\n 10847: collide	collision.h	/^void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)$/;\"	f\n 10848  n	collision.h	/^	Vector3f n;$/;\"	m	struct:Contact\n 10849  pt	collision.h	/^	Vector3f pt;$/;\"	m	struct:Contact\n .....\n 10853  Core	core.h	/^class Core$/;\"	c\n 10854  _CORE_H_	core.h	2;\"	d\n 10855: m_objects	core.h	/^	std::vector<Sphere*> m_objects;$/;\"	m	class:Core\n 10856  GpuHelper	gpuhelper.cpp	/^GpuHelper::GpuHelper()$/;\"	f	class:GpuHelper\n 10857  drawUnitCube	gpuhelper.cpp	/^void GpuHelper::drawUnitCube(void)$/;\"	f	class:GpuHelper\n .....\n 10998  m_timer	quaternion_demo.h	/^    QTimer m_timer;$/;\"	m	class:RenderingWidget\n 10999  ~RenderingWidget	quaternion_demo.h	/^    ~RenderingWidget() { }$/;\"	f	class:RenderingWidget\n 11000: AddAngularImpulse	sphere.cpp	/^void Sphere::AddAngularImpulse(Vector3f value)$/;\"	f	class:Sphere\n 11001: AddImpulse	sphere.cpp	/^void Sphere::AddImpulse(Vector3f value, Vector3f pt)$/;\"	f	class:Sphere\n 11002: Draw	sphere.cpp	/^void Sphere::Draw()$/;\"	f	class:Sphere\n 11003: Sphere	sphere.cpp	/^Sphere::Sphere()$/;\"	f	class:Sphere\n 11004: Step	sphere.cpp	/^void Sphere::Step(float t)$/;\"	f	class:Sphere\n 11005: m_icoSphere	sphere.cpp	/^IcoSphere Sphere::m_icoSphere = IcoSphere();$/;\"	m	class:Sphere	file:\n 11006: Sphere	sphere.h	/^class Sphere$/;\"	c\n 11007  _SPHERE_H_	sphere.h	2;\"	d\n 11008: m_Jinv	sphere.h	/^	Matrix3f m_Jinv;$/;\"	m	class:Sphere\n 11009: m_icoSphere	sphere.h	/^	static IcoSphere m_icoSphere;$/;\"	m	class:Sphere\n 11010: m_id	sphere.h	/^	int m_id;$/;\"	m	class:Sphere\n 11011: m_minv	sphere.h	/^	float m_minv;$/;\"	m	class:Sphere\n 11012: m_pos	sphere.h	/^	Vector3f m_pos;$/;\"	m	class:Sphere\n 11013: m_r	sphere.h	/^	float m_r;$/;\"	m	class:Sphere\n 11014: m_rot	sphere.h	/^	Quaternionf m_rot;$/;\"	m	class:Sphere\n 11015: m_v	sphere.h	/^	Vector3f m_v;$/;\"	m	class:Sphere\n 11016: m_w	sphere.h	/^	Vector3f m_w;$/;\"	m	class:Sphere\n 11017  mapToSphere	trackball.cpp	/^bool Trackball::mapToSphere(const Vector2i& p2, Vector3f& v3)$/;\"	f	class:Trackball\n 11018  track	trackball.cpp	/^void Trackball::track(const Vector2i& point2D)$/;\"	f	class:Trackball\n\n/home/m16a/Documents/phys/eduPhys/collision.h:\n   13  \n   14  \n   15: void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)\n   16  {\n   17  	assert(out_size > 0);\n\n/home/m16a/Documents/phys/eduPhys/core.cpp:\n   21  		for (int j = 0; j < size; ++j)\n   22  		{\n   23: 			Sphere *a = m_objects[i];\n   24: 			Sphere *b = m_objects[j];\n   25  \n   26  			if (a->m_id < b->m_id)\n   ..\n   54  \n   55  //step\n   56: 	std::vector<Sphere*>::iterator it = m_objects.begin();\n   57  	for (; it != m_objects.end(); ++it)\n   58  	{\n   ..\n   63  void Core::Draw()\n   64  {\n   65: 	std::vector<Sphere*>::iterator it = m_objects.begin();\n   66  \n   67  	for (; it != m_objects.end(); ++it)\n\n/home/m16a/Documents/phys/eduPhys/core.h:\n    4  #include <vector>\n    5  \n    6: class Sphere;\n    7  \n    8  class Core\n    .\n   10  public:\n   11  	Core();\n   12: 	std::vector<Sphere*> m_objects;\n   13  \n   14  \n\n~/Documents/phys/eduPhys/quaternion_demo:\n    <binary>\n\n/home/m16a/Documents/phys/eduPhys/quaternion_demo.cpp:\n  587  \n  588    //set phys initial world\n  589:   Sphere* s1 = new Sphere();\n  590    s1->m_pos = Vector3f(25.f, 0.f, 0.f);\n  591    //s1->m_v = Vector3f(-10.f, 0.f, 0.f);\n  ...\n  593    mRenderingWidget->m_core.get()->m_objects.push_back(s1);\n  594  \n  595:   Sphere* s2 = new Sphere();\n  596    s2->m_pos = Vector3f(-100.f, 0.f, 0.f);\n  597    s2->m_id = 2;\n\n/home/m16a/Documents/phys/eduPhys/sphere.cpp:\n    3  #include <QtDebug>\n    4  \n    5: IcoSphere Sphere::m_icoSphere = IcoSphere();\n    6  \n    7: Sphere::Sphere()\n    8  {\n    9  	m_r = 25;\n   ..\n   19  \n   20  \n   21: void Sphere::Step(float t)\n   22  {\n   23  	assert(m_id > 0);\n   ..\n   50  }\n   51  \n   52: void Sphere::AddImpulse(Vector3f value, Vector3f pt)\n   53  {\n   54  	if (value.norm() < 0.0001)\n   ..\n   79  }\n   80  \n   81: void Sphere::AddAngularImpulse(Vector3f value)\n   82  {\n   83  	if (value.norm() < 0.0001)\n   ..\n   92  }\n   93  \n   94: void Sphere::Draw()\n   95  {\n   96       glEnable(GL_NORMALIZE);\n\n/home/m16a/Documents/phys/eduPhys/sphere.h:\n   11  \n   12  \n   13: class Sphere : public IPhysEnt\n   14  {\n   15  \n   16  public:\n   17  	static IcoSphere m_icoSphere;\n   18: 	Sphere();\n   19: 	virtual void ~Sphere();\n   20  \n   21  	virtual void Draw();\n\n81 matches across 9 files\n",
+			"settings":
+			{
+				"buffer_size": 14696,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "core.cpp",
+			"settings":
+			{
+				"buffer_size": 1334,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "core.h",
+			"settings":
+			{
+				"buffer_size": 198,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "sphere.h",
+			"settings":
+			{
+				"buffer_size": 480,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "box.h",
+			"settings":
+			{
+				"buffer_size": 491,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "box.cpp",
+			"settings":
+			{
+				"buffer_size": 3267,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "collision.h",
+			"settings":
+			{
+				"buffer_size": 552,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"Inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 407.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/m16a/Documents/phys/eduPhys/core.h",
+		"/home/m16a/Documents/phys/edu/opengl/sphere.cpp",
+		"/home/m16a/Documents/phys/edu/opengl/sphere.h",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_cyl.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/ode.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/quickstep.cpp",
+		"/home/m16a/Documents/ode-0.13/include/ode/odemath.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/util.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/objects.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_base.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_base.cpp",
+		"/home/m16a/Documents/ode-0.13/include/ode/threading.h",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_ode.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/box.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_space_stress.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_impl_templates.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/objects.h",
+		"/home/m16a/Documents/ode-0.13/include/ode/common.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_impl.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_space.cpp",
+		"/home/m16a/Documents/ode-0.13/drawstuff/src/drawstuff.cpp",
+		"/home/m16a/Documents/ode-0.13/drawstuff/src/x11.cpp",
+		"/home/m16a/.config/sublime-text-3/Packages/User/CTags.sublime-settings",
+		"/home/m16a/Documents/ode-0.13/ode/study/latex_table.txt",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_kernel.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/util.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/threadingutils.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/sphere.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_util.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_kernel.h",
+		"/home/m16a/Documents/ode-0.13/include/ode/collision.h",
+		"/home/m16a/Documents/ode-0.13/include/ode/contact.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_impl.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/odeou.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_impl_win.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_impl_posix.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/threading_atomics_provs.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/memory.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/odeinit.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_heightfield.cpp",
+		"/home/m16a/Documents/ode-0.13/include/ode/objects.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/joints/joint.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_space_internal.h",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_crash.cpp",
+		"/home/m16a/.config/sublime-text-3/Packages/User/Diagram.sublime-settings",
+		"/home/m16a/.config/sublime-text-3/Packages/sublime_diagram_plugin/Diagram.sublime-settings",
+		"/home/m16a/.config/sublime-text-3/Packages/sublime_diagram_plugin/README.md",
+		"/home/m16a/.config/sublime-text-3/Packages/sublime_diagram_plugin/samples/EXAMPLE.wsd",
+		"/media/m16a/F8565D9C565D5D06/out.txt",
+		"/home/m16a/Documents/ode-0.13/ode/src/config.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_trimesh_opcode.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_trimesh_internal.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/collision_trimesh_gimpact.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/src/mass.cpp",
+		"/home/m16a/Documents/ode-0.13/include/ode/mass.h",
+		"/home/m16a/Documents/ode-0.13/ode/src/step.cpp",
+		"/home/m16a/Documents/ode-0.13/ode.sublime-project",
+		"/home/m16a/Documents/ode-0.13/ode/ode.sublime-project",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_boxstack.cpp",
+		"/home/m16a/Documents/ode-0.13/ode/README",
+		"/home/m16a/Documents/ode-0.13/ode/demo/demo_boxstack"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/home/m16a/Documents/phys/eduPhys",
+			"/home/m16a/Documents/ode-0.13, *.h, *.cpp",
+			"/home/m16a/Documents/ode-0.13",
+			"/home/m16a/Documents/ode-0.13,*.h,*.cpp",
+			"/home/m16a/Documents/ode-0.13/ode,*.h,*.cpp",
+			"/home/m16a/Documents/ode-0.13/ode"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"m_r",
+			"Sphere",
+			"PostThreadedCall",
+			"dxProcessIslands",
+			"dstepper_fn_t",
+			"dxStepperProcessingCallContext",
+			"dstepper_fn_t",
+			"WaitThreadedCall",
+			"dThreadedCallWaitFunction",
+			"PostThreadedCall",
+			"PostThreadedCallsGroup",
+			"PostThreadedCall",
+			"g_world_default_threading_functions",
+			"dxSelfThreaded",
+			"ProcessActiveJobAddition",
+			"dBUILTIN_THREADING_IMPL_ENABLED",
+			"WakeupAThread",
+			"dxselfthreaded",
+			"dxselfmultithreaded",
+			"ReleaseAJob",
+			"ReleaseAJobAndPickNextPendingOne",
+			"AllocateJobInfoFromPool",
+			"m_info_pool",
+			"next_info",
+			"m_info_pool",
+			"raw_head_info",
+			"m_info_pool",
+			"QueueJobForProcessing",
+			"InitializeDefaultThreading",
+			"g_world_default_threading_impl",
+			"RetrieveThreadingDefaultImpl",
+			"SetThreadingDefaultImplProvider",
+			"m_default_impl_provider",
+			"GetFunctionsInfo",
+			"m_functions_info",
+			"dTHREADING_INTF_DISABLED",
+			"dBUILTIN_THREADING_IMPL_ENABLED",
+			"dWorldSetStepThreadingImplementation",
+			"AssignThreadingImpl",
+			"dThreadedCallPostFunction",
+			"AssignThreadingImpl",
+			"dTHREADING_INTF_DISABLED",
+			"dBUILTIN_THREADING_IMPL_ENABLED",
+			"dxThreadingImplementation",
+			"dWorldSetStepThreadingImplementation",
+			"AssignThreadingImpl",
+			"m_functions_info",
+			"PostThreadedCall",
+			"dThreadedCallPostFunction",
+			"dMultiply2_333",
+			"dMultiply0_333",
+			"dMultiply0_133",
+			"dMultiply1_331",
+			"dMatrix3",
+			"dMultiply0_331",
+			"_dCalcVectorDot3",
+			"dCalcVectorDot3",
+			"dMultiplyHelper0_331",
+			"dMultiply0_331",
+			"dxQuickStepIsland_Stage1_Callback",
+			"M_STEPPER",
+			"m_stepper",
+			"subl",
+			"StickToJobsProcessing",
+			"PerformJobProcessingUntilShutdown",
+			"PerformJobProcessingSession",
+			"ReleaseAJobAndPickNextPendingOne",
+			"PickNextPendingJob",
+			"m_job_list",
+			"PostThreadedCall",
+			"g_builtin_threading_functions",
+			"g_world_default_threading_functions",
+			"dThreadedCallPostFunction",
+			"g_world_default_threading_functions",
+			"g_world_default_threading_impl",
+			"dxThreadingFunctionsInfo",
+			"post_call",
+			"m_pcwIslandsSteppingWait",
+			"dxQuickStepIsland",
+			"dxReallocateWorldProcessContext",
+			"nearCallback",
+			"simLoop",
+			"fn",
+			"start",
+			"fn",
+			"AllocateInstance",
+			"dxtemplateThreadingImplementation",
+			"AllocMutexGroup",
+			"InitializeDefaultThreading",
+			"SetThreadingDefaultImplProvider",
+			"dWorldSetStepThreadingImplementation",
+			"AssignThreadingImpl",
+			"g_world_default_threading_impl",
+			"dxCallWait",
+			"dMutexGroupAllocFunction",
+			"dxThreadingImplementation",
+			"dMutexGroupAllocFunction",
+			"ProcessActiveJobAddition",
+			"tJobListContainer",
+			"dMAKE_RELEASEE_JOBINSTANCE",
+			"ptrdiff_t",
+			"AlterThreadedCallDependenciesCount",
+			"dThreadedCallDependenciesCountAlterFunction",
+			"dxCallReleasee",
+			"dCallReleaseeID",
+			"dxCallReleasee",
+			"dxIslandsProcessingCallContext",
+			"dxIslandsProcessingCallContext(",
+			"m_islandsInfo",
+			"AtomicCompareExchangePointer",
+			"ThreadedProcessIslandSearch",
+			"ThreadedProcessGroup",
+			"m_job_list",
+			"m_list_container",
+			"PostThreadedCall",
+			"dThreadedCallPostFunction",
+			"ThreadedProcessGroup",
+			"PostThreadedCallsGroup",
+			"PostThreadedCall",
+			"dxCallReleasee",
+			"dxtemplateThreadingImplementation",
+			"tJobListContainer",
+			"PostThreadedCall",
+			"dThreadedCallPostFunction",
+			"dThreadingImplResourcesForCallsPreallocateFunction",
+			"dxThreadingFunctionsInfo",
+			"preallocate_resources_for_calls",
+			"StickToJobsProcessing"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	],
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "quaternion_demo.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18565,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								16598,
+								16598
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10384.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "geometry.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 559,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								536,
+								536
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "geometry.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 216,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								178,
+								178
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "sphere.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1733,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								319,
+								319
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "icosphere.cpp",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 972.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14696,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										479,
+										485
+									],
+									[
+										533,
+										539
+									],
+									[
+										682,
+										688
+									],
+									[
+										742,
+										748
+									],
+									[
+										1262,
+										1268
+									],
+									[
+										1289,
+										1295
+									],
+									[
+										1883,
+										1889
+									],
+									[
+										1903,
+										1909
+									],
+									[
+										1911,
+										1917
+									],
+									[
+										1932,
+										1938
+									],
+									[
+										1946,
+										1952
+									],
+									[
+										1970,
+										1976
+									],
+									[
+										2617,
+										2623
+									],
+									[
+										2651,
+										2657
+									],
+									[
+										3383,
+										3389
+									],
+									[
+										3394,
+										3400
+									],
+									[
+										4039,
+										4045
+									],
+									[
+										4627,
+										4633
+									],
+									[
+										4674,
+										4680
+									],
+									[
+										4760,
+										4766
+									],
+									[
+										5309,
+										5315
+									],
+									[
+										6038,
+										6044
+									],
+									[
+										6634,
+										6640
+									],
+									[
+										7315,
+										7321
+									],
+									[
+										8090,
+										8096
+									],
+									[
+										8707,
+										8713
+									],
+									[
+										9323,
+										9329
+									],
+									[
+										9935,
+										9941
+									],
+									[
+										10365,
+										10371
+									],
+									[
+										10376,
+										10382
+									],
+									[
+										10654,
+										10660
+									],
+									[
+										11099,
+										11105
+									],
+									[
+										11153,
+										11159
+									],
+									[
+										11197,
+										11203
+									],
+									[
+										11257,
+										11263
+									],
+									[
+										11295,
+										11301
+									],
+									[
+										11322,
+										11328
+									],
+									[
+										11337,
+										11343
+									],
+									[
+										11357,
+										11363
+									],
+									[
+										11365,
+										11371
+									],
+									[
+										11386,
+										11392
+									],
+									[
+										11424,
+										11430
+									],
+									[
+										11458,
+										11464
+									],
+									[
+										11508,
+										11514
+									],
+									[
+										11555,
+										11561
+									],
+									[
+										11576,
+										11582
+									],
+									[
+										11600,
+										11606
+									],
+									[
+										11703,
+										11709
+									],
+									[
+										11784,
+										11790
+									],
+									[
+										11838,
+										11844
+									],
+									[
+										11898,
+										11904
+									],
+									[
+										11959,
+										11965
+									],
+									[
+										12013,
+										12019
+									],
+									[
+										12077,
+										12083
+									],
+									[
+										12134,
+										12140
+									],
+									[
+										12191,
+										12197
+									],
+									[
+										12501,
+										12507
+									],
+									[
+										12512,
+										12518
+									],
+									[
+										12695,
+										12701
+									],
+									[
+										12731,
+										12737
+									],
+									[
+										12846,
+										12852
+									],
+									[
+										13003,
+										13009
+									],
+									[
+										13187,
+										13193
+									],
+									[
+										13278,
+										13284
+									],
+									[
+										13477,
+										13483
+									],
+									[
+										13494,
+										13500
+									],
+									[
+										13688,
+										13694
+									],
+									[
+										13705,
+										13711
+									],
+									[
+										13885,
+										13891
+									],
+									[
+										13935,
+										13941
+									],
+									[
+										13943,
+										13949
+									],
+									[
+										14013,
+										14019
+									],
+									[
+										14105,
+										14111
+									],
+									[
+										14232,
+										14238
+									],
+									[
+										14353,
+										14359
+									],
+									[
+										14487,
+										14493
+									],
+									[
+										14590,
+										14596
+									],
+									[
+										14622,
+										14628
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								13495,
+								13495
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4131.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "core.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								183,
+								183
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 216.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "core.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 198,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								83,
+								83
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 8,
+					"file": "sphere.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 480,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "box.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 491,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								163,
+								163
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "box.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3267,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								104,
+								104
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "collision.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 552,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82,
+								82
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.440059347181,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "eduPhys.sublime-workspace",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 223.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,5 +1,6 @@
 #include "core.h"
 #include "sphere.h"
+#include "box.h"
 #include <QtDebug>
 #include "collision.h"
 
@@ -20,14 +21,39 @@ void Core::Step(float t)
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
 		{
-			Sphere *a = m_objects[i];
-			Sphere *b = m_objects[j];
 
-			if (a->m_id < b->m_id)
+			if (m_objects[i]->m_id < m_objects[j]->m_id)
 			{
+
+				IPhysEnt *a = m_objects[i];
+				IPhysEnt *b = m_objects[j];
+
 				Contact c[1];
 				int s = 1;
-				collide(a, b, c, s);
+
+				//TODO: ugly, refactor on adding new collision geom
+				if (Box* a1 = dynamic_cast<Box*>(a))
+				{
+					if (Sphere* b1 = dynamic_cast<Sphere*>(b))
+					{
+						collide(b1, a1, c, s);
+						a = b1; b = a1;
+					}
+				}else if (Sphere* a1 = dynamic_cast<Sphere*>(a))
+				{
+					if (Box* b1 = dynamic_cast<Box*>(b))
+					{
+						collide(a1, b1, c, s);
+						a = a1; b = b1;
+
+					}
+					else if (Sphere* b1 = dynamic_cast<Sphere*>(b))
+ 					{	
+ 						collide(a1, b1, c, s);
+						a = a1; b = b1;
+					}
+
+				}
 
 				if (s > 0)
 				{
@@ -53,7 +79,7 @@ void Core::Step(float t)
 
 
 //step
-	std::vector<Sphere*>::iterator it = m_objects.begin();
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
 	{
 		(*it)->Step(t);
@@ -62,7 +88,7 @@ void Core::Step(float t)
 
 void Core::Draw()
 {
-	std::vector<Sphere*>::iterator it = m_objects.begin();
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 
 	for (; it != m_objects.end(); ++it)
 	{

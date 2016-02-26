@@ -9,13 +9,7 @@ IcoSphere Sphere::m_icoSphere = IcoSphere();
 
 Sphere::Sphere()
 {
-	m_pos = Vector3f(0.f, 0.f, 0.f);
-	m_rot = Quaternionf::Identity();
 	m_r = 25;
-
-	m_v = Vector3f(0.f, 0.f, 0.f);
-	m_w = Vector3f(0.f, 0.f, 0.f);
-	m_minv = 0.01;//100kg
 
 	Matrix3f J;
 	float a = 2.f/5.f / m_minv * m_r*m_r;
@@ -24,7 +18,6 @@ Sphere::Sphere()
 			0, 0, a;
 
 	m_Jinv = J.inverse();
-	m_id = 0;
 }
 
 
