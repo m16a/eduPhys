@@ -10,6 +10,10 @@
 #ifndef EIGEN_CAMERA_H
 #define EIGEN_CAMERA_H
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include <Eigen/Geometry>
 #include <QObject>
 // #include <frame.h>

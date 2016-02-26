@@ -9,7 +9,10 @@
 
 #ifndef EIGEN_GPUHELPER_H
 #define EIGEN_GPUHELPER_H
-
+#ifdef WIN32
+#include <windows.h>
+#include <QtGui/QApplication>
+#endif
 #include <Eigen/Geometry>
 #include <GL/gl.h>
 #include <vector>
