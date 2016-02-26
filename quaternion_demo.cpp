@@ -212,14 +212,16 @@ void RenderingWidget::drawScene()
 
   m_core.get()->Draw();
   
-  glVertexPointer(3, GL_FLOAT, 0, mVertices[0].data());
-  glNormalPointer(GL_FLOAT, 0, mNormals[0].data());
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_NORMAL_ARRAY);
-  glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
-  glDisableClientState(GL_VERTEX_ARRAY);
-  glDisableClientState(GL_NORMAL_ARRAY);
-
+	if (!mVertices.empty())
+	{
+		glVertexPointer(3, GL_FLOAT, 0, mVertices[0].data());
+		glNormalPointer(GL_FLOAT, 0, mNormals[0].data());
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+	}
   glDisable(GL_LIGHTING);
 
   update();
@@ -424,7 +426,7 @@ void RenderingWidget::paintGL()
   glDisable(GL_ALPHA_TEST);
   glDisable(GL_TEXTURE_1D);
   glDisable(GL_TEXTURE_2D);
-  glDisable(GL_TEXTURE_3D);
+  //glDisable(GL_TEXTURE_3D);
 
   // Clear buffers
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
