@@ -28,13 +28,9 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 	}
 }
 
-//const bool AABBOverlapsSphere ( const AABB&	B, const SCALAR	r, VECTOR&	C ) 
 bool overlap(Sphere* a, Box* b)
 {
 	Vector3f s = b->m_rot * (a->m_pos - b->m_pos);
-
-// /	qDebug() << "TEST " << s.x();
-
 
 	if (s.x() < 0)
 		s.x() += b->m_a/2;
