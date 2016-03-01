@@ -10,6 +10,9 @@
 #ifndef EIGEN_QUATERNION_DEMO_H
 #define EIGEN_QUATERNION_DEMO_H
 
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include "gpuhelper.h"
 #include "camera.h"
 #include "trackball.h"

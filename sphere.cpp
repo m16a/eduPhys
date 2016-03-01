@@ -1,4 +1,7 @@
 #include "sphere.h"
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include "gpuhelper.h"
 #include <QtDebug>
 
