@@ -145,10 +145,14 @@ RenderingWidget::RenderingWidget()
   mCurrentTrackingMode = TM_NO_TRACK;
   mNavMode = NavTurnAround;
   mLerpMode = LerpQuaternion;
+  m_SolverStepMode = SolverContinuous;
   mRotationMode = RotationStable;
   mTrackball.setCamera(&mCamera);
   m_core.reset(new Core);
 
+  m_performPauseStep == false;
+  m_isSolverStopped = false;
+  m_solverTimeFlow = SolverForwardTime;
   m_lastTime = QTime::currentTime();
   // required to capture key press events
   setFocusPolicy(Qt::ClickFocus);
@@ -206,7 +210,14 @@ void RenderingWidget::drawScene()
   float dt = currTime.msec() - m_lastTime.msec();
 
   if (dt > 0)
-    m_core.get()->Step(dt / 1000.f);
+  {
+    if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
+    {
+      float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
+      m_core.get()->Step(dir * dt / 1000.f);
+      m_performPauseStep = false;
+    }
+  }
   else 
     qDebug() << "negative step " << dt ;
 
@@ -308,6 +319,17 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
           m_timer.start(1000/30);
           mAnimate = true;
         }
+        break;
+      case Qt::Key_P:
+        m_isSolverStopped = !m_isSolverStopped; 
+        break;
+      case Qt::Key_N:
+        m_solverTimeFlow = SolverForwardTime;
+        m_performPauseStep = true;
+        break;
+      case Qt::Key_B:
+        m_solverTimeFlow = SolverBackwardTime;
+        m_performPauseStep = true;
         break;
       default:
         break;
@@ -466,6 +488,12 @@ void RenderingWidget::setLerpMode(int m)
   mLerpMode = LerpMode(m);
 }
 
+void RenderingWidget::setStepMode(int m)
+{
+  m_SolverStepMode = SolverStepMode(m);
+}
+
+
 void RenderingWidget::setRotationMode(int m)
 {
   mRotationMode = RotationMode(m);
@@ -580,6 +608,27 @@ QWidget* RenderingWidget::createNavigationControlWidget()
     box->setLayout(boxLayout);
     layout->addWidget(box);
   }
+  {
+    // step mode
+    QGroupBox* box = new QGroupBox("solver step mode");
+    QVBoxLayout* boxLayout = new QVBoxLayout;
+    QButtonGroup* group = new QButtonGroup(panel);
+    QRadioButton* but;
+    but = new QRadioButton("continuous");
+    group->addButton(but, SolverContinuous);
+    boxLayout->addWidget(but);
+    but->setToolTip("continous simulation in time");
+    but = new QRadioButton("discrete");
+    group->addButton(but, SolverStepDiscrete);
+    boxLayout->addWidget(but);
+    but->setToolTip("press 'B' and 'N' buttons to choose simulation direction");
+    group->button(mNavMode)->setChecked(true);
+    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setStepMode(int)));
+    box->setLayout(boxLayout);
+    layout->addWidget(box);
+  }
+
+
   layout->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
   panel->setLayout(layout);
   return panel;
@@ -610,7 +659,7 @@ QuaternionDemo::QuaternionDemo()
 
 
   IPhysEnt* s3 = new Box();
-  s3->m_pos = Vector3f(0.f, 0.f, 10.f);
+  s3->m_pos = Vector3f(0.f, 0.f, 15.f);
   s3->m_id = 3;
   s3->m_minv = 0.001;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);

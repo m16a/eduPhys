@@ -53,6 +53,16 @@ class RenderingWidget : public QGLWidget
       LerpEulerAngles
     };
 
+    enum SolverStepMode{
+      SolverStepDiscrete,
+      SolverContinuous
+    };
+
+    enum SolverFlow{
+      SolverForwardTime,
+      SolverBackwardTime
+    };
+
     enum RotationMode {
       RotationStable,
       RotationStandard
@@ -62,11 +72,15 @@ class RenderingWidget : public QGLWidget
     TrackMode mCurrentTrackingMode;
     NavMode mNavMode;
     LerpMode mLerpMode;
+    SolverStepMode m_SolverStepMode;
+    SolverFlow m_solverTimeFlow;
+    bool m_performPauseStep;
     RotationMode mRotationMode;
     Vector2i mMouseCoords;
     Trackball mTrackball;
 
     QTimer m_timer;
+    bool m_isSolverStopped;
 
     void setupCamera();
 
@@ -84,6 +98,7 @@ class RenderingWidget : public QGLWidget
 
     virtual void setNavMode(int);
     virtual void setLerpMode(int);
+    virtual void setStepMode(int);
     virtual void setRotationMode(int);
     virtual void resetCamera();
 
