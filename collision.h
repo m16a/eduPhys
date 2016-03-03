@@ -83,119 +83,20 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 		return;
 
 	Vector3f s = b->m_rot * (sphere->m_pos - b->m_pos);
+	qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
 
-//iterate through 6 planes
-	
-/*
-	------
-	|    |
-left|    |right
-	|    |
-	|    |
-	------
-*/
+	Vector3f dir = Vector3f(0.0f,0.0f,0.0f);
 
-	Vector3f ns[] = {	Vector3f(1,0,0), Vector3f(-1,0,0),
-						Vector3f(0,1,0), Vector3f(0,-1,0),
-						Vector3f(0,0,1), Vector3f(0,0,-1)};
+	dir.x() = std::min(0.0f, b->m_a/2.0f - abs(s.x())) * ((s.x() >= 0.0f) ? 1.0f : -1.0f);
+	dir.y() = std::min(0.0f, b->m_b/2.0f - abs(s.y())) * ((s.y() >= 0.0f) ? 1.0f : -1.0f);
+	dir.z() = std::min(0.0f, b->m_c/2.0f - abs(s.z())) * ((s.z() >= 0.0f) ? 1.0f : -1.0f);
+	qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
 
-	Vector3f cc;//collision_candidat
-	bool isColl = false;
-	do{
-		//right
-		float d = -1.0f*b->m_a/2.0f;
-		float dist = distPointPlane(ns[0], d, s);
-
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[0];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-		//left
-		d = -1.0f*b->m_a/2.0f;
-		dist = distPointPlane(ns[1], d, s);
-//		qDebug() << "dist:" << dist << " sphereX:" << sphere->m_pos.x();
-
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[1];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-		//front
-		d = -1.0f*b->m_b/2.0f;
-		dist = distPointPlane(ns[2], d, s);
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[2];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-		//back
-		d = -1.0f*b->m_b/2.0f;
-		dist = distPointPlane(ns[3], d, s);
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[3];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-		//top
-		d = -1.0f*b->m_c/2.0f;
-		dist = distPointPlane(ns[4], d, s);
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[4];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-		//bottom
-		d = -1.0f*b->m_c/2.0f;
-		dist = distPointPlane(ns[5], d, s);
-		if (dist < sphere->m_r)
-		{
-			cc = sphere->m_pos - sphere->m_r * ns[5];
-			if (isPointInsideBox(b->Size(), cc))
-			{
-				isColl = true;
-				break;
-			}
-		}
-
-	}while(0);
-//TODO: provide collision with corner points
-	if (isColl)
-	{
-		out_size = 0;
-		c->n = cc - sphere->m_pos;
-		c->n.normalize();
-		c->pt = cc;
-		//collision
-		qDebug() << "COLLISION";
-	}
-
-	
+	out_size = 1;
+	qDebug() << "internal coll " << (s+dir).x() << " " << (s+dir).y() <<" " << (s+dir).z(); 
+	c->pt = b->m_rot*(s + dir) + b->m_pos;
+	c->n = c->pt - sphere->m_pos;
+	c->n.normalize();	
 }
 
 

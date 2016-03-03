@@ -5,9 +5,9 @@
 
 Box::Box()
 {
-	m_a = 15;
-	m_b = 30;
-	m_c = 45;
+	m_a = 10;
+	m_b = 20;
+	m_c = 30;
 
 	Matrix3f J;
 	float a = 2.f/5.f / m_minv * m_a*m_a;

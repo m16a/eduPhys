@@ -640,18 +640,19 @@ QuaternionDemo::QuaternionDemo()
 
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
-  s1->m_pos = Vector3f(50.f, 0.f, 0.f);
+  s1->m_pos = Vector3f(100.f, 0.f, 0.f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
-  s1->AddImpulse(Vector3f(-5.f, 0.f, 0.f) * 100.f /*Vector3f(10,10,10)*/);
+  s1->m_minv = 0.01;
+  s1->AddImpulse(Vector3f(-20.f, 0.f, 0.f) * 100.f /*Vector3f(10,10,10)*/);
  
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
-  s2->m_pos = Vector3f(-100.f, 0.f, 0.f);
+  s2->m_pos = Vector3f(-0.f, 0.f, 15.f);
   s2->m_id = 2;
-  s2->m_minv = 0.001;
-  s2->m_v = Vector3f(10.f, 0.f, 0.f);
+  s2->m_minv = 0.01;
+  s2->m_v = Vector3f(2.f, 0.f, 0.f);
   //mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 
   //
@@ -661,7 +662,7 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s3 = new Box();
   s3->m_pos = Vector3f(0.f, 0.f, 15.f);
   s3->m_id = 3;
-  s3->m_minv = 0.001;
+  s3->m_minv = 1.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
   mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));

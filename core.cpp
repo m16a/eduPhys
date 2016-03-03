@@ -56,9 +56,7 @@ void Core::Step(float t)
 				}
 
 				if (s > 0)
-				{
-					qDebug() << "COLLISION!!!" << c[0].pt.x() << " "<< c[0].pt.y();
-					
+				{					
 					Vector3f rAP = c[0].pt - a->m_pos;
 					Vector3f rBP = c[0].pt - b->m_pos;
 
@@ -71,8 +69,11 @@ void Core::Step(float t)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
 
-					a->AddImpulse(-2.0*p * c[0].n);
-					b->AddImpulse(2.0*p * c[0].n);
+					qDebug() << "COLLISION point: " << c[0].pt.x() << " "<< c[0].pt.y() << " "<< c[0].pt.z() << 
+									" impulse: " << p;
+
+					a->AddImpulse(-2.0*p * c[0].n, c[0].pt);
+					b->AddImpulse(2.0*p * c[0].n, c[0].pt);
 				}			
 			}
 		}
