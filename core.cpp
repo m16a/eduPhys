@@ -64,7 +64,7 @@ void Core::Step(float t)
 					Matrix3f rBPcross = getCrossMatrix(rBP);
 					
 
-					float p = (a->m_v - b->m_v).dot(c[0].n) / 
+					float p = (a->m_v + rAP.cross(a->m_w) - (b->m_v + rBP.cross(b->m_w))).dot(c[0].n) / 
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
