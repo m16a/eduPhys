@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-f3146086051c381e7e2905fa9ef76dc0 quaternion_demo.moc

@@ -35,82 +35,6 @@
 
 using namespace Eigen;
 
-class FancySpheres
-{
-  public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    
-    FancySpheres()
-    {
-      const int levels = 4;
-      const float scale = 0.33;
-      float radius = 100;
-      std::vector<int> parents;
-
-      // leval 0
-      mCenters.push_back(Vector3f::Zero());
-      parents.push_back(-1);
-      mRadii.push_back(radius);
-
-      // generate level 1 using icosphere vertices
-      radius *= 0.45;
-      {
-        float dist = mRadii[0]*0.9;
-        for (int i=0; i<12; ++i)
-        {
-          mCenters.push_back(mIcoSphere.vertices()[i] * dist);
-          mRadii.push_back(radius);
-          parents.push_back(0);
-        }
-      }
-
-      static const float angles [10] = {
-        0, 0,
-        M_PI, 0.*M_PI,
-        M_PI, 0.5*M_PI,
-        M_PI, 1.*M_PI,
-        M_PI, 1.5*M_PI
-      };
-
-      // generate other levels
-      int start = 1;
-      for (int l=1; l<levels; l++)
-      {
-        radius *= scale;
-        int end = mCenters.size();
-        for (int i=start; i<end; ++i)
-        {
-          Vector3f c = mCenters[i];
-          Vector3f ax0 = (c - mCenters[parents[i]]).normalized();
-          Vector3f ax1 = ax0.unitOrthogonal();
-          Quaternionf q;
-          q.setFromTwoVectors(Vector3f::UnitZ(), ax0);
-          Affine3f t = Translation3f(c) * q * Scaling(mRadii[i]+radius);
-          for (int j=0; j<5; ++j)
-          {
-            Vector3f newC = c + ( (AngleAxisf(angles[j*2+1], ax0)
-                                * AngleAxisf(angles[j*2+0] * (l==1 ? 0.35 : 0.5), ax1)) * ax0)
-                                * (mRadii[i] + radius*0.8);
-            mCenters.push_back(newC);
-            mRadii.push_back(radius);
-            parents.push_back(i);
-          }
-        }
-        start = end;
-      }
-    }
-
-    void draw()
-    {
-
-    }
-  protected:
-    std::vector<Vector3f> mCenters;
-    std::vector<float> mRadii;
-    IcoSphere mIcoSphere;
-};
-
-
 // generic linear interpolation method
 template<typename T> T lerp(float t, const T& a, const T& b)
 {
@@ -178,7 +102,6 @@ void RenderingWidget::grabFrame(void)
 
 void RenderingWidget::drawScene()
 {
-  //static FancySpheres sFancySpheres;
   float length = 150;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitY(), Color(0,1,0,1));
@@ -457,8 +380,20 @@ void RenderingWidget::paintGL()
 
   mCamera.activateGL();
 
+
+	//Print camera info
+
+	
   drawScene();
+
+	Vector3f camPos = mCamera.position();
+	renderText(10,10, QString("camera params:"));
+	renderText(10,25, QString("pos %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
+
+	Quaternionf dir = mCamera.orientation();
+
 }
+
 
 void RenderingWidget::initializeGL()
 {
@@ -643,26 +578,26 @@ QuaternionDemo::QuaternionDemo()
   s1->m_pos = Vector3f(100.f, 0.f, 0.f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
-  s1->m_minv = 0.01;
-  s1->AddImpulse(Vector3f(-20.f, 0.f, 0.f) * 100.f /*Vector3f(10,10,10)*/);
+  s1->m_minv = 0.1;
+  s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
  
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
-  s2->m_pos = Vector3f(-0.f, 0.f, 15.f);
+  s2->m_pos = Vector3f(-50.f, -30.f, 0.f);
   s2->m_id = 2;
-  s2->m_minv = 0.01;
-  s2->m_v = Vector3f(2.f, 0.f, 0.f);
-  //mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+  s2->m_minv = 1;
+  //s2->m_v = Vector3f(2.f, 0.f, 0.f);
+  mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
 
   IPhysEnt* s3 = new Box();
-  s3->m_pos = Vector3f(0.f, 0.f, 15.f);
+  s3->m_pos = Vector3f(0.f, 50.f, 0.f);
   s3->m_id = 3;
-  s3->m_minv = 1.0f;
+  s3->m_minv = 0.01f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
   mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));

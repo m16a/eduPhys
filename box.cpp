@@ -6,17 +6,28 @@
 Box::Box()
 {
 	m_a = 10;
-	m_b = 20;
-	m_c = 30;
+	m_b = 200;
+	m_c = 300;
 
 	Matrix3f J;
-	float a = 2.f/5.f / m_minv * m_a*m_a;
+	float a = 1.f/12.f / m_minv * (m_b*m_b + m_c*m_c);
+
+	float b = 1.f/12.f / m_minv * (m_a*m_a + m_c*m_c);
+	float c = 1.f/12.f / m_minv * (m_b*m_b + m_a*m_a);
 	J <<	a, 0, 0,
-			0, a, 0,
-			0, 0, a;
+			0, b, 0,
+			0, 0, c;
 
 	m_Jinv = J.inverse();
 	//TODO: define inertia tensor for box
+
+//infinite inertia tensor
+#if 0
+	m_Jinv <<	0, 0, 0,
+						0, 0, 0,
+						0, 0, 0;
+#endif
+
 }
 
 
@@ -66,6 +77,12 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 		n.normalize();
 
 		Vector3f normImpulse = (n.dot(value)) * n;
+		
+		qDebug() << "m_pos: " << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();	
+		qDebug() << "nn: " << n.x() << " " << n.y() << " " << n.z();	
+		qDebug() << "impulse: " << value.x() << " " << value.y() << " " << value.z();	
+	
+		qDebug() << "normal impulse: " << normImpulse.x() << " " <<  normImpulse.y() << " " <<	 normImpulse.z();	
 
 		AddAngularImpulse((pt - m_pos).cross(value - normImpulse));
 
@@ -82,6 +99,7 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 
 void Box::AddAngularImpulse(Vector3f value)
 {
+	qDebug() << "angular impulse " << value.norm();
 	if (value.norm() < 0.0001)
 	{
 		qDebug() << "Small impulse";
@@ -90,6 +108,7 @@ void Box::AddAngularImpulse(Vector3f value)
 
 	Vector3f dw = m_Jinv * value;
 	m_w += dw;
+	qDebug() << "sphere rotation was added";
 
 }
 

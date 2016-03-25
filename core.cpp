@@ -63,17 +63,19 @@ void Core::Step(float t)
 					Matrix3f rAPcross = getCrossMatrix(rAP);
 					Matrix3f rBPcross = getCrossMatrix(rBP);
 					
-
-					float p = (a->m_v + rAP.cross(a->m_w) - (b->m_v + rBP.cross(b->m_w))).dot(c[0].n) / 
+					float e = 1.0f;//restitution coef
+					float p = (1 + e)*(a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))).dot(c[0].n) / 
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
 
 					qDebug() << "COLLISION point: " << c[0].pt.x() << " "<< c[0].pt.y() << " "<< c[0].pt.z() << 
 									" impulse: " << p;
-
-					a->AddImpulse(-2.0*p * c[0].n, c[0].pt);
-					b->AddImpulse(2.0*p * c[0].n, c[0].pt);
+	
+					qDebug() << "COLLISION normal: " << c[0].n.x() << " "<< c[0].n.y() << " "<< c[0].n.z();
+					
+					a->AddImpulse(-p * c[0].n, c[0].pt);
+					b->AddImpulse(p * c[0].n, c[0].pt);
 				}			
 			}
 		}
