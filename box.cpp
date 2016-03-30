@@ -60,8 +60,6 @@ void Box::Step(float t)
 	*/
 	
 	}
-	EulerAngles<float> eA(m_rot);
-	qDebug() << m_pos << " " << eA.coeffs();
 }
 
 void Box::AddImpulse(Vector3f value, Vector3f pt)

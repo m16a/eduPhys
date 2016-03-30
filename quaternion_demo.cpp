@@ -141,8 +141,10 @@ void RenderingWidget::drawScene()
       m_performPauseStep = false;
     }
   }
-  else 
-    qDebug() << "negative step " << dt ;
+  else
+	{ 
+    //qDebug() << "negative step " << dt ;
+	}
 
   m_lastTime = currTime;  
 
@@ -575,7 +577,7 @@ QuaternionDemo::QuaternionDemo()
 
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
-  s1->m_pos = Vector3f(100.f, 0.f, 0.f);
+  s1->m_pos = Vector3f(100.f, -80.f, 0.f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   s1->m_minv = 0.1;
@@ -584,7 +586,7 @@ QuaternionDemo::QuaternionDemo()
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
-  s2->m_pos = Vector3f(-50.f, -30.f, 0.f);
+  s2->m_pos = Vector3f(-50.f, -100.f, 0.f);
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
@@ -593,11 +595,12 @@ QuaternionDemo::QuaternionDemo()
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
+  //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 
   IPhysEnt* s3 = new Box();
-  s3->m_pos = Vector3f(0.f, 50.f, 0.f);
+  s3->m_pos = Vector3f(0.f, 0.f, 0.f);
   s3->m_id = 3;
-  s3->m_minv = 0.01f;
+  s3->m_minv = 0.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
   mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));

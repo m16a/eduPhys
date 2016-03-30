@@ -6,6 +6,7 @@
 #include "sphere.h"
 #include "box.h"
 #include <Eigen/Geometry>
+#include "my_utils.h"
 
 using Eigen::Vector3d;
 using Eigen::Vector3f;
@@ -21,7 +22,6 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 {
 	assert(out_size > 0);
 	out_size = 0;
-
 	Vector3f diff = b->m_pos - a->m_pos;
 	if (diff.norm() < a->m_r + b->m_r)
 	{
@@ -35,7 +35,7 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 bool overlap(Sphere* a, Box* b)
 {
 	Vector3f s = b->m_rot * (a->m_pos - b->m_pos);
-	
+	qDebug() << "test " << b->m_rot * Vector3f(10, 0, 0); 	
 	float d = 0.0f;
 	float tmp = 0.0f;
 
@@ -74,6 +74,8 @@ bool overlap(Sphere* a, Box* b)
 	
 	bool res = d <= a->m_r*a->m_r;
 
+	qDebug() << "overlap test " << a->m_id << " " << b->m_id << " " << s << "\n" << 
+	"res d:"<< d << " r^2:" << a->m_r*a->m_r;
 	if (res)
 		qDebug() << "OVERLAP";
 
