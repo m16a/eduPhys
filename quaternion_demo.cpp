@@ -387,8 +387,8 @@ void RenderingWidget::paintGL()
   drawScene();
 
 	Vector3f camPos = mCamera.position();
-	renderText(10,10, QString("camera params:"));
-	renderText(10,25, QString("pos %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
+	//renderText(10,12, QString("camera params:"));
+	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
 
@@ -604,16 +604,17 @@ QuaternionDemo::QuaternionDemo()
 
 
   setCentralWidget(mRenderingWidget);
-
+/*
   QDockWidget* panel = new QDockWidget("navigation", this);
   panel->setAllowedAreas((QFlags<Qt::DockWidgetArea>)(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea));
   addDockWidget(Qt::RightDockWidgetArea, panel);
   panel->setWidget(mRenderingWidget->createNavigationControlWidget());
+*/
 }
 
 int main(int argc, char *argv[])
 {
-  std::cout << "Navigation:\n";
+  std::cout << "	Navigation:\n";
   std::cout << "  left button:           rotate around the target\n";
   std::cout << "  middle button:         zoom\n";
   std::cout << "  left button + ctrl     quake rotate (rotate around camera position)\n";
@@ -626,8 +627,9 @@ int main(int argc, char *argv[])
 
   QApplication app(argc, argv);
   QuaternionDemo demo;
-  demo.resize(600,500);
-  demo.show();
+  demo.resize(600, 500);
+	demo.move(700, 100);
+	demo.show();
   return app.exec();
 }
 

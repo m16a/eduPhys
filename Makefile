@@ -202,6 +202,21 @@ icosphere.s:
 .PHONY : icosphere.s
 
 # target to build an object file
+my_utils.o:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/my_utils.o
+.PHONY : my_utils.o
+
+# target to preprocess a source file
+my_utils.i:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/my_utils.i
+.PHONY : my_utils.i
+
+# target to generate assembly for a file
+my_utils.s:
+	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/my_utils.s
+.PHONY : my_utils.s
+
+# target to build an object file
 quaternion_demo.o:
 	$(MAKE) -f CMakeFiles/quaternion_demo.dir/build.make CMakeFiles/quaternion_demo.dir/quaternion_demo.o
 .PHONY : quaternion_demo.o
@@ -273,6 +288,9 @@ help:
 	@echo "... icosphere.o"
 	@echo "... icosphere.i"
 	@echo "... icosphere.s"
+	@echo "... my_utils.o"
+	@echo "... my_utils.i"
+	@echo "... my_utils.s"
 	@echo "... quaternion_demo.o"
 	@echo "... quaternion_demo.i"
 	@echo "... quaternion_demo.s"

@@ -1,6 +1,8 @@
 #include "box.h"
 #include "gpuhelper.h"
 #include <QtDebug>
+#include "my_utils.h"
+#include "my_eulerAngles.h"
 
 
 Box::Box()
@@ -19,7 +21,6 @@ Box::Box()
 			0, 0, c;
 
 	m_Jinv = J.inverse();
-	//TODO: define inertia tensor for box
 
 //infinite inertia tensor
 #if 0
@@ -59,7 +60,8 @@ void Box::Step(float t)
 	*/
 	
 	}
-//	qDebug() << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();
+	EulerAngles<float> eA(m_rot);
+	qDebug() << m_pos << " " << eA.coeffs();
 }
 
 void Box::AddImpulse(Vector3f value, Vector3f pt)
@@ -77,13 +79,14 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 		n.normalize();
 
 		Vector3f normImpulse = (n.dot(value)) * n;
-		
+
+/*		
 		qDebug() << "m_pos: " << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();	
 		qDebug() << "nn: " << n.x() << " " << n.y() << " " << n.z();	
 		qDebug() << "impulse: " << value.x() << " " << value.y() << " " << value.z();	
 	
 		qDebug() << "normal impulse: " << normImpulse.x() << " " <<  normImpulse.y() << " " <<	 normImpulse.z();	
-
+*/
 		AddAngularImpulse((pt - m_pos).cross(value - normImpulse));
 
 		Vector3f dv = normImpulse * m_minv;
@@ -99,7 +102,7 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 
 void Box::AddAngularImpulse(Vector3f value)
 {
-	qDebug() << "angular impulse " << value.norm();
+//	qDebug() << "angular impulse " << value.norm();
 	if (value.norm() < 0.0001)
 	{
 		qDebug() << "Small impulse";
@@ -108,7 +111,7 @@ void Box::AddAngularImpulse(Vector3f value)
 
 	Vector3f dw = m_Jinv * value;
 	m_w += dw;
-	qDebug() << "sphere rotation was added";
+//	qDebug() << "sphere rotation was added";
 
 }
 

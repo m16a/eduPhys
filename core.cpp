@@ -68,11 +68,11 @@ void Core::Step(float t)
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
-
-					qDebug() << "COLLISION point: " << c[0].pt.x() << " "<< c[0].pt.y() << " "<< c[0].pt.z() << 
+					qDebug() << "COLLISION";
+					qDebug() << " point:" << c[0].pt << 
 									" impulse: " << p;
 	
-					qDebug() << "COLLISION normal: " << c[0].n.x() << " "<< c[0].n.y() << " "<< c[0].n.z();
+					qDebug() << " normal:" << c[0].n;
 					
 					a->AddImpulse(-p * c[0].n, c[0].pt);
 					b->AddImpulse(p * c[0].n, c[0].pt);
