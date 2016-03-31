@@ -3,12 +3,13 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-
+#include <vector>
 
 using Eigen::Vector3f;
 using Eigen::Quaternionf;
 using Eigen::Matrix3f;
 
+extern const Vector3f g_Gravity;
 
 struct  IPhysEnt
 {
@@ -19,7 +20,7 @@ struct  IPhysEnt
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f)) = 0;
 	virtual void AddAngularImpulse(Vector3f value) = 0;
 
-
+	
 	Vector3f m_pos;
 	Quaternionf m_rot;
 
@@ -28,6 +29,8 @@ struct  IPhysEnt
 
 	float m_minv;
 	Matrix3f m_Jinv;
+
+	std::vector<Vector3f> m_forces;
 
 	int m_id;
 };

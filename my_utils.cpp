@@ -49,5 +49,5 @@ Vector3f PYRFromQuat(Quaternionf& q)
 {
   Matrix3f m = q.toRotationMatrix();
 	Vector3f ea = m.eulerAngles(0,1,2);
-	return ea * 180.0f / M_PI;
+	return ea /* 180.0f / M_PI*/;
 }

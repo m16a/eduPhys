@@ -32,7 +32,7 @@
 #include "my_eulerAngles.h"
 #include "geometry.h"
 #include "box.h"
-
+#include "my_utils.h"
 using namespace Eigen;
 
 // generic linear interpolation method
@@ -393,6 +393,10 @@ void RenderingWidget::paintGL()
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
+qDebug() << dir;
+	Vector3f ypr = PYRFromQuat(dir); 
+	renderText(10,32, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
+
 
 }
 
@@ -404,8 +408,9 @@ void RenderingWidget::initializeGL()
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  mCamera.setPosition(Vector3f(-200, -200, -200));
-  mCamera.setTarget(Vector3f(0, 0, 0));
+  mCamera.setPosition(Vector3f(223, 188, 151));
+  
+	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
   mInitFrame.orientation = mCamera.orientation().inverse();
   mInitFrame.position = mCamera.viewMatrix().translation();
 }
@@ -581,8 +586,9 @@ QuaternionDemo::QuaternionDemo()
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   s1->m_minv = 0.1;
-  s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
- 
+  //s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
+	s1->m_forces.push_back(g_Gravity);
+	 
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();

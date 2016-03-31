@@ -28,6 +28,13 @@ void Sphere::Step(float t)
 
 	m_pos += m_v * t;
 
+	Vector3f f_sum(0,0,0);
+
+	for (int i=0; i<m_forces.size(); ++i)
+		f_sum += m_forces[i];
+	//Euler integration
+	m_v += f_sum * m_minv * t;
+	
 	Vector3f dw = m_w*t;
 	float n = dw.norm();
 	if (n > 0)
