@@ -17,6 +17,13 @@ QDebug operator<<(QDebug dbg, const Vector3f& v)
     return dbg.space();
 }
 
+QDebug operator<<(QDebug dbg, const Quaternionf& q)
+{
+    dbg.nospace() <<"["<<q.w() <<"," << q.x() << ", " << q.y() <<  ", " << q.z() << "]";
+
+    return dbg.space();
+}
+
 Matrix3f matrixFromPYR(float pitch, float yaw, float roll)
 {
 	Eigen::AngleAxisf rollAngle(roll, Eigen::Vector3f::UnitZ());

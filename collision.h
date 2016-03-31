@@ -34,8 +34,8 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 
 bool overlap(Sphere* a, Box* b)
 {
-	Vector3f s = b->m_rot * (a->m_pos - b->m_pos);
-	qDebug() << "test " << b->m_rot * Vector3f(10, 0, 0); 	
+	Quaternionf sT = (b->m_rot).conjugate();
+	Vector3f s = sT * (a->m_pos - b->m_pos);
 	float d = 0.0f;
 	float tmp = 0.0f;
 
@@ -74,8 +74,8 @@ bool overlap(Sphere* a, Box* b)
 	
 	bool res = d <= a->m_r*a->m_r;
 
-	qDebug() << "overlap test " << a->m_id << " " << b->m_id << " " << s << "\n" << 
-	"res d:"<< d << " r^2:" << a->m_r*a->m_r;
+//qDebug() << "overlap test " << a->m_id << " " << b->m_id << " " << s << "\n" << 
+//	"res d:"<< d << " r^2:" << a->m_r*a->m_r;
 	if (res)
 		qDebug() << "OVERLAP";
 
@@ -105,7 +105,8 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 	if (!overlap(sphere,b))
 		return;
 
-	Vector3f s = b->m_rot * (sphere->m_pos - b->m_pos);
+	Quaternionf sT = (b->m_rot).conjugate();
+	Vector3f s = sT * (sphere->m_pos - b->m_pos);
 //	qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
 
 	Vector3f dir = Vector3f(0.0f,0.0f,0.0f);

@@ -87,7 +87,7 @@ void Core::Step(float t)
 	{
 		(*it)->Step(t);
 
-		qDebug() << "ObjID:" << (*it)->m_id << " "<<  (*it)->m_pos << " " << PYRFromQuat((*it)->m_rot);
+//	qDebug() << "ObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
 	}
 }
 
