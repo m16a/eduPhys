@@ -63,7 +63,7 @@ void Core::Step(float t)
 					Matrix3f rAPcross = getCrossMatrix(rAP);
 					Matrix3f rBPcross = getCrossMatrix(rBP);
 					
-					float e = 1.0f;//restitution coef
+					float e = 0.9f;//restitution coef
 					float p = (1 + e)*(a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))).dot(c[0].n) / 
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)

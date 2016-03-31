@@ -393,11 +393,14 @@ void RenderingWidget::paintGL()
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
-qDebug() << dir;
 	Vector3f ypr = PYRFromQuat(dir); 
 	renderText(10,32, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
+//	Vector3f a = PYRFromQuat(dir);
+	
+	//EulerAngles<float> ea(dir);
+	//qDebug() << dir << " ==  " << quatFromPYR(a.x(), a.y(), a.z());
 
-
+	//qDebug() << dir << " ==  " << (Quaternionf)ea;
 }
 
 
@@ -582,7 +585,7 @@ QuaternionDemo::QuaternionDemo()
 
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
-  s1->m_pos = Vector3f(100.f, -80.f, 0.f);
+  s1->m_pos = Vector3f(100.f, -80.f, 70.f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   s1->m_minv = 0.1;
@@ -592,7 +595,7 @@ QuaternionDemo::QuaternionDemo()
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
-  s2->m_pos = Vector3f(-50.f, -100.f, 0.f);
+  s2->m_pos = Vector3f(-50.f, -100.f, 70.f);
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);

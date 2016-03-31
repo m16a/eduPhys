@@ -7,9 +7,9 @@
 
 Box::Box()
 {
-	m_a = 10;
-	m_b = 200;
-	m_c = 300;
+	m_a = 400;
+	m_b = 400;
+	m_c = 10;
 
 	Matrix3f J;
 	float a = 1.f/12.f / m_minv * (m_b*m_b + m_c*m_c);
@@ -23,7 +23,7 @@ Box::Box()
 	m_Jinv = J.inverse();
 
 //infinite inertia tensor
-#if 0
+#if 1
 	m_Jinv <<	0, 0, 0,
 						0, 0, 0,
 						0, 0, 0;
