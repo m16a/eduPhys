@@ -7,9 +7,9 @@
 
 Box::Box()
 {
-	m_a = 400;
-	m_b = 400;
-	m_c = 10;
+	m_a = 10;
+	m_b = 10;
+	m_c = 0.4;
 
 	Matrix3f J;
 	float a = 1.f/12.f / m_minv * (m_b*m_b + m_c*m_c);

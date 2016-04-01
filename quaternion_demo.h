@@ -90,11 +90,9 @@ class RenderingWidget : public QGLWidget
 
   protected slots:
 
-    virtual void animate(void);
     virtual void drawScene(void);
 
     virtual void grabFrame(void);
-    virtual void stopAnimation();
 
     virtual void setNavMode(int);
     virtual void setLerpMode(int);

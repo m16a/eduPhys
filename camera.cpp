@@ -61,7 +61,6 @@ Camera::~Camera()
 {
 }
 
-
 void Camera::setViewport(uint offsetx, uint offsety, uint width, uint height)
 {
     mVpX = offsetx;

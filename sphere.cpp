@@ -9,7 +9,7 @@ IcoSphere Sphere::m_icoSphere = IcoSphere();
 
 Sphere::Sphere()
 {
-	m_r = 20;
+	m_r = 0.1;
 
 	Matrix3f J;
 	float a = 2.f/5.f / m_minv * m_r*m_r;

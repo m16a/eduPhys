@@ -1,0 +1,8 @@
+Box-box overlap
+Box-box collision detection
+Contact solver
+Bug with infinite bouncing
+Review and rework camera control (moving-done)
+Linux rendering bug, scene disappearing
+Clear timeline
+Clear animation

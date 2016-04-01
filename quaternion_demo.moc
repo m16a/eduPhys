@@ -22,7 +22,7 @@ static const uint qt_meta_data_RenderingWidget[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,23 +31,21 @@ static const uint qt_meta_data_RenderingWidget[] = {
 
  // slots: signature, parameters, type, tag, flags
       17,   16,   16,   16, 0x09,
-      27,   16,   16,   16, 0x09,
-      39,   16,   16,   16, 0x09,
-      51,   16,   16,   16, 0x09,
-      67,   16,   16,   16, 0x09,
-      83,   16,   16,   16, 0x09,
-     100,   16,   16,   16, 0x09,
-     117,   16,   16,   16, 0x09,
-     138,   16,   16,   16, 0x09,
+      29,   16,   16,   16, 0x09,
+      41,   16,   16,   16, 0x09,
+      57,   16,   16,   16, 0x09,
+      74,   16,   16,   16, 0x09,
+      91,   16,   16,   16, 0x09,
+     112,   16,   16,   16, 0x09,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_RenderingWidget[] = {
-    "RenderingWidget\0\0animate()\0drawScene()\0"
-    "grabFrame()\0stopAnimation()\0setNavMode(int)\0"
-    "setLerpMode(int)\0setStepMode(int)\0"
-    "setRotationMode(int)\0resetCamera()\0"
+    "RenderingWidget\0\0drawScene()\0grabFrame()\0"
+    "setNavMode(int)\0setLerpMode(int)\0"
+    "setStepMode(int)\0setRotationMode(int)\0"
+    "resetCamera()\0"
 };
 
 void RenderingWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -56,15 +54,13 @@ void RenderingWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         Q_ASSERT(staticMetaObject.cast(_o));
         RenderingWidget *_t = static_cast<RenderingWidget *>(_o);
         switch (_id) {
-        case 0: _t->animate(); break;
-        case 1: _t->drawScene(); break;
-        case 2: _t->grabFrame(); break;
-        case 3: _t->stopAnimation(); break;
-        case 4: _t->setNavMode((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: _t->setLerpMode((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->setStepMode((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->setRotationMode((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->resetCamera(); break;
+        case 0: _t->drawScene(); break;
+        case 1: _t->grabFrame(); break;
+        case 2: _t->setNavMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: _t->setLerpMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: _t->setStepMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->setRotationMode((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->resetCamera(); break;
         default: ;
         }
     }
@@ -102,9 +98,9 @@ int RenderingWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 7;
     }
     return _id;
 }

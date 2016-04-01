@@ -102,7 +102,7 @@ void RenderingWidget::grabFrame(void)
 
 void RenderingWidget::drawScene()
 {
-  float length = 150;
+  float length = 2;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitY(), Color(0,1,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitZ(), Color(0,0,1,1));
@@ -166,51 +166,9 @@ void RenderingWidget::drawScene()
  
 }
 
-void RenderingWidget::animate()
-{
-  m_alpha += double(m_timer.interval()) * 1e-3;
-
-  TimeLine::const_iterator hi = m_timeline.upper_bound(m_alpha);
-  TimeLine::const_iterator lo = hi;
-  --lo;
-
-  Frame currentFrame;
-
-  if(hi==m_timeline.end())
-  {
-    // end
-    currentFrame = lo->second;
-    stopAnimation();
-  }
-  else if(hi==m_timeline.begin())
-  {
-    // start
-    currentFrame = hi->second;
-  }
-  else
-  {
-    float s = (m_alpha - lo->first)/(hi->first - lo->first);
-    if (mLerpMode==LerpEulerAngles)
-      currentFrame = ::lerpFrame<EulerAngles<float> >(s, lo->second, hi->second);
-    else if (mLerpMode==LerpQuaternion)
-      currentFrame = ::lerpFrame<Eigen::Quaternionf>(s, lo->second, hi->second);
-    else
-    {
-      std::cerr << "Invalid rotation interpolation mode (abort)\n";
-      exit(2);
-    }
-    currentFrame.orientation.coeffs().normalize();
-  }
-
-  currentFrame.orientation = currentFrame.orientation.inverse();
-  currentFrame.position = - (currentFrame.orientation * currentFrame.position);
-  mCamera.setFrame(currentFrame);
-
-  updateGL();
-}
-
 void RenderingWidget::keyPressEvent(QKeyEvent * e)
 {
+		const float camSpeed = 0.25f;
     switch(e->key())
     {
       case Qt::Key_Up:
@@ -231,20 +189,43 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
       case Qt::Key_R:
         resetCamera();
         break;
-      // start/stop the animation
-      case Qt::Key_A:
-        if (mAnimate)
-        {
-          stopAnimation();
-        }
-        else
-        {
-          m_alpha = 0;
-          connect(&m_timer, SIGNAL(timeout()), this, SLOT(animate()));
-          m_timer.start(1000/30);
-          mAnimate = true;
-        }
+      //  arrows to flight with camera
+      case Qt::Key_W:
+			{
+				Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos += camSpeed * camDir;
+				mCamera.setPosition(camPos);
         break;
+			}
+      case Qt::Key_S:
+			{
+  			Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos -= camSpeed * camDir;
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_A:
+			{
+  			Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos -= camSpeed * camDir.cross(Vector3f::UnitZ());
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_D:
+ 			{
+  			Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos += camSpeed * camDir.cross(Vector3f::UnitZ());
+				mCamera.setPosition(camPos);
+        break;
+			}
       case Qt::Key_P:
         m_isSolverStopped = !m_isSolverStopped; 
         break;
@@ -261,14 +242,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
     }
 
     updateGL();
-}
-
-void RenderingWidget::stopAnimation()
-{
-  disconnect(&m_timer, SIGNAL(timeout()), this, SLOT(animate()));
-  m_timer.stop();
-  mAnimate = false;
-  m_alpha = 0;
 }
 
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
@@ -303,6 +276,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
       break;
   }
 }
+
 void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 {
     mCurrentTrackingMode = TM_NO_TRACK;
@@ -411,7 +385,7 @@ void RenderingWidget::initializeGL()
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  mCamera.setPosition(Vector3f(223, 188, 151));
+  mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
   
 	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
   mInitFrame.orientation = mCamera.orientation().inverse();
@@ -446,8 +420,6 @@ void RenderingWidget::setRotationMode(int m)
 
 void RenderingWidget::resetCamera()
 {
-  if (mAnimate)
-    stopAnimation();
   m_timeline.clear();
   Frame aux0 = mCamera.frame();
   aux0.orientation = aux0.orientation.inverse();
@@ -479,10 +451,6 @@ void RenderingWidget::resetCamera()
 
   m_timeline[2] = mInitFrame;
   m_alpha = 0;
-  animate();
-  connect(&m_timer, SIGNAL(timeout()), this, SLOT(animate()));
-  m_timer.start(1000/30);
-  mAnimate = true;
 }
 
 QWidget* RenderingWidget::createNavigationControlWidget()
@@ -528,7 +496,6 @@ QWidget* RenderingWidget::createNavigationControlWidget()
     but = new QRadioButton("standard rotation");
     group->addButton(but, RotationStandard);
     boxLayout->addWidget(but);
-    but->setToolTip("standard approach mapping the x and y displacements\nas rotations around the camera's X and Y axes");
     group->button(mRotationMode)->setChecked(true);
     connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setRotationMode(int)));
     box->setLayout(boxLayout);
@@ -585,21 +552,21 @@ QuaternionDemo::QuaternionDemo()
 
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
-  s1->m_pos = Vector3f(100.f, -80.f, 70.f);
+  s1->m_pos = Vector3f(1.f, 1.f, 1.0f);
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   s1->m_minv = 0.1;
-  //s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
+//  s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
 	s1->m_forces.push_back(g_Gravity);
 	 
   mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
-  s2->m_pos = Vector3f(-50.f, -100.f, 70.f);
+  s2->m_pos = Vector3f(-0.5f, -1.f, 1.0f);
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
-  mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+ // mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
@@ -632,10 +599,10 @@ int main(int argc, char *argv[])
   std::cout << "  left button + ctrl     quake rotate (rotate around camera position)\n";
   std::cout << "  middle button + ctrl   walk (progress along camera's z direction)\n";
   std::cout << "  left button:           pan (translate in the XY camera's plane)\n\n";
-  std::cout << "R : move the camera to initial position\n";
-  std::cout << "A : start/stop animation\n";
-  std::cout << "C : clear the animation\n";
-  std::cout << "G : add a key frame\n";
+  std::cout << "W/A/S/D : move the camera\n";
+  std::cout << "R				: move the camera to initial position\n";
+  std::cout << "C				: clear the animation\n";
+  std::cout << "G				: add a key frame\n";
 
   QApplication app(argc, argv);
   QuaternionDemo demo;

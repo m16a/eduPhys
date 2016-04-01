@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-const Vector3f g_Gravity(0.0f, 0.0f, -9800.8f);
+const Vector3f g_Gravity(0.0f, 0.0f, -9.8f);
 IPhysEnt::IPhysEnt()
 {
 	m_pos = Vector3f(0.f, 0.f, 0.f);
