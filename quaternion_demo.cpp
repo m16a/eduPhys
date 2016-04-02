@@ -623,10 +623,12 @@ int main(int argc, char *argv[])
   std::cout << "  left button + ctrl     quake rotate (rotate around camera position)\n";
   std::cout << "  middle button + ctrl   walk (progress along camera's z direction)\n";
   std::cout << "  left button:           pan (translate in the XY camera's plane)\n\n";
-  std::cout << "W/A/S/D : move the camera\n";
-  std::cout << "R				: move the camera to initial position\n";
-  std::cout << "C				: clear the animation\n";
-  std::cout << "G				: add a key frame\n";
+  std::cout << "W/A/S/D			: move the camera\n";
+  std::cout << "Up/Down			: camera pitch\n";
+  std::cout << "Left/Right	: camera yaw\n";
+  std::cout << "R						: move the camera to initial position\n";
+  std::cout << "C						: clear the animation\n";
+  std::cout << "G						: add a key frame\n";
 
   QApplication app(argc, argv);
   QuaternionDemo demo;
