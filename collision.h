@@ -111,15 +111,16 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 
 	Vector3f dir = Vector3f(0.0f,0.0f,0.0f);
 
-	dir.x() = std::min(0.0f, b->m_a/2.0f - abs(s.x())) * ((s.x() >= 0.0f) ? 1.0f : -1.0f);
-	dir.y() = std::min(0.0f, b->m_b/2.0f - abs(s.y())) * ((s.y() >= 0.0f) ? 1.0f : -1.0f);
-	dir.z() = std::min(0.0f, b->m_c/2.0f - abs(s.z())) * ((s.z() >= 0.0f) ? 1.0f : -1.0f);
+	dir.x() = std::min(0.0f, b->m_a/2.0f - (float)fabs(s.x())) * ((s.x() >= 0.0f) ? 1.0f : -1.0f);
+	dir.y() = std::min(0.0f, b->m_b/2.0f - (float)fabs(s.y())) * ((s.y() >= 0.0f) ? 1.0f : -1.0f);
+	dir.z() = std::min(0.0f, b->m_c/2.0f - (float)fabs(s.z())) * ((s.z() >= 0.0f) ? 1.0f : -1.0f);
 //	qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
 
 	out_size = 1;
 //	qDebug() << "internal coll " << (s+dir).x() << " " << (s+dir).y() <<" " << (s+dir).z(); 
 	c->pt = b->m_rot*(s + dir) + b->m_pos;
 	c->n = c->pt - sphere->m_pos;
+	assert(c->n.norm() > 10e-5);
 	c->n.normalize();	
 }
 
