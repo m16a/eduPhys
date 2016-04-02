@@ -2,7 +2,8 @@ Box-box overlap
 Box-box collision detection
 Contact solver
 Bug with infinite bouncing
-Review and rework camera control (moving-done)
+Review old camera code
 Linux rendering bug, scene disappearing
 Clear timeline
 Clear animation
+Add external torque

@@ -169,14 +169,42 @@ void RenderingWidget::drawScene()
 void RenderingWidget::keyPressEvent(QKeyEvent * e)
 {
 		const float camSpeed = 0.25f;
+		const float camAngleSpeed = 10.0f * M_PI / 180.0f;
     switch(e->key())
     {
+			//rotate camera
       case Qt::Key_Up:
-        mCamera.zoom(2);
+			{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(camAngleSpeed, mCamera.right());
+				mCamera.setOrientation(delta*o);	
         break;
+			}
       case Qt::Key_Down:
-        mCamera.zoom(-2);
+  		{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(-camAngleSpeed, mCamera.right());
+				mCamera.setOrientation(delta*o);	
         break;
+			}
+      case Qt::Key_Left:
+  		{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(camAngleSpeed, Vector3f::UnitZ());
+				mCamera.setOrientation(delta*o);	
+        break;
+			}
+      case Qt::Key_Right:
+   		{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(-camAngleSpeed,  Vector3f::UnitZ());
+				mCamera.setOrientation(delta*o);	
+        break;
+			}
       // add a frame
       case Qt::Key_G:
         grabFrame();
@@ -210,19 +238,15 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
 			}
       case Qt::Key_A:
 			{
-  			Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos -= camSpeed * camDir.cross(Vector3f::UnitZ());
+				Vector3f camPos = mCamera.position(); 
+				camPos -= camSpeed * mCamera.right();
 				mCamera.setPosition(camPos);
         break;
 			}
       case Qt::Key_D:
  			{
-  			Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos += camSpeed * camDir.cross(Vector3f::UnitZ());
+				Vector3f camPos = mCamera.position(); 
+				camPos += camSpeed * mCamera.right();
 				mCamera.setPosition(camPos);
         break;
 			}

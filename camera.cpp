@@ -100,7 +100,6 @@ Vector3f Camera::right(void) const
 
 void Camera::setDirection(const Vector3f& newDirection)
 {
-    // TODO implement it computing the rotation between newDirection and current dir ?
     Vector3f up = this->up();
     
     Matrix3f camAxes;
