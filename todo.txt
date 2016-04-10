@@ -7,3 +7,4 @@ Linux rendering bug, scene disappearing
 Clear timeline
 Clear animation
 Add external torque
+Implemet more comprehensive time-steping, to calculate collision time more accurate

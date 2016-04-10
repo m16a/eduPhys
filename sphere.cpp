@@ -26,14 +26,14 @@ void Sphere::Step(float t)
 	assert(m_id > 0);
 	//qDebug() << "step " << t ;
 
-	m_pos += m_v * t;
-
+	//Symplectic Euler integration
 	Vector3f f_sum(0,0,0);
-
 	for (int i=0; i<m_forces.size(); ++i)
 		f_sum += m_forces[i];
-	//Euler integration
+
 	m_v += f_sum * m_minv * t;
+	m_pos += m_v * t;
+
 	
 	Vector3f dw = m_w*t;
 	float n = dw.norm();
