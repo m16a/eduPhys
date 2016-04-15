@@ -28,6 +28,7 @@
 #include <QGroupBox>
 
 #include <QtDebug>
+#include <time.h>
 
 #include "my_eulerAngles.h"
 #include "geometry.h"
@@ -77,7 +78,7 @@ RenderingWidget::RenderingWidget()
   m_performPauseStep == false;
   m_isSolverStopped = false;
   m_solverTimeFlow = SolverForwardTime;
-  m_lastTime = QTime::currentTime();
+  m_lastTime = 0.0f;
   // required to capture key press events
   setFocusPolicy(Qt::ClickFocus);
 }
@@ -128,25 +129,22 @@ void RenderingWidget::drawScene()
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHT1);
 
-  QTime currTime = QTime::currentTime();
 
-  float dt = currTime.msec() - m_lastTime.msec();
+	float currTime = clock() / float(CLOCKS_PER_SEC);
+  float dt = (currTime - m_lastTime);
 
-  if (dt > 0)
+	float step = 0.03f;
+	qDebug() <<"s:"<<dt;
+  if ( dt > step)
   {
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-      m_core.get()->Step(dir * dt / 1000.f);
+      m_core.get()->Step(dir * step);
       m_performPauseStep = false;
     }
+		m_lastTime = currTime;  
   }
-  else
-	{ 
-    //qDebug() << "negative step " << dt ;
-	}
-
-  m_lastTime = currTime;  
 
   m_core.get()->Draw();
   

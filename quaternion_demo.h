@@ -122,7 +122,8 @@ class RenderingWidget : public QGLWidget
     QWidget* createNavigationControlWidget();
 
     std::auto_ptr<Core> m_core;
-    QTime m_lastTime;
+    float m_lastTime; //seconds
+
 };
 
 class QuaternionDemo : public QMainWindow
