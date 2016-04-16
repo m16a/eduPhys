@@ -15,6 +15,9 @@ struct Contact
 {
 	Vector3f pt;
 	Vector3f n;
+	float depth;
+
+	Contact():depth(1000.0f){};
 };
 
 
@@ -28,6 +31,7 @@ void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 		c->n = diff;
 		c->pt = a->m_pos + c->n * a->m_r / (a->m_r + b->m_r);
 		c->n.normalize();
+		c->depth = (c->pt - a->m_pos).norm() - a->m_r;
 		out_size = 1;
 	}
 }
@@ -121,6 +125,7 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 	c->pt = b->m_rot*(s + dir) + b->m_pos;
 	c->n = c->pt - sphere->m_pos;
 	assert(c->n.norm() > 10e-5);
+	c->depth = (c->pt - sphere->m_pos).norm() - sphere->m_r;
 	c->n.normalize();	
 }
 

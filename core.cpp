@@ -12,16 +12,18 @@ Core::Core()
 
 }
 
-void Core::Step(float t)
+void Core::Step(float reqStep)
 {
-
-//step
-	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
-	for (; it != m_objects.end(); ++it)
+	
+	while (reqStep > 0)
 	{
-		(*it)->Step(t);
-		qDebug() << "ObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
-	}
+		//step
+		std::vector<IPhysEnt*>::iterator it = m_objects.begin();
+		for (; it != m_objects.end(); ++it)
+		{
+			(*it)->Step(reqStep);
+		//	qDebug() << "ObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
+		}	
 //collide
 	int size = m_objects.size();
 	for (int i = 0; i < size; ++i)
@@ -76,15 +78,17 @@ void Core::Step(float t)
 						);
 					qDebug() << "COLLISION";
 					qDebug() << " point:" << c[0].pt << 
-									" impulse: " << p;
+									" impulse:" << p;
 	
-					qDebug() << " normal:" << c[0].n;
+					qDebug() << " normal:" << c[0].n << " depth:" << c[0].depth;
 					
 					a->AddImpulse(-p * c[0].n, c[0].pt);
 					b->AddImpulse(p * c[0].n, c[0].pt);
 				}			
 			}
 		}
+		reqStep = 0.0f;
+	};
 }
 
 void Core::Draw()

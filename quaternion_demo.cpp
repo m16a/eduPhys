@@ -133,14 +133,13 @@ void RenderingWidget::drawScene()
 	float currTime = clock() / float(CLOCKS_PER_SEC);
   float dt = (currTime - m_lastTime);
 
-	float step = 0.03f;
-	qDebug() <<"s:"<<dt;
-  if ( dt > step)
+	float reqStep = 0.03f;
+  if ( dt > reqStep)
   {
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-      m_core.get()->Step(dir * step);
+      m_core.get()->Step(dir * reqStep);
       m_performPauseStep = false;
     }
 		m_lastTime = currTime;  
