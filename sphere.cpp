@@ -31,31 +31,36 @@ void Sphere::Step(float t)
 	for (int i=0; i<m_forces.size(); ++i)
 		f_sum += m_forces[i];
 
-	m_v += f_sum * m_minv * t;
-	m_pos += m_v * t;
-
-	
-	Vector3f dw = m_w*t;
-	float n = dw.norm();
-	if (n > 0)
+	if (t >= 0)
 	{
-		Vector3f r = dw / n * sin(n/2.f) ;
-		Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
-		m_rot *= dq;
-	/*
-	qDebug() 	<< dq.w() << " " 
-					<< dq.x() << " " 
-					<< dq.y() << " " 
-					<< dq.z(); 
-	*/
-					/*
-	qDebug() 	<< m_rot.w() << " " 
-				<< m_rot.x() << " " 
-				<< m_rot.y() << " " 
-				<< m_rot.z();
-	*/
-	
+		m_v += f_sum * m_minv * t;
+		m_pos += m_v * t;
+
+		Vector3f dw = m_w*t;
+		float n = dw.norm();
+		if (n > 0)
+		{
+			Vector3f r = dw / n * sin(n/2.f) ;
+			Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
+			m_rot *= dq;
+		}
 	}
+	else
+	{
+		Vector3f dw = m_w*t;
+		float n = dw.norm();
+		if (n > 0)
+		{
+			Vector3f r = dw / n * sin(n/2.f) ;
+			Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
+			m_rot *= dq;
+		}
+
+		m_pos += m_v * t;
+		m_v += f_sum * m_minv * t;
+	}
+	
+
 //	qDebug() << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();
 }
 

@@ -11,15 +11,22 @@ Core::Core()
 
 }
 
+void Core::DumpAll()
+{
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
+	for (; it != m_objects.end(); ++it)
+	{
+		qDebug() << "\tObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
+	}
+}
+
 void Core::StepAll(float dt)
 {
 	//qDebug() << "step:" << dt;
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
-	{
 		(*it)->Step(dt);
-		//qDebug() << "\tObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
-	}
+//	DumpAll();
 }
 
 float Core::FindCollisions(bool applyImpulses)
@@ -113,12 +120,22 @@ void Core::Step(float reqStep)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
 				mid = (sStep + fStep) / 2.0f;
-			
+				
+			//	qDebug() << "PRE";	
+			//	DumpAll();	
 				StepAll(mid);
+			//	qDebug() << "IN";	
+			//	DumpAll();	
 				float depth = FindCollisions(false);
 				StepAll(-mid);
+			//	qDebug() << "POST";
+			//	DumpAll();
 
-				qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+			//	qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+				
+				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
+					break;
+
 				if ( depth >= -COLLISION_DEPTH_TOLERANCE)
 					sStep = mid;
 				else
@@ -127,7 +144,7 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-//		qDebug() << "step time:" << mid;
+		//	qDebug() << "step time:" << mid;
 		StepAll(mid);
 		FindCollisions(true);
 
@@ -138,9 +155,6 @@ void Core::Step(float reqStep)
 void Core::Draw()
 {
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
-
 	for (; it != m_objects.end(); ++it)
-	{
 		(*it)->Draw();
-	}	
 }

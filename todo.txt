@@ -1,10 +1,11 @@
 Box-box overlap
 Box-box collision detection
 Contact solver
-Bug with infinite bouncing
+Provide stop condition for bouncing near rest position
 Review old camera code
 Linux rendering bug, scene disappearing
 Clear timeline
 Clear animation
 Add external torque
-Implemet more comprehensive time-steping, to calculate collision time more accurate
+Slow time issue
+

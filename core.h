@@ -21,7 +21,7 @@ public:
 	void Step(float reqStep);
 private:
 	void StepAll(float dt);
-
+	void DumpAll();
 	//finds collisions and returns deepest penetration  
 	//also contact impulses can be provided
 	float FindCollisions(bool applyImpulses);
