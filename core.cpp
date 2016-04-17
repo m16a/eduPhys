@@ -121,8 +121,8 @@ void Core::Step(float reqStep)
 			{
 				mid = (sStep + fStep) / 2.0f;
 				
-			//	qDebug() << "PRE";	
-			//	DumpAll();	
+		//		qDebug() << "PRE";	
+		//		DumpAll();	
 				StepAll(mid);
 			//	qDebug() << "IN";	
 			//	DumpAll();	
@@ -150,6 +150,7 @@ void Core::Step(float reqStep)
 
 		reqStep-= mid;
 	};
+	DumpAll();
 }
 
 void Core::Draw()

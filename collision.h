@@ -111,18 +111,22 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 
 	Quaternionf sT = (b->m_rot).conjugate();
 	Vector3f s = sT * (sphere->m_pos - b->m_pos);
-//	qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
+	qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
 
 	Vector3f dir = Vector3f(0.0f,0.0f,0.0f);
 
-	dir.x() = std::min(0.0f, b->m_a/2.0f - (float)fabs(s.x())) * ((s.x() >= 0.0f) ? 1.0f : -1.0f);
-	dir.y() = std::min(0.0f, b->m_b/2.0f - (float)fabs(s.y())) * ((s.y() >= 0.0f) ? 1.0f : -1.0f);
-	dir.z() = std::min(0.0f, b->m_c/2.0f - (float)fabs(s.z())) * ((s.z() >= 0.0f) ? 1.0f : -1.0f);
-//	qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
+	dir.x() = std::min(0.0f, b->m_a/2.0f - (float)fabs(s.x())) *
+														 ((s.x() >= 0.0f) ? 1.0f : -1.0f);
+	dir.y() = std::min(0.0f, b->m_b/2.0f - (float)fabs(s.y())) *
+														 ((s.y() >= 0.0f) ? 1.0f : -1.0f);
+	dir.z() = std::min(0.0f, b->m_c/2.0f - (float)fabs(s.z())) *
+														 ((s.z() >= 0.0f) ? 1.0f : -1.0f);
+	qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
 
 	out_size = 1;
 //	qDebug() << "internal coll " << (s+dir).x() << " " << (s+dir).y() <<" " << (s+dir).z(); 
 	c->pt = b->m_rot*(s + dir) + b->m_pos;
+	qDebug() << "internal pt:" << c->pt;
 	c->n = c->pt - sphere->m_pos;
 	assert(c->n.norm() > 10e-5);
 	c->depth = (c->pt - sphere->m_pos).norm() - sphere->m_r;
