@@ -9,30 +9,29 @@
 Core::Core()
 {
 
-
 }
 
-void Core::Step(float reqStep)
+void Core::StepAll(float dt)
 {
-	
-	while (reqStep > 0)
+	//qDebug() << "step:" << dt;
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
+	for (; it != m_objects.end(); ++it)
 	{
-		//step
-		std::vector<IPhysEnt*>::iterator it = m_objects.begin();
-		for (; it != m_objects.end(); ++it)
-		{
-			(*it)->Step(reqStep);
-		//	qDebug() << "ObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
-		}	
+		(*it)->Step(dt);
+		//qDebug() << "\tObjID:" << (*it)->m_id << " pos:"<<  (*it)->m_pos << " rot:" <</*PYRFromQuat*/((*it)->m_rot);
+	}
+}
+
+float Core::FindCollisions(bool applyImpulses)
+{
+	float res = 10000.0f;
 //collide
 	int size = m_objects.size();
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
 		{
-
 			if (m_objects[i]->m_id < m_objects[j]->m_id)
 			{
-
 				IPhysEnt *a = m_objects[i];
 				IPhysEnt *b = m_objects[j];
 
@@ -64,7 +63,13 @@ void Core::Step(float reqStep)
 				}
 
 				if (s > 0)
-				{					
+				{
+					if (c[0].depth < res)
+						res = c[0].depth;
+
+					if (!applyImpulses)
+						continue;
+
 					Vector3f rAP = c[0].pt - a->m_pos;
 					Vector3f rBP = c[0].pt - b->m_pos;
 
@@ -87,7 +92,46 @@ void Core::Step(float reqStep)
 				}			
 			}
 		}
-		reqStep = 0.0f;
+
+	return res;
+}
+
+void Core::Step(float reqStep)
+{
+	while (reqStep > 0)
+	{
+		StepAll(reqStep);
+		float d = FindCollisions(false);
+		StepAll(-reqStep);
+	
+		int i = 0;
+		float sStep = 0.0f;
+		float fStep = reqStep;
+		float mid = reqStep;
+//		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
+		if (d < -COLLISION_DEPTH_TOLERANCE)
+			while (i<MAX_COLLISIONS_ITERATIONS)
+			{
+				mid = (sStep + fStep) / 2.0f;
+			
+				StepAll(mid);
+				float depth = FindCollisions(false);
+				StepAll(-mid);
+
+				qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+				if ( depth >= -COLLISION_DEPTH_TOLERANCE)
+					sStep = mid;
+				else
+					fStep = mid;						
+
+				++i;
+			}
+		
+//		qDebug() << "step time:" << mid;
+		StepAll(mid);
+		FindCollisions(true);
+
+		reqStep-= mid;
 	};
 }
 
