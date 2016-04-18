@@ -138,13 +138,13 @@ void RenderingWidget::drawScene()
   if ( dt > reqStep)
 	{
 		//	qDebug() << reqStep;
+		m_lastTime = currTime;  
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
       m_core.get()->Step(dir * reqStep);
       m_performPauseStep = false;
     }
-		m_lastTime = currTime;  
   }
 
   m_core.get()->Draw();
