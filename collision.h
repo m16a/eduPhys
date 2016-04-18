@@ -93,9 +93,9 @@ float distPointPlane(Vector3f plane_normal, float d, Vector3f point)
 
 bool isPointInsideBox(const Vector3f size, const Vector3f p)
 {
-	if (abs(p.x()) <= size.x()/2.0f &&
-		abs(p.y()) <= size.y()/2.0f &&
-		abs(p.z()) <= size.z()/2.0f)
+	if (fabs(p.x()) <= size.x()/2.0f &&
+		fabs(p.y()) <= size.y()/2.0f &&
+		fabs(p.z()) <= size.z()/2.0f)
 		return true;
 
 	return false;
@@ -111,25 +111,42 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 
 	Quaternionf sT = (b->m_rot).conjugate();
 	Vector3f s = sT * (sphere->m_pos - b->m_pos);
-	qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
+	//qDebug() << "internal s " << (s).x() << " " << (s).y() <<" " << (s).z(); 
 
 	Vector3f dir = Vector3f(0.0f,0.0f,0.0f);
 
-	dir.x() = std::min(0.0f, b->m_a/2.0f - (float)fabs(s.x())) *
-														 ((s.x() >= 0.0f) ? 1.0f : -1.0f);
-	dir.y() = std::min(0.0f, b->m_b/2.0f - (float)fabs(s.y())) *
-														 ((s.y() >= 0.0f) ? 1.0f : -1.0f);
-	dir.z() = std::min(0.0f, b->m_c/2.0f - (float)fabs(s.z())) *
-														 ((s.z() >= 0.0f) ? 1.0f : -1.0f);
-	qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
+	if (!isPointInsideBox(b->Size(), s))
+	{
+		dir.x() = std::min(0.0f, b->m_a/2.0f - (float)fabs(s.x())) *
+															 ((s.x() >= 0.0f) ? 1.0f : -1.0f);
+		dir.y() = std::min(0.0f, b->m_b/2.0f - (float)fabs(s.y())) *
+															 ((s.y() >= 0.0f) ? 1.0f : -1.0f);
+		dir.z() = std::min(0.0f, b->m_c/2.0f - (float)fabs(s.z())) *
+															 ((s.z() >= 0.0f) ? 1.0f : -1.0f);
+	}
+	else
+	{
+		qDebug() << "!warning! : [sphere-box collision] big step or speed";
+		
+		dir.x() =  (b->m_a/2.0f - (float)fabs(s.x())) *
+															 ((s.x() >= 0.0f) ? 1.0f : -1.0f);
+		dir.y() =  (b->m_b/2.0f - (float)fabs(s.y())) *
+															 ((s.y() >= 0.0f) ? 1.0f : -1.0f);
+		dir.z() =  (b->m_c/2.0f - (float)fabs(s.z())) *
+															 ((s.z() >= 0.0f) ? 1.0f : -1.0f);	
+	}
+	//qDebug() << "internal dir " << (dir).x() << " " << (dir).y() <<" " << (dir).z(); 
 
 	out_size = 1;
-//	qDebug() << "internal coll " << (s+dir).x() << " " << (s+dir).y() <<" " << (s+dir).z(); 
+	//	qDebug() << "internal coll " << (s+dir).x() << " " << (s+dir).y() <<" " << (s+dir).z(); 
 	c->pt = b->m_rot*(s + dir) + b->m_pos;
-	qDebug() << "internal pt:" << c->pt;
+	//qDebug() << "internal pt:" << c->pt;
 	c->n = c->pt - sphere->m_pos;
 	assert(c->n.norm() > 10e-5);
-	c->depth = (c->pt - sphere->m_pos).norm() - sphere->m_r;
+	if(isPointInsideBox(b->Size(), s))
+		c->depth = -((c->pt - sphere->m_pos).norm() + sphere->m_r);
+	else
+		c->depth = (c->pt - sphere->m_pos).norm() - sphere->m_r;
 	c->n.normalize();	
 }
 

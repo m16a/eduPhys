@@ -8,5 +8,4 @@ Clear timeline
 Clear animation
 Add external torque
 Slow time issue
-Big timestep contact issue (looks like step is too big. On collision if sphere center is in box - collision point is sphere center )
 Unit tests would be fine

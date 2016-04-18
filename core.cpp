@@ -150,7 +150,7 @@ void Core::Step(float reqStep)
 
 		reqStep-= mid;
 	};
-	DumpAll();
+	//DumpAll();
 }
 
 void Core::Draw()
