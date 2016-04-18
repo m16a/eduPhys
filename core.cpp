@@ -83,13 +83,22 @@ float Core::FindCollisions(bool applyImpulses)
 					Matrix3f rAPcross = getCrossMatrix(rAP);
 					Matrix3f rBPcross = getCrossMatrix(rBP);
 					
-					float e = 0.9f;//restitution coef
-					float p = (1 + e)*(a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))).dot(c[0].n) / 
+					float e = 0.8f;//restitution coef
+					Vector3f v_contact = (a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))); 
+					if (v_contact.norm() < RESTING_CONTACT_SPEED)
+					{
+						a->m_active = false;
+						b->m_active = false;
+						continue;
+					}
+						a->m_active = true;
+						b->m_active = true;	
+					float p = (1 + e)*v_contact.dot(c[0].n) / 
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
 					qDebug() << "COLLISION";
-					qDebug() << " point:" << c[0].pt << 
+					qDebug() << " point:" << c[0].pt <<" v_con:"<< v_contact.norm()<< 
 									" impulse:" << p;
 	
 					qDebug() << " normal:" << c[0].n << " depth:" << c[0].depth;

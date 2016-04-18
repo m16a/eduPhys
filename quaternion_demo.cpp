@@ -133,7 +133,7 @@ void RenderingWidget::drawScene()
 	float currTime = clock() / float(CLOCKS_PER_SEC);
   float dt = (currTime - m_lastTime);
 
-	float reqStep = 0.01f;
+	float reqStep = 0.02f;
   if ( dt > reqStep)
   {
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))

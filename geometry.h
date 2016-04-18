@@ -29,7 +29,7 @@ struct  IPhysEnt
 
 	float m_minv;
 	Matrix3f m_Jinv;
-
+	bool m_active;
 	std::vector<Vector3f> m_forces;
 
 	int m_id;

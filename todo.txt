@@ -1,7 +1,6 @@
 Box-box overlap
 Box-box collision detection
 Contact solver
-Provide stop condition for bouncing near rest position
 Review old camera code
 Linux rendering bug, scene disappearing
 Clear timeline

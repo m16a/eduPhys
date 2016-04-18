@@ -25,7 +25,8 @@ void Sphere::Step(float t)
 {
 	assert(m_id > 0);
 	//qDebug() << "step " << t ;
-
+	if (!m_active)
+		return;
 	//Symplectic Euler integration
 	Vector3f f_sum(0,0,0);
 	for (int i=0; i<m_forces.size(); ++i)

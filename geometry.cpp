@@ -9,6 +9,6 @@ IPhysEnt::IPhysEnt()
 	m_v = Vector3f(0.f, 0.f, 0.f);
 	m_w = Vector3f(0.f, 0.f, 0.f);
 	m_minv = 0.01;//100kg
-
+	m_active = true;
 	m_id = 0;
 }
