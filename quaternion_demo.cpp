@@ -28,6 +28,7 @@
 #include <QGroupBox>
 
 #include <QtDebug>
+#include <stdlib.h>
 #include <time.h>
 
 #include "my_eulerAngles.h"
@@ -135,7 +136,8 @@ void RenderingWidget::drawScene()
 
 	float reqStep = 0.02f;
   if ( dt > reqStep)
-  {
+	{
+		//	qDebug() << reqStep;
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
@@ -258,6 +260,18 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
         m_solverTimeFlow = SolverBackwardTime;
         m_performPauseStep = true;
         break;
+			case Qt::Key_Space:
+			{
+				static int sIndex = 100;
+				IPhysEnt* s2 = new Sphere();
+				s2->m_pos = Vector3f(rand()%10 - 5, rand()%10 -5, 1.3f);
+				s2->m_id = sIndex++;
+				s2->m_minv = 1;
+				//s2->m_v = Vector3f(2.f, 0.f, 0.f);
+				m_core.get()->m_objects.push_back(s2);
+				s2->m_forces.push_back(g_Gravity);
+        break;
+			}
       default:
         break;
     }
@@ -626,10 +640,10 @@ int main(int argc, char *argv[])
   std::cout << "R						: move the camera to initial position\n";
   std::cout << "C						: clear the animation\n";
   std::cout << "G						: add a key frame\n";
-
+	srand(time(NULL));
   QApplication app(argc, argv);
   QuaternionDemo demo;
-  demo.resize(600, 500);
+  demo.resize(800, 600);
 	demo.move(700, 100);
 	demo.show();
   return app.exec();

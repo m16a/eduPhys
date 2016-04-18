@@ -81,8 +81,9 @@ bool overlap(Sphere* a, Box* b)
 //qDebug() << "overlap test " << a->m_id << " " << b->m_id << " " << s << "\n" << 
 //	"res d:"<< d << " r^2:" << a->m_r*a->m_r;
 	if (res)
-		qDebug() << "OVERLAP";
-
+	{
+	//	qDebug() << "OVERLAP";
+	}
 	return res;
 }
 
