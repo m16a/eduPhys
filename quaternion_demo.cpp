@@ -80,6 +80,9 @@ RenderingWidget::RenderingWidget()
   m_isSolverStopped = false;
   m_solverTimeFlow = SolverForwardTime;
   m_lastTime = 0.0f;
+	m_realTime = 0.0f;
+	m_physTime = 0.0f;
+	
   // required to capture key press events
   setFocusPolicy(Qt::ClickFocus);
 }
@@ -133,18 +136,20 @@ void RenderingWidget::drawScene()
 
 	float currTime = clock() / float(CLOCKS_PER_SEC);
   float dt = (currTime - m_lastTime);
-
-	float reqStep = 0.02f;
-  if ( dt > reqStep)
+	m_realTime+=dt;
+	qDebug() << m_realTime << m_physTime << dt;
+	float reqStep = 0.001f;
+  if (dt > reqStep)
 	{
-		//	qDebug() << reqStep;
+		qDebug() << "step:" <<dt;
 		m_lastTime = currTime;  
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-      m_core.get()->Step(dir * reqStep);
+      m_core.get()->Step(dir * dt);
       m_performPauseStep = false;
     }
+		m_physTime+=dt;
   }
 
   m_core.get()->Draw();
@@ -404,6 +409,12 @@ void RenderingWidget::paintGL()
 	Quaternionf dir = mCamera.orientation();
 	Vector3f ypr = PYRFromQuat(dir); 
 	renderText(10,32, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
+
+	if (m_realTime > 0.01)
+		renderText(10,52, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
+
+
+
 //	Vector3f a = PYRFromQuat(dir);
 	
 	//EulerAngles<float> ea(dir);
@@ -640,7 +651,9 @@ int main(int argc, char *argv[])
   std::cout << "R						: move the camera to initial position\n";
   std::cout << "C						: clear the animation\n";
   std::cout << "G						: add a key frame\n";
-	srand(time(NULL));
+  std::cout << "---------------------------------------------------------------------------\n";
+	
+srand(time(NULL));
   QApplication app(argc, argv);
   QuaternionDemo demo;
   demo.resize(800, 600);

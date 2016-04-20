@@ -123,6 +123,10 @@ class RenderingWidget : public QGLWidget
 
     std::auto_ptr<Core> m_core;
     float m_lastTime; //seconds
+		
+		float m_realTime;
+		float m_physTime;
+	
 
 };
 
