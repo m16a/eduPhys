@@ -6,5 +6,4 @@ Linux rendering bug, scene disappearing
 Clear timeline
 Clear animation
 Add external torque
-Slow time issue
 Unit tests would be fine

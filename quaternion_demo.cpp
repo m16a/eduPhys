@@ -79,7 +79,8 @@ RenderingWidget::RenderingWidget()
   m_performPauseStep == false;
   m_isSolverStopped = false;
   m_solverTimeFlow = SolverForwardTime;
-  m_lastTime = 0.0f;
+	m_realTimeStart = clock() / float(CLOCKS_PER_SEC);
+  m_lastTime = m_realTimeStart;
 	m_realTime = 0.0f;
 	m_physTime = 0.0f;
 	
@@ -136,12 +137,17 @@ void RenderingWidget::drawScene()
 
 	float currTime = clock() / float(CLOCKS_PER_SEC);
   float dt = (currTime - m_lastTime);
-	m_realTime+=dt;
+	m_realTime = currTime - m_realTimeStart;
+
+/*
+	qDebug() << " ";	
+	qDebug() << currTime << m_lastTime;
 	qDebug() << m_realTime << m_physTime << dt;
-	float reqStep = 0.001f;
+*/
+	float reqStep = 0.01f;
   if (dt > reqStep)
 	{
-		qDebug() << "step:" <<dt;
+//		qDebug() << "step:" <<dt;
 		m_lastTime = currTime;  
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
