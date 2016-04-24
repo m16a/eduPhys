@@ -9,6 +9,9 @@ using Eigen::Vector3f;
 using Eigen::Quaternionf;
 using Eigen::Matrix3f;
 
+struct SRay;
+struct SRayHit;
+
 extern const Vector3f g_Gravity;
 
 struct  IPhysEnt
@@ -19,7 +22,7 @@ struct  IPhysEnt
 	virtual void Step(float t) = 0;
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f)) = 0;
 	virtual void AddAngularImpulse(Vector3f value) = 0;
-
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 	
 	Vector3f m_pos;
 	Quaternionf m_rot;

@@ -144,7 +144,7 @@ void RenderingWidget::drawScene()
 	qDebug() << currTime << m_lastTime;
 	qDebug() << m_realTime << m_physTime << dt;
 */
-	float reqStep = 0.01f;
+	float reqStep = 0.001f;
   if (dt > reqStep)
 	{
 //		qDebug() << "step:" <<dt;
@@ -432,7 +432,7 @@ void RenderingWidget::paintGL()
 
 void RenderingWidget::initializeGL()
 {
-  glClearColor(1., 1., 1., 0.);
+  glClearColor(0.2, 0.2, 0.2, 0.);
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);

@@ -3,8 +3,10 @@
 #include "box.h"
 #include <QtDebug>
 #include "collision.h"
-
+#include "rwi.h"
+#include <cfloat>
 #include "my_utils.h"
+
 
 Core::Core()
 {
@@ -168,3 +170,28 @@ void Core::Draw()
 	for (; it != m_objects.end(); ++it)
 		(*it)->Draw();
 }
+
+int Core::RWI(const SRay& r, SRayHit& out_hit)
+{
+	int res = 0;
+	float dist = FLT_MAX; 
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
+	for (; it != m_objects.end(); ++it)
+	{
+		SRayHit o;
+		if ((*it)->IntersectRay(r, o))
+		{
+			if (dist > o.m_dist)
+			{
+				res = 1;
+				out_hit = o;
+				dist = o.m_dist;
+			}
+		}
+	}
+
+	return res;
+}
+
+
+

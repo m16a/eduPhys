@@ -3,7 +3,7 @@
 #include <QtDebug>
 #include "my_utils.h"
 #include "my_eulerAngles.h"
-
+#include "rwi.h"
 
 Box::Box()
 {
@@ -125,6 +125,14 @@ void Box::AddAngularImpulse(Vector3f value)
 
 }
 
+int Box::IntersectRay(const SRay& r, SRayHit& out_hit)
+{
+	int res = 0;
+
+
+
+	return res;
+}
 void Box::Draw()
 {
      glEnable(GL_NORMALIZE);

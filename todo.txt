@@ -2,8 +2,12 @@ Box-box overlap
 Box-box collision detection
 Contact solver
 Review old camera code
-Linux rendering bug, scene disappearing
+Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
 Clear timeline
 Clear animation
 Add external torque
 Unit tests would be fine
+Provide mouse object moving:
+	rwi for box 
+	obj selecting	
+Textures

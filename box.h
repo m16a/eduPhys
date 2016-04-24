@@ -9,7 +9,6 @@ using Eigen::Vector3f;
 using Eigen::Quaternionf;
 using Eigen::Matrix3f;
 
-
 class Box : public IPhysEnt
 {
 
@@ -26,6 +25,8 @@ public:
 	{
 		return Vector3f(m_a, m_b, m_c);
 	}
+
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 
 public:
 

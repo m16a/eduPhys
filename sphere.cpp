@@ -4,6 +4,8 @@
 #endif
 #include "gpuhelper.h"
 #include <QtDebug>
+#include "rwi.h"
+
 
 IcoSphere Sphere::m_icoSphere = IcoSphere();
 
@@ -106,6 +108,40 @@ void Sphere::AddAngularImpulse(Vector3f value)
 	m_w += dw;
 
 }
+
+int Sphere::IntersectRay(const SRay& r, SRayHit& out_hit)
+{
+	int res = 0;
+	
+	float t,t0,t1;
+	
+	Vector3f L = m_pos - r.m_org;
+	float tca = L.dot(r.m_dir);
+	if (tca < 0) return res;
+	float d2 = L.dot(L) - tca*tca;
+	if (d2 > m_r*m_r) return res;
+	float thc = sqrt(m_r*m_r - d2);
+	t0 = tca - thc; 
+  t1 = tca + thc; 
+  if (t0 > t1) std::swap(t0, t1); 
+	if (t0 < 0)
+	{ 
+			t0 = t1; // if t0 is negative, let's use t1 instead 
+			if (t0 < 0) return res; // both t0 and t1 are negative 
+	} 
+
+	t = t0;
+	res = 1;
+
+	out_hit.m_pt = r.m_org + t * r.m_dir;
+	out_hit.m_n = out_hit.m_pt - m_pos;
+	out_hit.m_n.normalize();
+	out_hit.m_dist = t;
+	out_hit.m_pEnt = this;
+
+	return res;
+}
+
 
 void Sphere::Draw()
 {

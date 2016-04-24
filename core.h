@@ -5,7 +5,9 @@
 
 class Sphere;
 class IPhysEnt;
-
+struct SRay;
+struct SRayHit;
+ 
 class Core
 {
 public:
@@ -19,6 +21,9 @@ public:
 	void Draw();
 
 	void Step(float reqStep);
+
+	int RWI(const SRay& r, SRayHit& out_hit);
+
 private:
 	void StepAll(float dt);
 	void DumpAll();
