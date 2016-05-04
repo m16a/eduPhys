@@ -15,6 +15,7 @@
 #endif
 #include <Eigen/Geometry>
 #include <GL/gl.h>
+#include <GL/glut.h>
 #include <vector>
 
 using namespace Eigen;

@@ -1,7 +1,9 @@
+cmake_minimum_required(VERSION 2.8)
 find_package(Qt4)
 find_package(OpenGL)
+find_package(GLUT)
 
-if(QT4_FOUND AND OPENGL_FOUND)
+if(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND)
 
   set(QT_USE_QTOPENGL TRUE)
   include(${QT_USE_FILE})
@@ -10,16 +12,15 @@ if(QT4_FOUND AND OPENGL_FOUND)
 
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(quaternion_demo_SRCS my_utils.cpp gpuhelper.cpp box.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp sphere.cpp core.cpp geometry.cpp)
+  set(quaternion_demo_SRCS  gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp geometry.cpp my_utils.cpp  sphere.cpp core.cpp)
 
   qt4_automoc(${quaternion_demo_SRCS})
 
   add_executable(quaternion_demo ${quaternion_demo_SRCS})
-  #add_dependencies(demos quaternion_demo)
 
   target_link_libraries(quaternion_demo
     ${QT_QTCORE_LIBRARY}    ${QT_QTGUI_LIBRARY}
-    ${QT_QTOPENGL_LIBRARY}  ${OPENGL_LIBRARIES} )
+    ${QT_QTOPENGL_LIBRARY}  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
 
 else()
 

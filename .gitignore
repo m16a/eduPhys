@@ -5,4 +5,5 @@ CMakeCache.txt
 .tags_sorted_by_file
 *.swp
 quaternion_demo
+Makefile
 tags

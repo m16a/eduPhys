@@ -27,6 +27,8 @@
 #include <QPushButton>
 #include <QGroupBox>
 
+#include <GL/glut.h>
+
 #include <QtDebug>
 #include <stdlib.h>
 #include <time.h>
@@ -292,35 +294,52 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
 
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
 {
-  mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
-  bool fly = (mNavMode==NavFly) || (e->modifiers()&Qt::ControlModifier);
-  switch(e->button())
-  {
-    case Qt::LeftButton:
-      if(fly)
-      {
-        mCurrentTrackingMode = TM_LOCAL_ROTATE;
-        mTrackball.start(Trackball::Local);
-      }
-      else
-      {
-        mCurrentTrackingMode = TM_ROTATE_AROUND;
-        mTrackball.start(Trackball::Around);
-      }
-      mTrackball.track(mMouseCoords);
-      break;
-    case Qt::MidButton:
-      if(fly)
-        mCurrentTrackingMode = TM_FLY_Z;
-      else
-        mCurrentTrackingMode = TM_ZOOM;
-      break;
-    case Qt::RightButton:
-        mCurrentTrackingMode = TM_FLY_PAN;
-      break;
-    default:
-      break;
-  }
+	if (e->modifiers() & Qt::ControlModifier)
+	{
+		mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
+		bool fly = (mNavMode==NavFly) || (e->modifiers()&Qt::ControlModifier);
+		switch(e->button())
+		{
+			case Qt::LeftButton:
+				if(fly)
+				{
+					mCurrentTrackingMode = TM_LOCAL_ROTATE;
+					mTrackball.start(Trackball::Local);
+				}
+				else
+				{
+					mCurrentTrackingMode = TM_ROTATE_AROUND;
+					mTrackball.start(Trackball::Around);
+				}
+				mTrackball.track(mMouseCoords);
+				break;
+			case Qt::MidButton:
+				if(fly)
+					mCurrentTrackingMode = TM_FLY_Z;
+				else
+					mCurrentTrackingMode = TM_ZOOM;
+				break;
+			case Qt::RightButton:
+					mCurrentTrackingMode = TM_FLY_PAN;
+				break;
+			default:
+				break;
+		}
+	}
+	else
+	{
+		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
+		int wHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+		//GLbyte color[4];
+		GLfloat depth;
+		//GLuint index;
+		
+		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+		glReadPixels(e->x(), wHeight - e->y() - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+		qDebug()<<"wScr:" <<e->x()<<" " << e->y() << "depth" << depth;
+	}
 }
 
 void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
