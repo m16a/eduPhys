@@ -27,7 +27,6 @@
 #include <QPushButton>
 #include <QGroupBox>
 
-#include <GL/glut.h>
 
 #include <QtDebug>
 #include <stdlib.h>
@@ -329,7 +328,9 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	else
 	{
 		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
-		int wHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+		//TODO: get window height
+		int wHeight = 600;//glutGet(GLUT_WINDOW_HEIGHT);
 
 		//GLbyte color[4];
 		GLfloat depth;
@@ -338,7 +339,27 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
 		glReadPixels(e->x(), wHeight - e->y() - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-		qDebug()<<"wScr:" <<e->x()<<" " << e->y() << "depth" << depth;
+		
+		double modelview[16], projection[16];
+    int viewport[4];
+    float z;
+		double objx, objy, objz; 
+		//get the modelview matrix              
+    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+
+    //get the projection matrix
+    glGetDoublev( GL_PROJECTION_MATRIX, projection );
+
+    //get the viewport              
+    glGetIntegerv( GL_VIEWPORT, viewport );
+
+    //Unproject the window co-ordinates to 
+    //find the world co-ordinates.
+    gluUnProject( e->x(), wHeight-e->y(), depth, modelview, projection, viewport, &objx, &objy, &objz );
+	
+	qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
+	
+	qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
 	}
 }
 
@@ -678,13 +699,14 @@ int main(int argc, char *argv[])
   std::cout << "G						: add a key frame\n";
   std::cout << "---------------------------------------------------------------------------\n";
 	
-srand(time(NULL));
+	srand(time(NULL));
   QApplication app(argc, argv);
   QuaternionDemo demo;
   demo.resize(800, 600);
 	demo.move(700, 100);
 	demo.show();
-  return app.exec();
+	glutInit(&argc, argv); 
+	 return app.exec();
 }
 
 #include "quaternion_demo.moc"
