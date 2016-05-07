@@ -370,9 +370,11 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 
 		if (m_core->RWI(r, res))
 		{
+			m_pSelectedEnt = res.m_pEnt;	
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
-
-		}	
+		}
+		else
+			m_pSelectedEnt = 0; 
 	}
 }
 
@@ -434,6 +436,17 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 
         updateGL();
     }
+		else
+		{
+        float dx =   float(e->x() - mMouseCoords.x()); 
+        float dy = - float(e->y() - mMouseCoords.y());
+				
+				m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0));
+				if (m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
+				{
+					m_pSelectedEnt->m_v[2] += dy/10.0f;
+				}
+		}
 
     mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
 }
@@ -664,7 +677,7 @@ QuaternionDemo::QuaternionDemo()
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
-  mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+ // mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 	s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
@@ -676,7 +689,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_id = 3;
   s3->m_minv = 0.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
-  mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+//  mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 
 

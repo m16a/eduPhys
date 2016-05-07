@@ -1,11 +1,17 @@
 Box-box overlap
 Box-box collision detection
-Contact solver
+
 Review old camera code
-Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
 Clear timeline
 Clear animation
+
 Add external torque
 Unit tests would be fine
-Provide mouse object moving
 Textures
+Contact solver
+Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
+
+Provide really cool mouse object moving
+	*while button is pressed object repeats mouse movement
+	*after button is released apply velocity to object
+	*make fancy 3d moving

@@ -23,8 +23,10 @@
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QMainWindow>
 #include <memory>
+#include "obj_mover.h"
 
 class Core;
+class IPhysEnt;
 
 class RenderingWidget : public QGLWidget
 {
@@ -123,6 +125,9 @@ class RenderingWidget : public QGLWidget
 
     std::auto_ptr<Core> m_core;
     float m_lastTime; //seconds
+	
+		ObjMover m_objMover;	
+		IPhysEnt* m_pSelectedEnt;
 		
 		float m_realTime;
 		float m_physTime;

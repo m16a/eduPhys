@@ -4,6 +4,8 @@ CMakeCache.txt
 .tags
 .tags_sorted_by_file
 *.swp
+*.moc_parameters
+*.cmake
 quaternion_demo
 Makefile
 tags

@@ -8,7 +8,7 @@ class IPhysEnt;
 
 struct SRay
 {
-	Vector3f m_org; //origin
+	Vector3f m_org; 
 	Vector3f m_dir;
 	float m_dist;
 };
