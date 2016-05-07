@@ -125,22 +125,101 @@ void Box::AddAngularImpulse(Vector3f value)
 
 }
 
+struct AABB
+{
+	Vector3f vMin;
+	Vector3f vMax;
+};
+
+bool ClipLine(int d, const AABB& aabbBox, const Vector3f& v0, const Vector3f& v1, float& f_low, float& f_high)
+{
+	// f_low and f_high are the results from all clipping so far. We'll write our results back out to those parameters.
+
+	// f_dim_low and f_dim_high are the results we're calculating for this current dimension.
+	float f_dim_low, f_dim_high;
+
+	// Find the point of intersection in this dimension only as a fraction of the total vector http://youtu.be/USjbg5QXk3g?t=3m12s
+	f_dim_low = (aabbBox.vMin[d] - v0[d])/(v1[d] - v0[d]);
+	f_dim_high = (aabbBox.vMax[d] - v0[d])/(v1[d] - v0[d]);
+
+	// Make sure low is less than high
+	if (f_dim_high < f_dim_low)
+		std::swap(f_dim_high, f_dim_low);
+
+	// If this dimension's high is less than the low we got then we definitely missed. http://youtu.be/USjbg5QXk3g?t=7m16s
+	if (f_dim_high < f_low)
+		return false;
+
+	// Likewise if the low is less than the high.
+	if (f_dim_low > f_high)
+		return false;
+
+	// Add the clip from this dimension to the previous results http://youtu.be/USjbg5QXk3g?t=5m32s
+	f_low = std::max(f_dim_low, f_low);
+	f_high = std::min(f_dim_high, f_high);
+
+	if (f_low > f_high)
+		return false;
+
+	return true;
+}
+
+// Find the intersection of a line from v0 to v1 and an axis-aligned bounding box http://www.youtube.com/watch?v=USjbg5QXk3g
+bool LineAABBIntersection(const AABB& aabbBox, const Vector3f& v0, const Vector3f& v1, Vector3f& vecIntersection, float& flFraction)
+{
+	float f_low = 0;
+	float f_high = 1;
+
+	if (!ClipLine(0, aabbBox, v0, v1, f_low, f_high))
+		return false;	
+	
+	if (!ClipLine(1, aabbBox, v0, v1, f_low, f_high))
+		return false;
+
+	if (!ClipLine(2, aabbBox, v0, v1, f_low, f_high))
+		return false;
+
+	// The formula for I: http://youtu.be/USjbg5QXk3g?t=6m24s
+	Vector3f b = v1 - v0;
+	vecIntersection = v0 + b * f_low;
+
+	flFraction = f_low;
+
+	return true;
+}
+
 int Box::IntersectRay(const SRay& r, SRayHit& out_hit)
 {
 	int res = 0;
 
+	AABB aabbBox;
+	aabbBox.vMin = Vector3f(-m_a/2, -m_b/2, -m_c/2);
+	aabbBox.vMax = Vector3f(m_a/2, m_b/2, m_c/2);
 
+	Quaternionf sT = (m_rot).conjugate();
+	SRay trans_r = r;
+	trans_r.m_org = sT * (r.m_org - m_pos);	
+	trans_r.m_dir = sT * r.m_dir;	
+	//qDebug()<< "box_rwi:" << r.m_org << " " << trans_r.m_org;	
+	if (LineAABBIntersection(aabbBox, trans_r.m_org, trans_r.m_org + trans_r.m_dir * trans_r.m_dist, out_hit.m_pt, out_hit.m_dist))
+	{
+		res = 1;
+		out_hit.m_pEnt = this;
+		out_hit.m_dist *= r.m_dist;
+		out_hit.m_pt = m_rot * out_hit.m_pt + m_pos;
+	}
 
 	return res;
 }
+
 void Box::Draw()
 {
-     glEnable(GL_NORMALIZE);
-     Affine3f t = Translation3f(m_pos) * m_rot * Scaling(m_a, m_b, m_c);
-     gpu.pushMatrix(GL_MODELVIEW);
-     gpu.multMatrix(t.matrix(),GL_MODELVIEW);
-    
-     // Многоцветная сторона - ПЕРЕДНЯЯ
+	glEnable(GL_NORMALIZE);
+	Affine3f t = Translation3f(m_pos) * m_rot * Scaling(m_a, m_b, m_c);
+	gpu.pushMatrix(GL_MODELVIEW);
+	gpu.multMatrix(t.matrix(),GL_MODELVIEW);
+	
+	// Многоцветная сторона - ПЕРЕДНЯЯ
 	glBegin(GL_POLYGON);
 	 
 	glColor3f( 1.0, 0.0, 0.0 );     glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
@@ -214,7 +293,6 @@ void Box::Draw()
 	glVertex3f( -0.5, -0.5, -0.5 );
 	glEnd();
 
-
-     gpu.popMatrix(GL_MODELVIEW);
-     glDisable(GL_NORMALIZE);
+	gpu.popMatrix(GL_MODELVIEW);
+	glDisable(GL_NORMALIZE);
 }

@@ -36,6 +36,9 @@
 #include "geometry.h"
 #include "box.h"
 #include "my_utils.h"
+#include "rwi.h"
+
+
 using namespace Eigen;
 
 // generic linear interpolation method
@@ -329,20 +332,15 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	{
 		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
 
-		//TODO: get window height
+		//TOneverDO: get window height
 		int wHeight = 600;//glutGet(GLUT_WINDOW_HEIGHT);
 
-		//GLbyte color[4];
 		GLfloat depth;
-		//GLuint index;
 		
-		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
 		glReadPixels(e->x(), wHeight - e->y() - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-		//glReadPixels(x, wHeight - y - 1, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 		
 		double modelview[16], projection[16];
     int viewport[4];
-    float z;
 		double objx, objy, objz; 
 		//get the modelview matrix              
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
@@ -353,13 +351,28 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
     //get the viewport              
     glGetIntegerv( GL_VIEWPORT, viewport );
 
-    //Unproject the window co-ordinates to 
-    //find the world co-ordinates.
+    //Unproject the window co-ordinates to find the world co-ordinates.
     gluUnProject( e->x(), wHeight-e->y(), depth, modelview, projection, viewport, &objx, &objy, &objz );
 	
-	qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
-	
-	qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
+		/*	
+		qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
+		qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
+		*/
+
+		//do RWI test, to find pointed object
+		SRay r;
+		r.m_org = mCamera.position();
+		Vector3f dir = Vector3f(objx-r.m_org[0],objy-r.m_org[1],objz-r.m_org[2]);
+		r.m_dist = 1000.0f;
+		dir.normalize();
+		r.m_dir = dir;
+		SRayHit res;
+
+		if (m_core->RWI(r, res))
+		{
+			qDebug() << "Picked object:" << res.m_pEnt->m_id;
+
+		}	
 	}
 }
 
@@ -443,13 +456,10 @@ void RenderingWidget::paintGL()
   mCamera.activateGL();
 
 
-	//Print camera info
-
-	
   drawScene();
 
+	//Print camera info
 	Vector3f camPos = mCamera.position();
-	//renderText(10,12, QString("camera params:"));
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
@@ -459,13 +469,9 @@ void RenderingWidget::paintGL()
 	if (m_realTime > 0.01)
 		renderText(10,52, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
 
-
-
-//	Vector3f a = PYRFromQuat(dir);
-	
+	//Vector3f a = PYRFromQuat(dir);
 	//EulerAngles<float> ea(dir);
 	//qDebug() << dir << " ==  " << quatFromPYR(a.x(), a.y(), a.z());
-
 	//qDebug() << dir << " ==  " << (Quaternionf)ea;
 }
 

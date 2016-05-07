@@ -106,11 +106,11 @@ void Sphere::AddAngularImpulse(Vector3f value)
 
 	Vector3f dw = m_Jinv * value;
 	m_w += dw;
-
 }
 
 int Sphere::IntersectRay(const SRay& r, SRayHit& out_hit)
 {
+	//TODO: take into accoun r.m_dist
 	int res = 0;
 	
 	float t,t0,t1;
