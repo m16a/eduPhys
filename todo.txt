@@ -11,6 +11,8 @@ Textures
 Contact solver
 Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
 
+Figure out color setting for box. Looks like lightning settings + check vertieces normals
+
 Provide really cool mouse object moving
 	*while button is pressed object repeats mouse movement
 	*after button is released apply velocity to object

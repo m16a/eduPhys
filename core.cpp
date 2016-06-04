@@ -28,7 +28,7 @@ void Core::StepAll(float dt)
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
 		(*it)->Step(dt);
-//	DumpAll();
+	//DumpAll();
 }
 
 float Core::FindCollisions(bool applyImpulses)

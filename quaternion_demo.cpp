@@ -119,10 +119,11 @@ void RenderingWidget::drawScene()
 
   // draw the fractal object
   float sqrt3 = /*internal::*/sqrt(3.);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, Vector4f(0.5,0.5,0.5,1).data());
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, Vector4f(0.5,1,0.5,1).data());
+  glLightfv(GL_LIGHT0, GL_AMBIENT, Vector4f(0.1,0.1,0.1,1).data());
+ // glLightfv(GL_LIGHT0, GL_DIFFUSE, Vector4f(0.5,1,0.5,1).data());
   glLightfv(GL_LIGHT0, GL_SPECULAR, Vector4f(1,1,1,1).data());
-  glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(-sqrt3,-sqrt3,sqrt3,0).data());
+  //glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(-sqrt3,-sqrt3,sqrt3,0).data());
+  glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(0,0,100,0).data());
 
   glLightfv(GL_LIGHT1, GL_AMBIENT, Vector4f(0,0,0,1).data());
   glLightfv(GL_LIGHT1, GL_DIFFUSE, Vector4f(1,0.5,0.5,1).data());
@@ -136,7 +137,7 @@ void RenderingWidget::drawScene()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
+  //glEnable(GL_LIGHT1);
 
 
 	float currTime = clock() / float(CLOCKS_PER_SEC);
@@ -294,6 +295,44 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
     updateGL();
 }
 
+Vector3f unProj(const Vector2i& in, float& scrDepth)
+{
+		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
+
+		//TOneverDO: get window height
+		int wHeight = 600;//glutGet(GLUT_WINDOW_HEIGHT);
+
+		GLfloat depth;
+		if (scrDepth > 2.0f)
+		{	
+			glReadPixels(in[0], wHeight - in[1] - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+			scrDepth = depth;
+		}else{
+			depth = scrDepth;
+		}	
+		double modelview[16], projection[16];
+    int viewport[4];
+		double objx, objy, objz; 
+		//get the modelview matrix              
+    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+
+    //get the projection matrix
+    glGetDoublev( GL_PROJECTION_MATRIX, projection );
+
+    //get the viewport              
+    glGetIntegerv( GL_VIEWPORT, viewport );
+
+    //Unproject the window co-ordinates to find the world co-ordinates.
+    gluUnProject( in[0], wHeight-in[1], depth, modelview, projection, viewport, &objx, &objy, &objz );
+	
+		/*	
+		qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
+		qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
+		*/
+		
+		return Vector3f(objx, objy, objz);
+}
+
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
 {
 	if (e->modifiers() & Qt::ControlModifier)
@@ -330,39 +369,13 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	}
 	else
 	{
-		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
-
-		//TOneverDO: get window height
-		int wHeight = 600;//glutGet(GLUT_WINDOW_HEIGHT);
-
-		GLfloat depth;
-		
-		glReadPixels(e->x(), wHeight - e->y() - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-		
-		double modelview[16], projection[16];
-    int viewport[4];
-		double objx, objy, objz; 
-		//get the modelview matrix              
-    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-
-    //get the projection matrix
-    glGetDoublev( GL_PROJECTION_MATRIX, projection );
-
-    //get the viewport              
-    glGetIntegerv( GL_VIEWPORT, viewport );
-
-    //Unproject the window co-ordinates to find the world co-ordinates.
-    gluUnProject( e->x(), wHeight-e->y(), depth, modelview, projection, viewport, &objx, &objy, &objz );
-	
-		/*	
-		qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
-		qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
-		*/
-
+		mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
+		float unused = 100.0f;
+		Vector3f world = unProj(mMouseCoords, unused);
 		//do RWI test, to find pointed object
 		SRay r;
 		r.m_org = mCamera.position();
-		Vector3f dir = Vector3f(objx-r.m_org[0],objy-r.m_org[1],objz-r.m_org[2]);
+		Vector3f dir = world - r.m_org;
 		r.m_dist = 1000.0f;
 		dir.normalize();
 		r.m_dir = dir;
@@ -371,6 +384,8 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 		if (m_core->RWI(r, res))
 		{
 			m_pSelectedEnt = res.m_pEnt;	
+			m_pSelectedEnt->m_v= Vector3f(0,0,0);
+			m_pSelectedEnt->m_active = true; 
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
 		}
 		else
@@ -444,7 +459,15 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 				m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0));
 				if (m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
 				{
-					m_pSelectedEnt->m_v[2] += dy/10.0f;
+					float scrDepth = 100.0f;	
+					Vector3f world = unProj(mMouseCoords, scrDepth);
+	
+					Vector3f newWorld = unProj(Vector2i(e->x(), e->y()), scrDepth);
+					
+					m_pSelectedEnt->m_pos[2] += (newWorld - world)[2];
+					qDebug() << "move:" << world << "->" << newWorld;
+					
+					Vector3f pos = 	m_pSelectedEnt->m_pos;
 				}
 		}
 
@@ -491,7 +514,7 @@ void RenderingWidget::paintGL()
 
 void RenderingWidget::initializeGL()
 {
-  glClearColor(0.2, 0.2, 0.2, 0.);
+  glClearColor(0.07, 0.07, 0.07, 0.);
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -677,7 +700,7 @@ QuaternionDemo::QuaternionDemo()
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
- // mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
 	s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
@@ -689,7 +712,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_id = 3;
   s3->m_minv = 0.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
-//  mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 
 
