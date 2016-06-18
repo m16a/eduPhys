@@ -13,6 +13,10 @@
 #include <GL/glu.h>
 
 #include "Eigen/LU"
+#include <QtDebug>
+#include "my_utils.h"
+
+#include <iostream>
 using namespace Eigen;
 
 Camera::Camera()
@@ -22,7 +26,7 @@ Camera::Camera()
     
     mFovY = M_PI/3.;
     mNearDist = 1.;
-    mFarDist = 50000.;
+    mFarDist = 500.;
     
     mVpX = 0;
     mVpY = 0;
@@ -236,8 +240,9 @@ const Matrix4f& Camera::projectionMatrix(void) const
 void Camera::activateGL(void)
 {
   glViewport(vpX(), vpY(), vpWidth(), vpHeight());
-  gpu.loadMatrix(projectionMatrix(),GL_PROJECTION);
-  gpu.loadMatrix(viewMatrix().matrix(),GL_MODELVIEW);
+  
+  gpu.loadMatrix(viewMatrix().matrix(), GL_MODELVIEW);
+	gpu.loadMatrix(projectionMatrix(), GL_PROJECTION);
 }
 
 
@@ -260,3 +265,29 @@ Vector3f Camera::unProject(const Vector2f& uv, float depth, const Matrix4f& invM
     Vector4f b = invModelview * Vector4f(a.x(), a.y(), a.z(), 1.);
     return Vector3f(b.x(), b.y(), b.z());
 }
+
+Vector3f Camera::directionFromScreen(const Vector2i& uv)
+{
+		GLfloat tmp[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, tmp);
+		Eigen::Map<Eigen::Matrix4f> mv_m(tmp);	
+		//std::cout << "Model view" << std::endl << mv_m << std::endl;
+
+		GLfloat tmp2[16];
+		glGetFloatv(GL_PROJECTION_MATRIX, tmp2);
+		Eigen::Map<Eigen::Matrix4f> proj_m(tmp2);	
+		//std::cout << "Projection" << std::endl << proj_m << std::endl;
+
+		//TODO: provide getter for window width, height
+		Vector4f pOnScr(uv[0]*2/800.0f - 1.f, -1.f* (uv[1]*2/600.0f - 1.f), -1.0f, 1);
+		//std::cout << "pOnScr: " << pOnScr[0] << " " << pOnScr[1] << std::endl; 
+		
+		Vector4f rr = (proj_m * mv_m).inverse() * pOnScr;
+		Vector3f rrr(rr[0] / rr[3], rr[1]  / rr[3], rr[2]  / rr[3] );
+		
+		Vector3f res =  rrr - position();
+		res.normalize();
+		return res;
+}
+
+

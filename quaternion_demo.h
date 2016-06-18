@@ -78,7 +78,8 @@ class RenderingWidget : public QGLWidget
     SolverFlow m_solverTimeFlow;
     bool m_performPauseStep;
     RotationMode mRotationMode;
-    Vector2i mMouseCoords;
+    Vector2i m_lastMousePos;
+		float m_lastMousePosTime;
     Trackball mTrackball;
 
     QTimer m_timer;

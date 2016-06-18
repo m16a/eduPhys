@@ -94,6 +94,7 @@ class Camera
     Eigen::Vector3f unProject(const Eigen::Vector2f& uv, float depth, const Eigen::Matrix4f& invModelview) const;
     Eigen::Vector3f unProject(const Eigen::Vector2f& uv, float depth) const;
     
+		Eigen::Vector3f directionFromScreen(const Eigen::Vector2i& uv);
   protected:
     void updateViewMatrix(void) const;
     void updateProjectionMatrix(void) const;

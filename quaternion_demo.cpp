@@ -181,6 +181,11 @@ void RenderingWidget::drawScene()
  
 }
 
+float getCurrTime()
+{
+	return clock() / float(CLOCKS_PER_SEC);
+}
+
 void RenderingWidget::keyPressEvent(QKeyEvent * e)
 {
 		const float camSpeed = 0.25f;
@@ -318,7 +323,7 @@ Vector3f unProj(const Vector2i& in, float& scrDepth)
 
     //get the projection matrix
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
-
+		
     //get the viewport              
     glGetIntegerv( GL_VIEWPORT, viewport );
 
@@ -335,9 +340,10 @@ Vector3f unProj(const Vector2i& in, float& scrDepth)
 
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
 {
+	m_lastMousePos = Vector2i(e->pos().x(), e->pos().y());
+	m_lastMousePosTime = getCurrTime();	
 	if (e->modifiers() & Qt::ControlModifier)
 	{
-		mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
 		bool fly = (mNavMode==NavFly) || (e->modifiers()&Qt::ControlModifier);
 		switch(e->button())
 		{
@@ -352,7 +358,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 					mCurrentTrackingMode = TM_ROTATE_AROUND;
 					mTrackball.start(Trackball::Around);
 				}
-				mTrackball.track(mMouseCoords);
+				mTrackball.track(m_lastMousePos);
 				break;
 			case Qt::MidButton:
 				if(fly)
@@ -369,9 +375,10 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	}
 	else
 	{
-		mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
+
+	
 		float unused = 100.0f;
-		Vector3f world = unProj(mMouseCoords, unused);
+		Vector3f world = unProj(m_lastMousePos, unused);
 		//do RWI test, to find pointed object
 		SRay r;
 		r.m_org = mCamera.position();
@@ -380,7 +387,10 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 		dir.normalize();
 		r.m_dir = dir;
 		SRayHit res;
-
+		
+		qDebug() << "direction:" << dir;
+		qDebug() << "custom dir " << mCamera.directionFromScreen(m_lastMousePos);
+	
 		if (m_core->RWI(r, res))
 		{
 			m_pSelectedEnt = res.m_pEnt;	
@@ -397,6 +407,9 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 {
     mCurrentTrackingMode = TM_NO_TRACK;
     updateGL();
+		m_lastMousePosTime = 0.0f;
+		if (m_pSelectedEnt)
+			m_pSelectedEnt->m_v[2] = 0.0f;
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
@@ -404,8 +417,8 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
     // tracking
     if(mCurrentTrackingMode != TM_NO_TRACK)
     {
-        float dx =   float(e->x() - mMouseCoords.x()) / float(mCamera.vpWidth());
-        float dy = - float(e->y() - mMouseCoords.y()) / float(mCamera.vpHeight());
+        float dx =   float(e->x() - m_lastMousePos.x()) / float(mCamera.vpWidth());
+        float dy = - float(e->y() - m_lastMousePos.y()) / float(mCamera.vpHeight());
 
         // speedup the transformations
         if(e->modifiers() & Qt::ShiftModifier)
@@ -453,25 +466,50 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
     }
 		else
 		{
-        float dx =   float(e->x() - mMouseCoords.x()); 
-        float dy = - float(e->y() - mMouseCoords.y());
+        float dx =   float(e->x() - m_lastMousePos.x()); 
+        float dy = - float(e->y() - m_lastMousePos.y());
 				
 				m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0));
 				if (m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
 				{
 					float scrDepth = 100.0f;	
-					Vector3f world = unProj(mMouseCoords, scrDepth);
-	
-					Vector3f newWorld = unProj(Vector2i(e->x(), e->y()), scrDepth);
+					Vector3f world = unProj(m_lastMousePos, scrDepth);
+					//do RWI test, to find pointed object
+					SRay r;
+					r.m_org = mCamera.position();
+					Vector3f dir = world - r.m_org;
+					r.m_dist = 1000.0f;
+					dir.normalize();
+					r.m_dir = dir;
+					SRayHit res;
+					bool isDrugNeeded = true;
+					if (m_core->RWI(r, res))
+						isDrugNeeded = res.m_pEnt == m_pSelectedEnt;	
+					else
+						m_pSelectedEnt = 0;
 					
-					m_pSelectedEnt->m_pos[2] += (newWorld - world)[2];
-					qDebug() << "move:" << world << "->" << newWorld;
-					
-					Vector3f pos = 	m_pSelectedEnt->m_pos;
+					if (isDrugNeeded && m_pSelectedEnt)
+					{
+						Vector3f newWorld = unProj(Vector2i(e->x(), e->y()), scrDepth);
+						
+						float zDist = (newWorld - world)[2] / 100;
+
+						float time = getCurrTime() - m_lastMousePosTime;
+						assert(time > 0);
+
+						float zSpeed = zDist / time;	
+						m_pSelectedEnt->m_v[2] = zSpeed;
+						qDebug() << "move:" << world << "->" << newWorld << "dist: " << zDist
+						<< "rwi: " << res.m_pt
+						<< "t: " << time 
+						<< "spd: " << zSpeed;
+					}else
+						m_pSelectedEnt = 0;
 				}
 		}
 
-    mMouseCoords = Vector2i(e->pos().x(), e->pos().y());
+    m_lastMousePos = Vector2i(e->pos().x(), e->pos().y());
+		m_lastMousePosTime = getCurrTime();	
 }
 
 void RenderingWidget::paintGL()
@@ -499,11 +537,15 @@ void RenderingWidget::paintGL()
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
+	Vector3f d(1,0,0);
+	d = dir * d;
+	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
+	
 	Vector3f ypr = PYRFromQuat(dir); 
-	renderText(10,32, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
+	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
 	if (m_realTime > 0.01)
-		renderText(10,52, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
+		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
 
 	//Vector3f a = PYRFromQuat(dir);
 	//EulerAngles<float> ea(dir);
@@ -519,9 +561,14 @@ void RenderingWidget::initializeGL()
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
-  
-	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
+  //mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
+	//mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
+
+  mCamera.setPosition(Vector3f(-2, 0, 0));
+	Quaternionf t;
+	t.setIdentity();
+	mCamera.setOrientation(t);
+
   mInitFrame.orientation = mCamera.orientation().inverse();
   mInitFrame.position = mCamera.viewMatrix().translation();
 }
@@ -701,7 +748,7 @@ QuaternionDemo::QuaternionDemo()
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
 	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
-	s2->m_forces.push_back(g_Gravity);
+	//s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
@@ -712,7 +759,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_id = 3;
   s3->m_minv = 0.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
-	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+	//mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 
 

@@ -9,7 +9,6 @@ using namespace Eigen;
 extern Eigen::Matrix3f getCrossMatrix(Vector3f t);
 
 extern QDebug operator<<(QDebug dbg, const Vector3f& v);
-
 extern QDebug operator<<(QDebug dbg, const Quaternionf& q);
 
 extern Eigen::Matrix3f matrixFromPYR(float pitch, float yaw, float roll);
