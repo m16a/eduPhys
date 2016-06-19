@@ -507,7 +507,7 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 void RenderingWidget::wheelEvent(QWheelEvent * event)
 {
 		//qDebug() << "wheel " << event->delta() << " " << event->orientation();
-		if (!m_pSelectedEnt)
+		if (!m_pSelectedEnt || m_pSelectedEnt->m_minv == 0)
 			return;	
 		
 		Vector3f camDir = mCamera.direction();
@@ -563,13 +563,13 @@ void RenderingWidget::initializeGL()
   glDepthMask(GL_TRUE);
   glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-  //mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
-	//mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
+  mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
+	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
 
-  mCamera.setPosition(Vector3f(-2, 0, 0));
+  //mCamera.setPosition(Vector3f(-2, 0, 0));
 	Quaternionf t;
 	t.setIdentity();
-	mCamera.setOrientation(t);
+	//mCamera.setOrientation(t);
 
   mInitFrame.orientation = mCamera.orientation().inverse();
   mInitFrame.position = mCamera.viewMatrix().translation();
@@ -750,7 +750,7 @@ QuaternionDemo::QuaternionDemo()
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
 	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
-	//s2->m_forces.push_back(g_Gravity);
+	s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
@@ -761,7 +761,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_id = 3;
   s3->m_minv = 0.0f;
   //s3->m_v = Vector3f(10.f, 0.f, 0.f);
-	//mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 
 
