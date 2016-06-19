@@ -375,21 +375,14 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	}
 	else
 	{
-
-	
-		float unused = 100.0f;
-		Vector3f world = unProj(m_lastMousePos, unused);
 		//do RWI test, to find pointed object
 		SRay r;
 		r.m_org = mCamera.position();
-		Vector3f dir = world - r.m_org;
 		r.m_dist = 1000.0f;
-		dir.normalize();
-		r.m_dir = dir;
+		r.m_dir = mCamera.directionFromScreen(m_lastMousePos);
 		SRayHit res;
 		
-		qDebug() << "direction:" << dir;
-		qDebug() << "custom dir " << mCamera.directionFromScreen(m_lastMousePos);
+		//qDebug() << "direction:" << r.m_dir;
 	
 		if (m_core->RWI(r, res))
 		{
@@ -408,8 +401,6 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
     mCurrentTrackingMode = TM_NO_TRACK;
     updateGL();
 		m_lastMousePosTime = 0.0f;
-		if (m_pSelectedEnt)
-			m_pSelectedEnt->m_v[2] = 0.0f;
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
@@ -472,39 +463,40 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 				m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0));
 				if (m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
 				{
-					float scrDepth = 100.0f;	
-					Vector3f world = unProj(m_lastMousePos, scrDepth);
-					//do RWI test, to find pointed object
-					SRay r;
-					r.m_org = mCamera.position();
-					Vector3f dir = world - r.m_org;
-					r.m_dist = 1000.0f;
-					dir.normalize();
-					r.m_dir = dir;
-					SRayHit res;
-					bool isDrugNeeded = true;
-					if (m_core->RWI(r, res))
-						isDrugNeeded = res.m_pEnt == m_pSelectedEnt;	
-					else
-						m_pSelectedEnt = 0;
+					Vector4f pickedWrld(m_pSelectedEnt->m_pos[0],m_pSelectedEnt->m_pos[1],m_pSelectedEnt->m_pos[2],1);
 					
-					if (isDrugNeeded && m_pSelectedEnt)
+					GLfloat tmp[16];
+					glGetFloatv(GL_MODELVIEW_MATRIX, tmp);
+					Eigen::Map<Eigen::Matrix4f> mv_m(tmp);	
+					//std::cout << "Model view" << std::endl << mv_m << std::endl;
+
+					GLfloat tmp2[16];
+					glGetFloatv(GL_PROJECTION_MATRIX, tmp2);
+					Eigen::Map<Eigen::Matrix4f> proj_m(tmp2);	
+					//std::cout << "Projection" << std::endl << proj_m << std::endl;
+				
+					Vector4f pickedClip = proj_m * mv_m * pickedWrld;
+					float pickedNormDepth = pickedClip[2] / pickedClip[3];	
+
+					//TODO: provide getter for window width, height
+					Vector4f newMouseNorm(e->x()*2/800.0f - 1.f, -1.f* (e->y()*2/600.0f - 1.f), pickedNormDepth, 1);
+					
+					Vector4f newMouseWrld = (proj_m * mv_m).inverse() * newMouseNorm;
 					{
-						Vector3f newWorld = unProj(Vector2i(e->x(), e->y()), scrDepth);
-						
-						float zDist = (newWorld - world)[2] / 100;
+						Vector3f offsetWrld(newMouseWrld[0] / newMouseWrld[3]  - pickedWrld[0],newMouseWrld[1] / newMouseWrld[3]  - pickedWrld[1],newMouseWrld[2] / newMouseWrld[3]  - pickedWrld[2]);
 
 						float time = getCurrTime() - m_lastMousePosTime;
+						if (time < 0.01)
+							time = 0.01;
 						assert(time > 0);
 
-						float zSpeed = zDist / time;	
-						m_pSelectedEnt->m_v[2] = zSpeed;
-						qDebug() << "move:" << world << "->" << newWorld << "dist: " << zDist
-						<< "rwi: " << res.m_pt
+						Vector3f speed = offsetWrld / time;	
+						m_pSelectedEnt->m_v = speed;
+						/*qDebug() << "move:" << pickedWrld << "->" << newMouseWrld << "dist: " << offsetWrld
 						<< "t: " << time 
-						<< "spd: " << zSpeed;
-					}else
-						m_pSelectedEnt = 0;
+						<< "spd: " << speed;
+						*/
+					}
 				}
 		}
 

@@ -17,6 +17,13 @@ QDebug operator<<(QDebug dbg, const Vector3f& v)
     return dbg.space();
 }
 
+QDebug operator<<(QDebug dbg, const Vector4f& v)
+{
+    dbg.nospace() << "(" << v[0]/v[3] << ", " << v[1]/v[3] <<  ", " << v[2]/v[3] << ", " << v[3] <<")";
+
+    return dbg.space();
+}
+
 QDebug operator<<(QDebug dbg, const Quaternionf& q)
 {
     dbg.nospace() <<"["<<q.w() <<"," << q.x() << ", " << q.y() <<  ", " << q.z() << "]";
