@@ -114,6 +114,7 @@ class RenderingWidget : public QGLWidget
     virtual void mouseReleaseEvent(QMouseEvent * e);
     virtual void mouseMoveEvent(QMouseEvent * e);
     virtual void keyPressEvent(QKeyEvent * e);
+		virtual void wheelEvent(QWheelEvent * event);
     //--------------------------------------------------------------------------------
 
   public: 

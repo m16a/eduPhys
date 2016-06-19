@@ -504,6 +504,16 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 		m_lastMousePosTime = getCurrTime();	
 }
 
+void RenderingWidget::wheelEvent(QWheelEvent * event)
+{
+		//qDebug() << "wheel " << event->delta() << " " << event->orientation();
+		if (!m_pSelectedEnt)
+			return;	
+		
+		Vector3f camDir = mCamera.direction();
+		m_pSelectedEnt->m_v = 0.5f * (event->delta() > 0 ? 1 : -1) * camDir;
+}
+
 void RenderingWidget::paintGL()
 {
   glEnable(GL_DEPTH_TEST);
