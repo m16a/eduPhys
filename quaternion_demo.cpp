@@ -389,6 +389,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 			m_pSelectedEnt = res.m_pEnt;	
 			m_pSelectedEnt->m_v= Vector3f(0,0,0);
 			m_pSelectedEnt->m_active = true; 
+			m_pSelectedEnt->m_forces.clear();
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
 		}
 		else
@@ -401,6 +402,11 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
     mCurrentTrackingMode = TM_NO_TRACK;
     updateGL();
 		m_lastMousePosTime = 0.0f;
+		if (m_pSelectedEnt)
+		{
+			m_pSelectedEnt->m_forces.push_back(g_Gravity);
+			m_pSelectedEnt = 0;
+		}	
 }
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
@@ -740,7 +746,7 @@ QuaternionDemo::QuaternionDemo()
   s1->m_id = 1;
   s1->m_minv = 1;
 //  s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
-	s1->m_forces.push_back(g_Gravity);
+//	s1->m_forces.push_back(g_Gravity);
 	 
   //mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
@@ -774,6 +780,25 @@ QuaternionDemo::QuaternionDemo()
 */
 }
 
+void myMessageOutput(QtMsgType type, const char *msg)
+{
+	 //in this function, you can write the message to any stream!
+	 switch (type) {
+	 case QtDebugMsg:
+			 fprintf(stderr, "[Debug]: %s\n", msg);
+			 break;
+	 case QtWarningMsg:
+			 fprintf(stderr, "[Warning]: %s\n", msg);
+			 break;
+	 case QtCriticalMsg:
+			 fprintf(stderr, "[Critical]: %s\n", msg);
+			 break;
+	 case QtFatalMsg:
+			 fprintf(stderr, "[Fatal]: %s\n", msg);
+			 abort();
+	 }
+}
+
 int main(int argc, char *argv[])
 {
   std::cout << "	Navigation:\n";
@@ -790,6 +815,8 @@ int main(int argc, char *argv[])
   std::cout << "G						: add a key frame\n";
   std::cout << "---------------------------------------------------------------------------\n";
 	
+	qInstallMsgHandler(myMessageOutput);	
+
 	srand(time(NULL));
   QApplication app(argc, argv);
   QuaternionDemo demo;

@@ -34,7 +34,6 @@ void Core::StepAll(float dt)
 float Core::FindCollisions(bool applyImpulses)
 {
 	float res = 10000.0f;
-//collide
 	int size = m_objects.size();
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
@@ -87,10 +86,11 @@ float Core::FindCollisions(bool applyImpulses)
 					
 					float e = 0.8f;//restitution coef
 					Vector3f v_contact = (a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))); 
-					if (v_contact.norm() < RESTING_CONTACT_SPEED)
+					if (v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
 					{
 						a->m_active = false;
 						b->m_active = false;
+						//a->m_v = b->m_v = Vector3f(0,0,0);	
 						continue;
 					}
 						a->m_active = true;

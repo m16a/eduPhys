@@ -1,10 +1,6 @@
 Box-box overlap
 Box-box collision detection
 
-Review old camera code
-Clear timeline
-Clear animation
-
 Add external torque
 Unit tests would be fine
 Textures
@@ -12,4 +8,8 @@ Contact solver
 Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
 
 Figure out color setting for box. Looks like lightning settings + check vertieces normals
+
+Review old camera code
+Clear timeline
+Clear animation
 
