@@ -9,6 +9,8 @@ Linux rendering bug, scene disappearing. Seems like linux toucpad issue.
 
 Figure out color setting for box. Looks like lightning settings + check vertieces normals
 
+Make smooth key scene rotation
+
 Review old camera code
 Clear timeline
 Clear animation

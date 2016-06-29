@@ -7,15 +7,13 @@
 
 Box::Box()
 {
-	m_a = 10;
-	m_b = 10;
-	m_c = 0.4;
+	m_size = Vector3f(0.1f, 0.2f, 0.3f);
 
 	Matrix3f J;
-	float a = 1.f/12.f / m_minv * (m_b*m_b + m_c*m_c);
+	float a = 1.f/12.f / m_minv * (m_size[1]*m_size[1]+ m_size[2]*m_size[2]);
 
-	float b = 1.f/12.f / m_minv * (m_a*m_a + m_c*m_c);
-	float c = 1.f/12.f / m_minv * (m_b*m_b + m_a*m_a);
+	float b = 1.f/12.f / m_minv * (m_size[0]*m_size[0] + m_size[2]*m_size[2]);
+	float c = 1.f/12.f / m_minv * (m_size[1]*m_size[1] + m_size[0]*m_size[0]);
 	J <<	a, 0, 0,
 			0, b, 0,
 			0, 0, c;
@@ -193,8 +191,8 @@ int Box::IntersectRay(const SRay& r, SRayHit& out_hit)
 	int res = 0;
 
 	AABB aabbBox;
-	aabbBox.vMin = Vector3f(-m_a/2, -m_b/2, -m_c/2);
-	aabbBox.vMax = Vector3f(m_a/2, m_b/2, m_c/2);
+	aabbBox.vMin = Vector3f(-m_size[0]/2, -m_size[1]/2, -m_size[2]/2);
+	aabbBox.vMax = Vector3f(m_size[0]/2, m_size[1]/2, m_size[2]/2);
 
 	Quaternionf sT = (m_rot).conjugate();
 	SRay trans_r = r;
@@ -215,7 +213,7 @@ int Box::IntersectRay(const SRay& r, SRayHit& out_hit)
 void Box::Draw()
 {
 	glEnable(GL_NORMALIZE);
-	Affine3f t = Translation3f(m_pos) * m_rot * Scaling(m_a, m_b, m_c);
+	Affine3f t = Translation3f(m_pos) * m_rot * Scaling(m_size[0], m_size[1], m_size[2]);
 	gpu.pushMatrix(GL_MODELVIEW);
 	gpu.multMatrix(t.matrix(),GL_MODELVIEW);
 	

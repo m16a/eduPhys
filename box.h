@@ -21,19 +21,16 @@ public:
 	virtual void Step(float t);
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f));
 	virtual void AddAngularImpulse(Vector3f value);
-	Vector3f Size()
+	Vector3f Size() const
 	{
-		return Vector3f(m_a, m_b, m_c);
+		return m_size; 
 	}
 
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 
 public:
 
-	float m_a;
-	float m_b;
-	float m_c;
-
+	Vector3f m_size;
 };
 
 #endif

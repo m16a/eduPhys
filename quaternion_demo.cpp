@@ -755,8 +755,8 @@ QuaternionDemo::QuaternionDemo()
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
-	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
-	s2->m_forces.push_back(g_Gravity);
+//	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+//	s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 
@@ -765,11 +765,20 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s3 = new Box();
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
-  s3->m_minv = 0.0f;
-  //s3->m_v = Vector3f(10.f, 0.f, 0.f);
+  s3->m_minv = 0.1f;
+  s3->m_v = Vector3f(1.0f, 0.f, 0.f);
+
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
+	
 
+  IPhysEnt* s4 = new Box();
+  s4->m_pos = Vector3f(1.f, 0.f, 0.0f);
+  s4->m_id = 4;
+  s4->m_minv = 0.1f;
+	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
+	s4->m_rot.normalize();
+	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 
   setCentralWidget(mRenderingWidget);
 /*

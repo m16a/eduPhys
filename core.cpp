@@ -54,6 +54,11 @@ float Core::FindCollisions(bool applyImpulses)
 						collide(b1, a1, c, s);
 						a = b1; b = a1;
 					}
+					else if (Box* b1 = dynamic_cast<Box*>(b))
+					{
+						collide(a1, b1, c, s);
+						a = a1; b = b1;
+					}
 				}else if (Sphere* a1 = dynamic_cast<Sphere*>(a))
 				{
 					if (Box* b1 = dynamic_cast<Box*>(b))
