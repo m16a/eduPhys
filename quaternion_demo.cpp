@@ -387,7 +387,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 		if (m_core->RWI(r, res))
 		{
 			m_pSelectedEnt = res.m_pEnt;	
-			m_pSelectedEnt->m_v= Vector3f(0,0,0);
+//			m_pSelectedEnt->m_v= Vector3f(0,0,0);
 			m_pSelectedEnt->m_active = true; 
 			m_pSelectedEnt->m_forces.clear();
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;

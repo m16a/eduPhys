@@ -90,7 +90,7 @@ float Core::FindCollisions(bool applyImpulses)
 					{
 						a->m_active = false;
 						b->m_active = false;
-						//a->m_v = b->m_v = Vector3f(0,0,0);	
+						a->m_v = b->m_v = Vector3f(0,0,0);	
 						continue;
 					}
 						a->m_active = true;
