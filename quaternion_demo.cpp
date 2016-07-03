@@ -776,7 +776,9 @@ QuaternionDemo::QuaternionDemo()
   s4->m_pos = Vector3f(1.f, 0.f, 0.0f);
   s4->m_id = 4;
   s4->m_minv = 0.1f;
-	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
+	//s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
+	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
+ 	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
 	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 

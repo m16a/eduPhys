@@ -153,7 +153,7 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 
 bool overlap(Box* a, Box* b)
 {
-	//test all in a's CS
+	//test all separation axes in a's CS
 	//TODO: a lot of multiplication reduce can be made here	
 
 	Quaternionf rel = a->m_rot.conjugate() * b->m_rot;
@@ -162,15 +162,16 @@ bool overlap(Box* a, Box* b)
 	Vector3f b_size_in_a = rel * (b->m_size / 2.0f);
 	//test *a* main axes
 	for (int i=0; i < 3; ++i)
-		if (fabs(t[i]) > a->m_size[i] / 2.0f + b_size_in_a[i])
+		if (fabs(t[i]) > a->m_size[i] / 2.0f + fabs(b_size_in_a[i]))
 			return false;
 
-	qDebug() << "box test";	
+	//qDebug() << "box test 1";	
 	//test *b* main axes
 	for (int i=0; i < 3; ++i)
-		if (fabs((rel.conjugate()*t)[i]) > b->m_size[i] / 2.0f + (rel.conjugate()*(a->m_size/2.0f))[i])
+		if (fabs((rel.conjugate()*t)[i]) > b->m_size[i] / 2.0f + fabs((rel.conjugate()*(a->m_size/2.0f))[i]))
 			return false;
 
+	//qDebug() << "box test 2";	
 	float ra, rb;
 	
 	//test a0 x b0
@@ -181,12 +182,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 
+	//qDebug() << "box test 3";	
 	//test a0 x b1
 	{
 		Vector3f a0(a->m_size[0]/2, 0, 0);
@@ -195,12 +197,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 	
+	//qDebug() << "box test 4";	
 	//test a0 x b2
 	{
 		Vector3f a0(a->m_size[0]/2, 0, 0);
@@ -208,14 +211,14 @@ bool overlap(Box* a, Box* b)
 		b0 = rel * b0;
 			
 		Vector3f L = a0.cross(b0);
-
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
-
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
+		
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 
 
+	//qDebug() << "box test 5";	
 	//test a1 x b0
 	{
 		Vector3f a0(0,a->m_size[1]/2, 0);
@@ -224,12 +227,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 
+	//qDebug() << "box test 6";	
 	//test a1 x b1
 	{
 		Vector3f a0(0,a->m_size[1]/2, 0);
@@ -238,12 +242,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 	
+	//qDebug() << "box test 7";	
 	//test a1 x b2
 	{
 		Vector3f a0(0,a->m_size[1]/2, 0);
@@ -252,12 +257,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 
+	//qDebug() << "box test 8";	
 	//test a2 x b0
 	{
 		Vector3f a0(0,0,a->m_size[2]/2);
@@ -266,12 +272,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 
+	//qDebug() << "box test 9";	
 	//test a1 x b1
 	{
 		Vector3f a0(0,0,a->m_size[2]/2);
@@ -280,12 +287,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
 	
+	//qDebug() << "box test 10";	
 	//test a1 x b2
 	{
 		Vector3f a0(0,0,a->m_size[2]/2);
@@ -294,16 +302,13 @@ bool overlap(Box* a, Box* b)
 			
 		Vector3f L = a0.cross(b0);
 
-		ra = (a->m_size/2).dot(L);
-		rb = b_size_in_a.dot(L);
+		ra = fabs((a->m_size/2).dot(L));
+		rb = fabs(b_size_in_a.dot(L));
 
 		if (fabs(t.dot(L)) > ra + rb) return false;
 	}
+	//qDebug() << "box test 11";	
 	return true;
-
-
-
-
 }
 
 
