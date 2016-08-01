@@ -68,7 +68,6 @@ template<> EulerAngles<float> lerp(float t, const EulerAngles<float>& a, const E
   return res;
 }
 
-
 RenderingWidget::RenderingWidget()
 {
   mAnimate = false;
@@ -561,7 +560,6 @@ void RenderingWidget::paintGL()
 	//qDebug() << dir << " ==  " << (Quaternionf)ea;
 }
 
-
 void RenderingWidget::initializeGL()
 {
   glClearColor(0.07, 0.07, 0.07, 0.);
@@ -600,7 +598,6 @@ void RenderingWidget::setStepMode(int m)
 {
   m_SolverStepMode = SolverStepMode(m);
 }
-
 
 void RenderingWidget::setRotationMode(int m)
 {
@@ -745,8 +742,8 @@ QuaternionDemo::QuaternionDemo()
   //s1->m_v = Vector3f(-10.f, 0.f, 0.f);
   s1->m_id = 1;
   s1->m_minv = 1;
-//  s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
-//	s1->m_forces.push_back(g_Gravity);
+	//s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
+	//s1->m_forces.push_back(g_Gravity);
 	 
   //mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
@@ -755,8 +752,8 @@ QuaternionDemo::QuaternionDemo()
   s2->m_id = 2;
   s2->m_minv = 1;
   //s2->m_v = Vector3f(2.f, 0.f, 0.f);
-//	mRenderingWidget->m_core.get()->m_objects.push_back(s2);
-//	s2->m_forces.push_back(g_Gravity);
+	//mRenderingWidget->m_core.get()->m_objects.push_back(s2);
+	//s2->m_forces.push_back(g_Gravity);
   //
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
 

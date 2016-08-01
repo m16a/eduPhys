@@ -1,12 +1,11 @@
-
 #ifndef _COLLISION_H_
 #define _COLLISION_H_
-
 
 #include "sphere.h"
 #include "box.h"
 #include <Eigen/Geometry>
 #include "my_utils.h"
+#include "float.h"
 
 using Eigen::Vector3d;
 using Eigen::Vector3f;
@@ -19,7 +18,6 @@ struct Contact
 
 	Contact():depth(1000.0f){};
 };
-
 
 void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 {
@@ -151,6 +149,22 @@ void collide(Sphere* sphere, Box* b, Contact* c, int& out_size)
 	c->n.normalize();	
 }
 
+inline bool _testSA(const Vector3f& a0, const Vector3f& b0, const Vector3f& a_size, const Vector3f& b_in_a_size, const Vector3f& t)
+{
+	const Vector3f L = a0.cross(b0);
+	if (L.dot(L) > 10e-5)
+	{
+		const float ra = fabs((a_size/2).dot(L));
+		const float rb = fabs(b_in_a_size.dot(L));
+
+		if (fabs(t.dot(L)) > ra + rb) 
+			return false;
+	}
+	else
+		qWarning() << "SAT is missed due to paralel edges";
+	return true;
+}
+
 bool overlap(Box* a, Box* b)
 {
 	//test all separation axes in a's CS
@@ -180,12 +194,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(b->m_size[0]/2, 0, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 
 	//qDebug() << "box test 3";	
@@ -195,12 +204,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(0,b->m_size[1]/2, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 	
 	//qDebug() << "box test 4";	
@@ -209,14 +213,9 @@ bool overlap(Box* a, Box* b)
 		Vector3f a0(a->m_size[0]/2, 0, 0);
 		Vector3f b0(0, 0, b->m_size[2]/2);
 		b0 = rel * b0;
-			
-		Vector3f L = a0.cross(b0);
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
 		
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
-
 
 	//qDebug() << "box test 5";	
 	//test a1 x b0
@@ -225,12 +224,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(b->m_size[0]/2, 0, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 
 	//qDebug() << "box test 6";	
@@ -240,12 +234,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(0,b->m_size[1]/2, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 	
 	//qDebug() << "box test 7";	
@@ -255,12 +244,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(0, 0, b->m_size[2]/2);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 
 	//qDebug() << "box test 8";	
@@ -270,12 +254,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(b->m_size[0]/2, 0, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 
 	//qDebug() << "box test 9";	
@@ -285,12 +264,7 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(0,b->m_size[1]/2, 0);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 	
 	//qDebug() << "box test 10";	
@@ -300,17 +274,11 @@ bool overlap(Box* a, Box* b)
 		Vector3f b0(0, 0, b->m_size[2]/2);
 		b0 = rel * b0;
 			
-		Vector3f L = a0.cross(b0);
-
-		ra = fabs((a->m_size/2).dot(L));
-		rb = fabs(b_size_in_a.dot(L));
-
-		if (fabs(t.dot(L)) > ra + rb) return false;
+		if (!_testSA(a0, b0, a->m_size, b_size_in_a, t)) return false;
 	}
 	//qDebug() << "box test 11";	
 	return true;
 }
-
 
 void collide(Box* a, Box* b, Contact* c, int& out_size)
 {
@@ -319,4 +287,38 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	if (overlap(a,b))
 		qDebug() << "BOX OVERLAP";
 }
+
+float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
+{
+	float res = FLT_MAX;
+	for (int i=-1; i<2; i+=2)
+	for (int j=-1; j<2; j+=2)
+	for (int k=-1; k<2; k+=2)
+	{	
+		Vector3f v_wrld = a->m_pos + a->m_rot * (Vector3f(i*a->m_size[0]/2.0f, j*a->m_size[1]/2.0f, k*a->m_size[2]/2.0f));
+		res = std::min(res, in_s.dot(v_wrld));
+	}
+	return res;
+}
+
+float boxBoxCheckDirection(const Box* a, const Box* b, const Vector3f& in_s)
+{
+	float res = FLT_MAX;
+	if (in_s.dot(in_s) > 0.001)
+	{
+		Vector3f s = in_s.normalized();
+		res = boxBoxSupportDist(a, s) + boxBoxSupportDist(b, -s);	
+	}
+	return res;
+}
+
+void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s, float& out_d)
+{
+	out_s = Vector3f(0.0f, 0.0f, 0.0f);
+	out_d = FLT_MAX;
+}
+
+
+
 #endif//_COLLISION_H_
+
