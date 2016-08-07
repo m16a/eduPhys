@@ -280,14 +280,6 @@ bool overlap(Box* a, Box* b)
 	return true;
 }
 
-void collide(Box* a, Box* b, Contact* c, int& out_size)
-{
-	assert(out_size > 0);
-	out_size = 0;
-	if (overlap(a,b))
-		qDebug() << "BOX OVERLAP";
-}
-
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
 {
 	float res = FLT_MAX;
@@ -298,26 +290,91 @@ float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
 		Vector3f v_wrld = a->m_pos + a->m_rot * (Vector3f(i*a->m_size[0]/2.0f, j*a->m_size[1]/2.0f, k*a->m_size[2]/2.0f));
 		res = std::min(res, in_s.dot(v_wrld));
 	}
+//	qDebug() << "bbsd " << res;
 	return res;
 }
 
 float boxBoxCheckDirection(const Box* a, const Box* b, const Vector3f& in_s)
 {
-	float res = FLT_MAX;
+	float res = -INFINITY;
 	if (in_s.dot(in_s) > 0.001)
 	{
 		Vector3f s = in_s.normalized();
 		res = boxBoxSupportDist(a, s) + boxBoxSupportDist(b, -s);	
 	}
+	//qDebug() << "bbcd " << res;
 	return res;
 }
 
 void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s, float& out_d)
 {
 	out_s = Vector3f(0.0f, 0.0f, 0.0f);
-	out_d = FLT_MAX;
+	out_d = -INFINITY;
+	Vector3f tmp;
+	float d;
+
+	//check each face for *a*
+	static const Vector3f arr[] = {Vector3f(1,0,0), Vector3f(0,1,0), Vector3f(0,0,1), Vector3f(-1,0,0), Vector3f(0,-1,0), Vector3f(0,0,-1)};
+	std::vector<Vector3f> loc_n(arr, arr+sizeof(arr)/sizeof(arr[0])); 
+	for (int i=0; i<loc_n.size(); ++i)
+	{
+		tmp = a->m_rot * loc_n[i];
+		d = boxBoxCheckDirection(a,b,-tmp);
+		if (d>out_d)
+		{ 
+			out_d = d;
+			out_s = -tmp;
+		}
+	}
+
+	//check each face for *b*
+	for (int i=0; i<loc_n.size(); ++i)
+	{
+		tmp = b->m_rot * loc_n[i];
+		d = boxBoxCheckDirection(a,b,tmp);
+		if (d>out_d)
+		{ 
+			out_d = d;
+			out_s = tmp;
+		}
+	}
+
+	//check edges, 9 cases
+	for (int i=0; i<3;i++)
+	for (int j=0; j<3;j++)
+	{
+		tmp = (a->m_rot*loc_n[i]).cross(b->m_rot*loc_n[j]);
+		d = boxBoxCheckDirection(a,b,tmp);
+		if (d>out_d)
+		{ 
+			out_d = d;
+			out_s = tmp;
+		}
+		d = boxBoxCheckDirection(a,b,-tmp);
+		if (d>out_d)
+		{ 
+			out_d = d;
+			out_s = -tmp;
+		}
+	}
+
+	//qDebug() << out_d << out_s;
+	if (out_d <= 0)
+		return;
+	//TODO: check vertex-vertex and vertex-edge cases	
 }
 
+void collide(Box* a, Box* b, Contact* c, int& out_size)
+{
+	assert(out_size > 0);
+	out_size = 0;
+
+	Vector3f separationAxe;
+	float penDepth;
+	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
+	if (penDepth < 0)
+		qDebug() << "BOX OVERLAP";
+}
 
 
 #endif//_COLLISION_H_
