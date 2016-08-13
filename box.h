@@ -13,7 +13,6 @@ class Box : public IPhysEnt
 {
 
 public:
-//	static IcoSphere m_icoSphere;
 	Box();
 	virtual ~Box(){};
 
@@ -25,12 +24,14 @@ public:
 	{
 		return m_size; 
 	}
-
+	
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 
 public:
 
 	Vector3f m_size;
 };
+
+void getBoxVerticies(const Box* b, Vector3f out_arr[6]);
 
 #endif

@@ -297,3 +297,15 @@ void Box::Draw()
 	gpu.popMatrix(GL_MODELVIEW);
 	glDisable(GL_NORMALIZE);
 }
+
+void getBoxVerticies(const Box* b, Vector3f out_arr[6])
+{
+	int indx = 0;
+	for (int i=-1; i<2; i+=2)
+	for (int j=-1; j<2; j+=2)
+	for (int k=-1; k<2; k+=2)
+	{	
+		Vector3f v_wrld = b->m_pos + b->m_rot * (Vector3f(i*b->m_size[0]/2.0f, j*b->m_size[1]/2.0f, k*b->m_size[2]/2.0f));
+		out_arr[indx++] = v_wrld;
+	}
+}

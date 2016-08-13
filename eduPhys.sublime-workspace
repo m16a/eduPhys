@@ -148,6 +148,8 @@
 	},
 	"file_history":
 	[
+		"/home/m16a/Documents/reviews/Wild Strawberries",
+		"/home/m16a/Documents/reviews/MyFirstCrash",
 		"/home/m16a/Desktop/js test/script.js",
 		"/home/m16a/Desktop/js test/js.html",
 		"/home/m16a/Downloads/flexbox nav/3-building-a-layout-with-flexbox/2-two-column-layout-with-flexbox/final/css/flexbox.css",
@@ -400,11 +402,6 @@
 			"sheets":
 			[
 			]
-		},
-		{
-			"sheets":
-			[
-			]
 		}
 	],
 	"incremental_find":
@@ -424,18 +421,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":

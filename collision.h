@@ -19,6 +19,12 @@ struct Contact
 	Contact():depth(1000.0f){};
 };
 
+struct SPlane
+{
+	Vector3f n;
+	float d;
+};
+
 void collide(Sphere* a, Sphere* b, Contact* c, int& out_size)
 {
 	assert(out_size > 0);
@@ -95,7 +101,7 @@ bool isPointInsideBox(const Vector3f size, const Vector3f p)
 	if (fabs(p.x()) <= size.x()/2.0f &&
 		fabs(p.y()) <= size.y()/2.0f &&
 		fabs(p.z()) <= size.z()/2.0f)
-		return true;
+			return true;
 
 	return false;
 }
@@ -280,15 +286,21 @@ bool overlap(Box* a, Box* b)
 	return true;
 }
 
+void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
+{
+	out_plane.n = s;
+	 
+}
+
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
 {
 	float res = FLT_MAX;
-	for (int i=-1; i<2; i+=2)
-	for (int j=-1; j<2; j+=2)
-	for (int k=-1; k<2; k+=2)
+	Vector3f bVerts[6];	
+	getBoxVerticies(a, bVerts);
+	
+	for (int i=0; i<6; ++i)
 	{	
-		Vector3f v_wrld = a->m_pos + a->m_rot * (Vector3f(i*a->m_size[0]/2.0f, j*a->m_size[1]/2.0f, k*a->m_size[2]/2.0f));
-		res = std::min(res, in_s.dot(v_wrld));
+		res = std::min(res, in_s.dot(bVerts[i]));
 	}
 //	qDebug() << "bbsd " << res;
 	return res;
