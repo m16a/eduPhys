@@ -16,7 +16,7 @@ struct IDebugItem
 struct SDebugPlane : public IDebugItem 
 {
 	Vector3f m_n;
-	Vector3f m_d;
+	float m_d;
 
 	virtual void Draw();
 };
@@ -25,19 +25,12 @@ struct SDebugPlane : public IDebugItem
 struct SDebugMngr
 {
 //	void AddDebugItem(const IDebugItem* pDI);
-	void DrawPlane(const Vector3f& n, const Vector3f& d);
+	void DrawPlane(const Vector3f& n, const float d);
 	std::list<IDebugItem*> m_list;
 	void Draw();
 };
 
-SDebugMngr* DebugManager()
-{
-	static SDebugMngr* sDbgMngr = 0;
-	if (0 == sDbgMngr)
-		sDbgMngr = new SDebugMngr;
-
-	return sDbgMngr;
-}
+SDebugMngr* DebugManager();
 
 
 #endif

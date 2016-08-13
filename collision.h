@@ -6,6 +6,8 @@
 #include <Eigen/Geometry>
 #include "my_utils.h"
 #include "float.h"
+#include "debug_draw.h"
+
 
 using Eigen::Vector3d;
 using Eigen::Vector3f;
@@ -403,6 +405,12 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	if (penDepth < 0)
 		qDebug() << "BOX OVERLAP";
+	else
+	{
+		SPlane p;
+		boxGetSupportPlane(a, separationAxe, p);
+		DebugManager()->DrawPlane(p.n, p.d);	 
+	}
 }
 
 

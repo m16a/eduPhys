@@ -17,4 +17,6 @@ extern Eigen::Matrix3f matrixFromPYR(float pitch, float yaw, float roll);
 extern Quaternion<float> quatFromPYR(float pitch, float yaw, float roll);
 
 extern Vector3f PYRFromQuat(Quaternionf& q);
+
+bool isVectorsEqual(const Vector3f a, const Vector3f b);
 #endif// _MY_UTILS_H_

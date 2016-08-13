@@ -64,3 +64,13 @@ Vector3f PYRFromQuat(Quaternionf& q)
 	Vector3f ea = m.eulerAngles(0,1,2);
 	return ea /* 180.0f / M_PI*/;
 }
+
+bool isVectorsEqual(const Vector3f a, const Vector3f b)
+{
+	for (int i=0; i<3; ++i)
+	{
+		if (a[i] - b[i] > 0.001)
+			return false;
+	}
+	return true;
+}

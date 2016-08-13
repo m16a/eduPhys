@@ -37,6 +37,7 @@
 #include "box.h"
 #include "my_utils.h"
 #include "rwi.h"
+#include "debug_draw.h"
 
 
 using namespace Eigen;
@@ -163,7 +164,9 @@ void RenderingWidget::drawScene()
   }
 
   m_core.get()->Draw();
-  
+	
+	DebugManager()->Draw();	
+/*  
 	if (!mVertices.empty())
 	{
 		glVertexPointer(3, GL_FLOAT, 0, mVertices[0].data());
@@ -174,7 +177,8 @@ void RenderingWidget::drawScene()
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_NORMAL_ARRAY);
 	}
-  glDisable(GL_LIGHTING);
+*/
+	glDisable(GL_LIGHTING);
 
   update();
  
@@ -522,13 +526,13 @@ void RenderingWidget::wheelEvent(QWheelEvent * event)
 void RenderingWidget::paintGL()
 {
   glEnable(GL_DEPTH_TEST);
-  glDisable(GL_CULL_FACE);
-  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-  glDisable(GL_COLOR_MATERIAL);
-  glDisable(GL_BLEND);
-  glDisable(GL_ALPHA_TEST);
-  glDisable(GL_TEXTURE_1D);
-  glDisable(GL_TEXTURE_2D);
+ // glDisable(GL_CULL_FACE);
+ // glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  //glDisable(GL_COLOR_MATERIAL);
+  //glDisable(GL_BLEND);
+ // glDisable(GL_ALPHA_TEST);
+ // glDisable(GL_TEXTURE_1D);
+ // glDisable(GL_TEXTURE_2D);
   //glDisable(GL_TEXTURE_3D);
 
   // Clear buffers
@@ -565,8 +569,8 @@ void RenderingWidget::initializeGL()
   glClearColor(0.07, 0.07, 0.07, 0.);
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
   glDepthMask(GL_TRUE);
-  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
+ // glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glClearDepth(1.0f);
   mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
 	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
 
