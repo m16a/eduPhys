@@ -289,7 +289,24 @@ bool overlap(Box* a, Box* b)
 void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 {
 	out_plane.n = s;
-	 
+
+	Vector3f aWrld = a->m_rot * Vector3f(a->m_size[0]/2,0,0); 
+	Vector3f bWrld = a->m_rot * Vector3f(0,a->m_size[1]/2,0); 
+	Vector3f cWrld = a->m_rot * Vector3f(0,0,a->m_size[2]/2); 
+
+	out_plane.d = fabs(aWrld.dot(s))+fabs(bWrld.dot(s))+fabs(cWrld.dot(s));
+
+/*	Vector3f bVerts[6];	
+	getBoxVerticies(a, bVerts);
+	for (int i=0; i<6; ++i)
+	{	
+		for (int j=0; j<6; ++j)
+		{
+			
+		}
+		bVerts[i];
+	}
+*/
 }
 
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
