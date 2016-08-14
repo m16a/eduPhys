@@ -216,48 +216,37 @@ void Box::Draw()
 	Affine3f t = Translation3f(m_pos) * m_rot * Scaling(m_size[0], m_size[1], m_size[2]);
 	gpu.pushMatrix(GL_MODELVIEW);
 	gpu.multMatrix(t.matrix(),GL_MODELVIEW);
-	
+
+	glColorMaterial(GL_FRONT, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);	
 	// Многоцветная сторона - ПЕРЕДНЯЯ
 	glBegin(GL_POLYGON);
 	 
-	glColor3f(1.0, 0.0, 0.0);     glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
-	glNormal3f(0,0,-1);
-
-	//	glColor3f(0.1, 0.1, 0.1);
-  glVertex3f(  0.5,  0.5, -0.5 );      // P2 is green
-	glNormal3f(0,0,-1);
-
-	//glColor3f(0.1, 0.1, 0.1);
+	glColor3f(232/255.0f,209/255.0f,116/255.0f);
+  glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
+	//glNormal3f(0,0,-1);
+  glVertex3f(  0.5,  0.5, -0.5 ); 
   glVertex3f( -0.5,  0.5, -0.5 );      // P3 is blue
-	glNormal3f(0,0,-1);
-
-	//glColor3f(0.1, 0.1, 0.1);     
 	glVertex3f( -0.5, -0.5, -0.5 );      // P4 is purple
-	glNormal3f(0,0,-1);
-
 	glEnd();
 
 	// Белая сторона - ЗАДНЯЯ
 	glBegin(GL_POLYGON);
-	//glColor3f(0.1, 0.1, 0.1);
+	
+	glColor3f(227/255.0f,158/255.0f,84/255.0f);
+	glNormal3f(0,0,1);
 	glVertex3f(  0.5, -0.5, 0.5 );
-	glNormal3f(0,0,1);
 	glVertex3f(  0.5,  0.5, 0.5 );
-	glNormal3f(0,0,1);
-
 	glVertex3f( -0.5,  0.5, 0.5 );
-	glNormal3f(0,0,1);
 
 	glVertex3f( -0.5, -0.5, 0.5 );
-	glNormal3f(0,0,1);
 
 	glEnd();
 	 
 	// Фиолетовая сторона - ПРАВАЯ
+	glColor3f(214/255.0f,77/255.0f,77/255.0f);
 	glBegin(GL_POLYGON);
-	//glColor3f(  1.0,  0.0,  1.0 );
 	glNormal3f(1,0,0);
-
 	glVertex3f( 0.5, -0.5, -0.5 );
 	glVertex3f( 0.5,  0.5, -0.5 );
 	glVertex3f( 0.5,  0.5,  0.5 );
@@ -265,9 +254,9 @@ void Box::Draw()
 	glEnd();
 	 
 	// Зеленая сторона - ЛЕВАЯ
+	glColor3f(77/255.0f,115/255.0f,88/255.0f);
 	glBegin(GL_POLYGON);
 	glNormal3f(-1,0,0);
-	//glColor3f(   0.0,  1.0,  0.0 );
 	glVertex3f( -0.5, -0.5,  0.5 );
 	glVertex3f( -0.5,  0.5,  0.5 );
 	glVertex3f( -0.5,  0.5, -0.5 );
@@ -275,8 +264,8 @@ void Box::Draw()
 	glEnd();
 	 
 	// Синяя сторона - ВЕРХНЯЯ
+	glColor3f(232/255.0f,209/255.0f,116/255.0f);
 	glBegin(GL_POLYGON);
-	//glColor3f(   0.0,  0.0,  1.0 );
 	glNormal3f(0,1,0);
 	glVertex3f(  0.5,  0.5,  0.5 );
 	glVertex3f(  0.5,  0.5, -0.5 );
@@ -285,8 +274,8 @@ void Box::Draw()
 	glEnd();
 	 
 	// Красная сторона - НИЖНЯЯ
+	glColor3f(158/255.0f,214/255.0f,112/255.0f);
 	glBegin(GL_POLYGON);
-	//glColor3f(   1.0,  0.0,  0.0 );
 	glNormal3f(0,-1,0);
 	glVertex3f(  0.5, -0.5, -0.5 );
 	glVertex3f(  0.5, -0.5,  0.5 );

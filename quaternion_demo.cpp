@@ -130,14 +130,15 @@ void RenderingWidget::drawScene()
   glLightfv(GL_LIGHT1, GL_SPECULAR, Vector4f(1,1,1,1).data());
   glLightfv(GL_LIGHT1, GL_POSITION, Vector4f(-sqrt3,sqrt3,-sqrt3,0).data());
 
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Vector4f(0.7, 0.7, 0.7, 1).data());
-  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector4f(0.8, 0.75, 0.6, 1).data());
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Vector4f(1, 1, 1, 1).data());
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 64);
+//  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Vector4f(0.7, 0.7, 0.7, 1).data());
+//  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector4f(0.8, 0.75, 0.6, 1).data());
+//  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Vector4f(1, 1, 1, 1).data());
+//  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 64);
 
   glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  //glEnable(GL_LIGHT1);
+//  glEnable(GL_LIGHT0);
+  
+	glEnable(GL_LIGHT1);
 
 
 	float currTime = clock() / float(CLOCKS_PER_SEC);
@@ -166,22 +167,8 @@ void RenderingWidget::drawScene()
   m_core.get()->Draw();
 	
 	DebugManager()->Draw();	
-/*  
-	if (!mVertices.empty())
-	{
-		glVertexPointer(3, GL_FLOAT, 0, mVertices[0].data());
-		glNormalPointer(GL_FLOAT, 0, mNormals[0].data());
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glDrawArrays(GL_TRIANGLES, 0, mVertices.size());
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-	}
-*/
 	glDisable(GL_LIGHTING);
-
   update();
- 
 }
 
 float getCurrTime()
@@ -301,44 +288,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
     }
 
     updateGL();
-}
-
-Vector3f unProj(const Vector2i& in, float& scrDepth)
-{
-		int	wWidth = glutGet(GLUT_WINDOW_WIDTH);
-
-		//TOneverDO: get window height
-		int wHeight = 600;//glutGet(GLUT_WINDOW_HEIGHT);
-
-		GLfloat depth;
-		if (scrDepth > 2.0f)
-		{	
-			glReadPixels(in[0], wHeight - in[1] - 1, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-			scrDepth = depth;
-		}else{
-			depth = scrDepth;
-		}	
-		double modelview[16], projection[16];
-    int viewport[4];
-		double objx, objy, objz; 
-		//get the modelview matrix              
-    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-
-    //get the projection matrix
-    glGetDoublev( GL_PROJECTION_MATRIX, projection );
-		
-    //get the viewport              
-    glGetIntegerv( GL_VIEWPORT, viewport );
-
-    //Unproject the window co-ordinates to find the world co-ordinates.
-    gluUnProject( in[0], wHeight-in[1], depth, modelview, projection, viewport, &objx, &objy, &objz );
-	
-		/*	
-		qDebug()<<"screen:" <<e->x()<<" " << e->y() << "depth" << depth << " " << wHeight;
-		qDebug()<<"world:" <<objx<<" " <<objy<< " " << objz; 
-		*/
-		
-		return Vector3f(objx, objy, objz);
 }
 
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
@@ -567,17 +516,8 @@ void RenderingWidget::paintGL()
 void RenderingWidget::initializeGL()
 {
   glClearColor(0.07, 0.07, 0.07, 0.);
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
-  glDepthMask(GL_TRUE);
- // glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glClearDepth(1.0f);
   mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
 	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
-
-  //mCamera.setPosition(Vector3f(-2, 0, 0));
-	Quaternionf t;
-	t.setIdentity();
-	//mCamera.setOrientation(t);
 
   mInitFrame.orientation = mCamera.orientation().inverse();
   mInitFrame.position = mCamera.viewMatrix().translation();
