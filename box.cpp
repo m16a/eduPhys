@@ -222,9 +222,10 @@ void Box::Draw()
 	// Многоцветная сторона - ПЕРЕДНЯЯ
 	glBegin(GL_POLYGON);
 	 
-	glColor3f(232/255.0f,209/255.0f,116/255.0f);
+//	glColor3f(232/255.0f,209/255.0f,116/255.0f);
+	glColor3f(51/255.0f,51/255.0f,51/255.0f);
   glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
-	//glNormal3f(0,0,-1);
+	glNormal3f(0,0,-1);
   glVertex3f(  0.5,  0.5, -0.5 ); 
   glVertex3f( -0.5,  0.5, -0.5 );      // P3 is blue
 	glVertex3f( -0.5, -0.5, -0.5 );      // P4 is purple
@@ -232,8 +233,7 @@ void Box::Draw()
 
 	// Белая сторона - ЗАДНЯЯ
 	glBegin(GL_POLYGON);
-	
-	glColor3f(227/255.0f,158/255.0f,84/255.0f);
+//	glColor3f(227/255.0f,158/255.0f,84/255.0f);
 	glNormal3f(0,0,1);
 	glVertex3f(  0.5, -0.5, 0.5 );
 	glVertex3f(  0.5,  0.5, 0.5 );
@@ -244,7 +244,7 @@ void Box::Draw()
 	glEnd();
 	 
 	// Фиолетовая сторона - ПРАВАЯ
-	glColor3f(214/255.0f,77/255.0f,77/255.0f);
+//	glColor3f(77/255.0f,115/255.0f,88/255.0f);
 	glBegin(GL_POLYGON);
 	glNormal3f(1,0,0);
 	glVertex3f( 0.5, -0.5, -0.5 );
@@ -254,7 +254,7 @@ void Box::Draw()
 	glEnd();
 	 
 	// Зеленая сторона - ЛЕВАЯ
-	glColor3f(77/255.0f,115/255.0f,88/255.0f);
+//	glColor3f(214/255.0f,77/255.0f,77/255.0f);
 	glBegin(GL_POLYGON);
 	glNormal3f(-1,0,0);
 	glVertex3f( -0.5, -0.5,  0.5 );
@@ -264,7 +264,7 @@ void Box::Draw()
 	glEnd();
 	 
 	// Синяя сторона - ВЕРХНЯЯ
-	glColor3f(232/255.0f,209/255.0f,116/255.0f);
+//	glColor3f(158/255.0f,214/255.0f,112/255.0f);
 	glBegin(GL_POLYGON);
 	glNormal3f(0,1,0);
 	glVertex3f(  0.5,  0.5,  0.5 );
@@ -274,7 +274,7 @@ void Box::Draw()
 	glEnd();
 	 
 	// Красная сторона - НИЖНЯЯ
-	glColor3f(158/255.0f,214/255.0f,112/255.0f);
+//	glColor3f(158/255.0f,214/255.0f,112/255.0f);
 	glBegin(GL_POLYGON);
 	glNormal3f(0,-1,0);
 	glVertex3f(  0.5, -0.5, -0.5 );
@@ -282,7 +282,7 @@ void Box::Draw()
 	glVertex3f( -0.5, -0.5,  0.5 );
 	glVertex3f( -0.5, -0.5, -0.5 );
 	glEnd();
-
+	
 	gpu.popMatrix(GL_MODELVIEW);
 	glDisable(GL_NORMALIZE);
 }
