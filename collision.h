@@ -296,19 +296,23 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 	Vector3f bWrld = a->m_rot * Vector3f(0,a->m_size[1]/2,0); 
 	Vector3f cWrld = a->m_rot * Vector3f(0,0,a->m_size[2]/2); 
 
-	out_plane.d = fabs(aWrld.dot(s))+fabs(bWrld.dot(s))+fabs(cWrld.dot(s));
-
-/*	Vector3f bVerts[6];	
-	getBoxVerticies(a, bVerts);
-	for (int i=0; i<6; ++i)
+	Vector3f bVs[6];	
+	getBoxVerticies(a, bVs);
+	int i,j;
+	for (i=j=0; i<6; ++i)
 	{	
-		for (int j=0; j<6; ++j)
+		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
+		for (; j<6; ++j)
 		{
-			
+			if (bVs[j][0]*s[0] + bVs[j][1]*s[1]+bVs[j][2]*s[2] > -tmp_d)
+				break;
 		}
-		bVerts[i];
+		if (j == 6)
+		{
+			out_plane.d = tmp_d;
+			break;
+		}
 	}
-*/
 }
 
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
@@ -404,11 +408,16 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	float penDepth;
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	if (penDepth < 0)
+	{
 		qDebug() << "BOX OVERLAP";
+		SPlane p;
+		boxGetSupportPlane(a, -separationAxe, p);
+		DebugManager()->DrawPlane(p.n, p.d);	 
+	}
 	else
 	{
 		SPlane p;
-		boxGetSupportPlane(a, separationAxe, p);
+		boxGetSupportPlane(a, -separationAxe, p);
 		DebugManager()->DrawPlane(p.n, p.d);	 
 	}
 }

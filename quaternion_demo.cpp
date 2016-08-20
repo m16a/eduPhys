@@ -112,7 +112,7 @@ void RenderingWidget::grabFrame(void)
 
 void RenderingWidget::drawScene()
 {
-  float length = 2;
+  float length = 0.2;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitY(), Color(0,1,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitZ(), Color(0,0,1,1));
@@ -169,6 +169,23 @@ void RenderingWidget::drawScene()
 	DebugManager()->Draw();	
 	glDisable(GL_LIGHTING);
   update();
+
+	glColor4f(1.0, 1.0, 1.0, 0.9);
+	//Print camera info
+	Vector3f camPos = mCamera.position();
+	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
+
+	Quaternionf dir = mCamera.orientation();
+	Vector3f d(1,0,0);
+	d = dir * d;
+	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
+	
+	Vector3f ypr = PYRFromQuat(dir); 
+	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
+
+	if (m_realTime > 0.01)
+		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
+
 }
 
 float getCurrTime()
@@ -491,21 +508,6 @@ void RenderingWidget::paintGL()
 
 
   drawScene();
-
-	//Print camera info
-	Vector3f camPos = mCamera.position();
-	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
-
-	Quaternionf dir = mCamera.orientation();
-	Vector3f d(1,0,0);
-	d = dir * d;
-	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
-	
-	Vector3f ypr = PYRFromQuat(dir); 
-	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
-
-	if (m_realTime > 0.01)
-		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
 
 	//Vector3f a = PYRFromQuat(dir);
 	//EulerAngles<float> ea(dir);

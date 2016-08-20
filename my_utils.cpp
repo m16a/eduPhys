@@ -69,7 +69,7 @@ bool isVectorsEqual(const Vector3f a, const Vector3f b)
 {
 	for (int i=0; i<3; ++i)
 	{
-		if (a[i] - b[i] > 0.001)
+		if (fabs(a[i] - b[i]) > 0.001)
 			return false;
 	}
 	return true;
