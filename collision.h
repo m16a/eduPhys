@@ -399,6 +399,25 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 	//TODO: check vertex-vertex and vertex-edge cases	
 }
 
+void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
+{
+	const float TOLERANCE = 10e-3f;
+	out_size = 0;		
+	Vector3f bVs[6];	
+	getBoxVerticies(b, bVs);
+	
+	size_t indx = 0;	
+	for (int i=0; i<6; ++i)
+	{	
+		float d = p.n[0]*bVs[i][0] + p.n[1]*bVs[i][1] + p.n[2]*bVs[i][2] + p.d;
+		if (fabs(d) <= TOLERANCE)
+			out_arr[indx++] = bVs[i];
+	}
+	out_size = indx;
+	qDebug() << indx;
+	assert(indx >=0 && indx <= 4);
+}
+
 void collide(Box* a, Box* b, Contact* c, int& out_size)
 {
 	assert(out_size > 0);
@@ -409,10 +428,22 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	if (penDepth < 0)
 	{
-		qDebug() << "BOX OVERLAP";
 		SPlane p;
 		boxGetSupportPlane(a, -separationAxe, p);
 		DebugManager()->DrawPlane(p.n, p.d);	 
+
+		Vector3f vs1[4];
+		size_t cnt1;
+		getVerticiesOnSupportPlane(a, p, vs1, cnt1);
+		assert(cnt1 >= 0 && cnt1 <=4);
+
+		Vector3f vs2[4];
+		size_t cnt2;
+		getVerticiesOnSupportPlane(b, p, vs2, cnt2);
+		assert(cnt2 >= 0 && cnt2 <=4);
+
+		qDebug() << "BOX OVERLAP" << cnt1 << cnt2;
+		
 	}
 	else
 	{
@@ -421,7 +452,6 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		DebugManager()->DrawPlane(p.n, p.d);	 
 	}
 }
-
 
 #endif//_COLLISION_H_
 

@@ -145,6 +145,7 @@ void RenderingWidget::drawScene()
   float dt = (currTime - m_lastTime);
 	m_realTime = currTime - m_realTimeStart;
 
+	DebugManager()->Draw(m_isSolverStopped);	
 /*
 	qDebug() << " ";	
 	qDebug() << currTime << m_lastTime;
@@ -166,7 +167,6 @@ void RenderingWidget::drawScene()
 
   m_core.get()->Draw();
 	
-	DebugManager()->Draw();	
 	glDisable(GL_LIGHTING);
   update();
 
@@ -517,7 +517,7 @@ void RenderingWidget::paintGL()
 
 void RenderingWidget::initializeGL()
 {
-  glClearColor(0.07, 0.07, 0.07, 0.);
+  glClearColor(0.2, 0.2, 0.2, 0.);
   mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
 	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
 
@@ -719,9 +719,9 @@ QuaternionDemo::QuaternionDemo()
   s4->m_pos = Vector3f(1.f, 0.f, 0.0f);
   s4->m_id = 4;
   s4->m_minv = 0.1f;
-	//s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
+	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
 	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
- 	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
+ 	//s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
 	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 

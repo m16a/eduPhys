@@ -32,7 +32,6 @@ void SDebugPlane::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBegin(GL_POLYGON);
 	glColor4f(1.0, 0.0, 0.0, 0.1);
-	qDebug() << m_n << "  " << m_d;
 //	glNormal3f(m_n[0],m_n[1],m_n[2]);
 
 	glVertex3f(P1[0], P1[1], P1[2]);
@@ -61,12 +60,15 @@ SDebugMngr* DebugManager()
 	return sDbgMngr;
 }
 
-void SDebugMngr::Draw()
+void SDebugMngr::Draw(bool isPause)
 {
-	while (!m_list.empty())
+	std::list<IDebugItem*>::iterator it = m_list.begin();
+	while (it != m_list.end())
 	{
-		IDebugItem* i = m_list.front();
-		i->Draw();
-		m_list.pop_front();
+		(*it)->Draw();
+		++it;
 	}
+
+	if(!isPause)
+		m_list.clear();
 }

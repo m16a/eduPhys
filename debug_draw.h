@@ -27,7 +27,7 @@ struct SDebugMngr
 //	void AddDebugItem(const IDebugItem* pDI);
 	void DrawPlane(const Vector3f& n, const float d);
 	std::list<IDebugItem*> m_list;
-	void Draw();
+	void Draw(bool isPause = false);
 };
 
 SDebugMngr* DebugManager();
