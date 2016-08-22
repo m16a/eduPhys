@@ -287,7 +287,7 @@ void Box::Draw()
 	glDisable(GL_NORMALIZE);
 }
 
-void getBoxVerticies(const Box* b, Vector3f out_arr[6])
+void getBoxVerticies(const Box* b, Vector3f out_arr[8])
 {
 	int indx = 0;
 	for (int i=-1; i<2; i+=2)

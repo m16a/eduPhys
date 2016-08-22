@@ -18,7 +18,7 @@ struct Contact
 	Vector3f n;
 	float depth;
 
-	Contact():depth(1000.0f){};
+	Contact():pt(Vector3f(0,0,0)), n(Vector3f(0,0,0)),depth(1000.0f){};
 };
 
 struct SPlane
@@ -296,18 +296,18 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 	Vector3f bWrld = a->m_rot * Vector3f(0,a->m_size[1]/2,0); 
 	Vector3f cWrld = a->m_rot * Vector3f(0,0,a->m_size[2]/2); 
 
-	Vector3f bVs[6];	
+	Vector3f bVs[8];	
 	getBoxVerticies(a, bVs);
 	int i,j;
-	for (i=j=0; i<6; ++i)
+	for (i=j=0; i<8; ++i)
 	{	
 		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
-		for (; j<6; ++j)
+		for (; j<8; ++j)
 		{
-			if (bVs[j][0]*s[0] + bVs[j][1]*s[1]+bVs[j][2]*s[2] > -tmp_d)
+			if (bVs[j][0]*s[0] + bVs[j][1]*s[1]+bVs[j][2]*s[2] < -tmp_d)
 				break;
 		}
-		if (j == 6)
+		if (j == 8)
 		{
 			out_plane.d = tmp_d;
 			break;
@@ -318,10 +318,10 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
 {
 	float res = FLT_MAX;
-	Vector3f bVerts[6];	
+	Vector3f bVerts[8];	
 	getBoxVerticies(a, bVerts);
 	
-	for (int i=0; i<6; ++i)
+	for (int i=0; i<8; ++i)
 	{	
 		res = std::min(res, in_s.dot(bVerts[i]));
 	}
@@ -401,20 +401,25 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
 {
-	const float TOLERANCE = 10e-3f;
+	const float TOLERANCE = 1e-2f;
 	out_size = 0;		
-	Vector3f bVs[6];	
+	Vector3f bVs[8];	
 	getBoxVerticies(b, bVs);
 	
 	size_t indx = 0;	
-	for (int i=0; i<6; ++i)
+	for (int i=0; i<8; ++i)
 	{	
 		float d = p.n[0]*bVs[i][0] + p.n[1]*bVs[i][1] + p.n[2]*bVs[i][2] + p.d;
+		//qDebug() << "test vertex" << bVs[i];
 		if (fabs(d) <= TOLERANCE)
+		{
 			out_arr[indx++] = bVs[i];
+			//qDebug() << "pass";
+		}
+		//else qDebug() << "NOTpass";
 	}
 	out_size = indx;
-	qDebug() << indx;
+	//qDebug() << indx;
 	assert(indx >=0 && indx <= 4);
 }
 
@@ -426,12 +431,14 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	Vector3f separationAxe;
 	float penDepth;
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
+	separationAxe.normalized();
+	qDebug() << penDepth;
 	if (penDepth < 0)
 	{
 		SPlane p;
-		boxGetSupportPlane(a, -separationAxe, p);
+		boxGetSupportPlane(a, separationAxe, p);
 		DebugManager()->DrawPlane(p.n, p.d);	 
-
+		qDebug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, vs1, cnt1);
@@ -443,12 +450,24 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		assert(cnt2 >= 0 && cnt2 <=4);
 
 		qDebug() << "BOX OVERLAP" << cnt1 << cnt2;
-		
+	
+		c[0].depth = penDepth;
+		out_size = 1;
+		if (cnt1 == 1)
+		{
+			c[0].pt = vs1[0];
+			c[0].n = p.n;	
+		}
+		else if (cnt2 == 1)
+		{
+			c[0].pt = vs2[0];
+			c[0].n = -p.n;	
+		}
 	}
 	else
 	{
 		SPlane p;
-		boxGetSupportPlane(a, -separationAxe, p);
+		boxGetSupportPlane(a, separationAxe, p);
 		DebugManager()->DrawPlane(p.n, p.d);	 
 	}
 }

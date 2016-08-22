@@ -82,7 +82,8 @@ float Core::FindCollisions(bool applyImpulses)
 
 					if (!applyImpulses)
 						continue;
-
+					
+					assert(c[0].n.norm() > 0.1);
 					Vector3f rAP = c[0].pt - a->m_pos;
 					Vector3f rBP = c[0].pt - b->m_pos;
 
@@ -91,15 +92,17 @@ float Core::FindCollisions(bool applyImpulses)
 					
 					float e = 0.8f;//restitution coef
 					Vector3f v_contact = (a->m_v + (a->m_w).cross(rAP) - (b->m_v + (b->m_w).cross(rBP))); 
-					if (v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
+					if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
 					{
+						qDebug() << "vCon" << v_contact << c[0].n;	
 						a->m_active = false;
 						b->m_active = false;
 						a->m_v = b->m_v = Vector3f(0,0,0);	
 						continue;
 					}
-						a->m_active = true;
-						b->m_active = true;	
+
+					a->m_active = true;
+					b->m_active = true;	
 					float p = (1 + e)*v_contact.dot(c[0].n) / 
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
@@ -131,7 +134,7 @@ void Core::Step(float reqStep)
 		float sStep = 0.0f;
 		float fStep = reqStep;
 		float mid = reqStep;
-//		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
+		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
 		if (d < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
@@ -147,7 +150,7 @@ void Core::Step(float reqStep)
 			//	qDebug() << "POST";
 			//	DumpAll();
 
-			//	qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+				qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
 				
 				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
 					break;
@@ -160,7 +163,7 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-		//	qDebug() << "step time:" << mid;
+		qDebug() << "step time:" << mid;
 		StepAll(mid);
 		FindCollisions(true);
 

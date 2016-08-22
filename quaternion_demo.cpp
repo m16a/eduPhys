@@ -145,12 +145,6 @@ void RenderingWidget::drawScene()
   float dt = (currTime - m_lastTime);
 	m_realTime = currTime - m_realTimeStart;
 
-	DebugManager()->Draw(m_isSolverStopped);	
-/*
-	qDebug() << " ";	
-	qDebug() << currTime << m_lastTime;
-	qDebug() << m_realTime << m_physTime << dt;
-*/
 	float reqStep = 0.001f;
   if (dt > reqStep)
 	{
@@ -166,6 +160,7 @@ void RenderingWidget::drawScene()
   }
 
   m_core.get()->Draw();
+	DebugManager()->Draw(m_isSolverStopped);	
 	
 	glDisable(GL_LIGHTING);
   update();
@@ -708,7 +703,7 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s3 = new Box();
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
-  s3->m_minv = 0.1f;
+  s3->m_minv = 1.f;
   s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
@@ -718,7 +713,7 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s4 = new Box();
   s4->m_pos = Vector3f(1.f, 0.f, 0.0f);
   s4->m_id = 4;
-  s4->m_minv = 0.1f;
+  s4->m_minv = 1.f;
 	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
 	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
  	//s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
