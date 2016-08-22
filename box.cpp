@@ -21,7 +21,7 @@ Box::Box()
 	m_Jinv = J.inverse();
 
 //infinite inertia tensor
-#if 1
+#if 0
 	m_Jinv <<	0, 0, 0,
 						0, 0, 0,
 						0, 0, 0;
