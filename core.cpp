@@ -137,7 +137,7 @@ void Core::Step(float reqStep)
 		float sStep = 0.0f;
 		float fStep = reqStep;
 		float mid = reqStep;
-		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
+		//qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
 		if (d < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
@@ -153,7 +153,7 @@ void Core::Step(float reqStep)
 			//	qDebug() << "POST";
 			//	DumpAll();
 
-				qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+				//qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
 				
 				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
 					break;
@@ -166,7 +166,7 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-		qDebug() << "step time:" << mid;
+		//qDebug() << "step time:" << mid;
 		StepAll(mid);
 		FindCollisions(true);
 

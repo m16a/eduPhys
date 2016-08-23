@@ -432,13 +432,13 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	float penDepth;
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	separationAxe.normalized();
-	qDebug() << penDepth;
+	//qDebug() << penDepth;
 	if (penDepth < 0)
 	{
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		DebugManager()->DrawPlane(p.n, p.d);	 
-		qDebug() << "spPlane " << p.n << p.d;
+		//qDebug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, vs1, cnt1);
@@ -463,6 +463,27 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			c[0].pt = vs2[0];
 			c[0].n = -p.n;	
 		}
+		else if (cnt2 == 2 && cnt1 == 2)//edge-edge
+		{
+			qWarning() << "Implement edge-edge intersection";
+			assert(0);
+		}
+		else if (cnt2 == 2 && cnt1 == 4 || cnt1 == 2 && cnt2 == 4)//edge-face
+		{
+			qWarning() << "Implement edge-face intersection";
+			assert(0);
+		}
+		else if (cnt2 == 4 && cnt1 == 4)//face-face
+		{
+			qWarning() << "Implement face-face intersection";
+			assert(0);
+		}
+		else
+		{
+			qCritical() << "Wrong intersection verticies count:" << cnt1 << cnt2;
+			assert(0);
+		}
+
 	}
 	else
 	{
