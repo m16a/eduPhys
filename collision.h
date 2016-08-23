@@ -423,6 +423,40 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[
 	assert(indx >=0 && indx <= 4);
 }
 
+void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)
+{
+	Vector3f d1 = a2 - a1;
+	Vector3f d2 = b2 - b1;
+	
+	if (fabs(d1.cross(d2).norm()) > 1e-2)//segment are not colinear
+	{
+		//lets try lines intersection first
+		out_cnt = 1;	
+		float a = d1.dot(d1);
+		float b = d1.dot(d2);
+		Vector3f r = a1 - b1;
+		float c = d1.dot(r);
+		float e = d2.dot(d2);
+		float f = d2.dot(r);
+		float d = a*c - b*b;
+		float s = (b*f - c*e)/d; 	
+		float t = (a*f - c*b)/d; 	
+		if (s<0 || s >1 || t<0 || t>1)
+			qWarning() << "segment-segment intersection: point lies out of segment, use more sofisticated method";
+		Vector3f p1 = (a1 + s*d1);
+		Vector3f p2 = (b1 + t*d2);
+		out_normal = p2 - p1;
+		out_normal.normalize(); 
+		out_vrts[0] = (p1 + p2) / 2.0f;
+	}
+	else //colinear case
+	{
+		out_cnt = 2;	
+		qWarning() << "Implement intersection of colinear segements";
+		assert(0);
+	}
+}
+
 void collide(Box* a, Box* b, Contact* c, int& out_size)
 {
 	assert(out_size > 0);
@@ -456,17 +490,24 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		if (cnt1 == 1)
 		{
 			c[0].pt = vs1[0];
-			c[0].n = p.n;	
+			c[0].n = p.n;//TODO:check statement	
 		}
 		else if (cnt2 == 1)
 		{
 			c[0].pt = vs2[0];
-			c[0].n = -p.n;	
+			c[0].n = p.n;//TODO:check statement	
 		}
 		else if (cnt2 == 2 && cnt1 == 2)//edge-edge
 		{
-			qWarning() << "Implement edge-edge intersection";
-			assert(0);
+			Vector3f tmp[2], norm;
+			int cnt;
+			intersectSegmentSegment(vs1[0], vs1[1], vs2[0], vs2[1], tmp, cnt, norm);
+			assert(cnt==1 || cnt==2);
+			out_size = cnt;
+			c[0].n = norm; 
+			c[0].pt = tmp[0];	
+			if (cnt == 2)
+				c[1].pt = tmp[1];	
 		}
 		else if (cnt2 == 2 && cnt1 == 4 || cnt1 == 2 && cnt2 == 4)//edge-face
 		{
