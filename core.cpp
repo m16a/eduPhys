@@ -115,6 +115,9 @@ float Core::FindCollisions(bool applyImpulses)
 					
 					a->AddImpulse(-p * c[0].n, c[0].pt);
 					b->AddImpulse(p * c[0].n, c[0].pt);
+						
+					DebugManager()->DrawVector(c[0].pt, c[0].n, p);	 
+					DebugManager()->DrawVector(c[0].pt, -c[0].n, p);	 
 				}			
 			}
 		}

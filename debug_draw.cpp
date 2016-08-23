@@ -42,6 +42,11 @@ void SDebugPlane::Draw()
 	glDisable(GL_BLEND);
 }
 
+void SDebugVector::Draw()
+{
+  gpu.drawVector(m_pos, m_len*m_dir, Color(1,0,0,1));
+}
+
 void SDebugMngr::DrawPlane(const Vector3f& n, float d)
 {
 	SDebugPlane* p = new SDebugPlane();
@@ -49,6 +54,15 @@ void SDebugMngr::DrawPlane(const Vector3f& n, float d)
 	p->m_d = d;
 
 	m_list.push_front(p);
+}
+
+void SDebugMngr::DrawVector(const Vector3f& pos, const Vector3f& dir, const float len)
+{
+	SDebugVector* v = new SDebugVector();
+	v->m_pos = pos;
+	v->m_dir = dir;
+	v->m_len = len;
+	m_list.push_front(v);
 }
 
 SDebugMngr* DebugManager()

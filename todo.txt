@@ -6,7 +6,6 @@ Textures
 Contact solver
 Linux rendering bug, scene disappearing. Seems like linux toucpad issue. No problems with mouse
 
-Debug visualize for impulses
 Make smooth key scene rotation
 
 Review old camera code

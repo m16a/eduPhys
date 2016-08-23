@@ -22,10 +22,20 @@ struct SDebugPlane : public IDebugItem
 };
 
 
+struct SDebugVector : public IDebugItem 
+{
+	Vector3f m_pos;
+	Vector3f m_dir;
+	float m_len;
+
+	virtual void Draw();
+};
+
 struct SDebugMngr
 {
 //	void AddDebugItem(const IDebugItem* pDI);
 	void DrawPlane(const Vector3f& n, const float d);
+	void DrawVector(const Vector3f& pos, const Vector3f& dir, const float len);
 	std::list<IDebugItem*> m_list;
 	void Draw(bool isPause = false);
 };
