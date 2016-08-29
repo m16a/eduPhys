@@ -158,8 +158,8 @@ void RenderingWidget::drawScene()
     }
 		m_physTime+=dt;
   }
-
   m_core.get()->Draw();
+	m_objMover.Update();	
 	DebugManager()->Draw(m_isSolverStopped);	
 	
 	glDisable(GL_LIGHTING);
@@ -355,9 +355,13 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 			m_pSelectedEnt->m_active = true; 
 			m_pSelectedEnt->m_forces.clear();
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
+			m_objMover.OnSelect(m_pSelectedEnt);
 		}
-		else
+		else	
+		{
+			m_objMover.OnDeselect(0);
 			m_pSelectedEnt = 0; 
+		}
 	}
 }
 
