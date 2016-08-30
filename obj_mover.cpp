@@ -4,6 +4,7 @@
 #include "gpuhelper.h"
 #include "geometry.h"
 #include "my_utils.h"
+#include "poly34.h"
 
 ObjMover::ObjMover()
 {
@@ -50,6 +51,12 @@ void ObjMover::Update()
   glEnable(GL_LIGHTING);
 }
 
+STorus::STorus()
+{
+	m_rMajor = 0.2;
+	m_rMinor = 0.003;
+}
+
 void STorus::Draw()
 {
 	Affine3f t = Translation3f(m_pos) * m_rot;
@@ -67,9 +74,9 @@ void STorus::Draw()
 				double s = (i + k) % numc + 0.5;
 				double t = j % numt;
 
-				double x = (0.2 + 0.003 * cos(s * TWOPI / numc)) * cos(t * TWOPI / numt);
-				double y = (0.2 + 0.003 * cos(s * TWOPI / numc)) * sin(t * TWOPI / numt);
-				double z = 0.003 * sin(s * TWOPI / numc);
+				double x = (m_rMajor + m_rMinor * cos(s * TWOPI / numc)) * cos(t * TWOPI / numt);
+				double y = (m_rMajor + m_rMinor * cos(s * TWOPI / numc)) * sin(t * TWOPI / numt);
+				double z = m_rMinor * sin(s * TWOPI / numc);
 
 				glVertex3d(2 * x, 2 * y, 2 * z);
 			}
@@ -88,3 +95,49 @@ struct STorus
 	float m_rOut;
 };
 */
+int STorus::line_intersect(const Vector3f& org, const Vector3f& dir, 
+			  int * num_intersections,
+			  float * intersections,
+			  float * shade) const
+//              
+// Intersect ray
+//          [ax]     [bx]              
+//	    [ay] + t [by]
+//	    [az]     [bz]
+// with torus at origin, major radius R, minor radius r
+//
+{
+
+  // This struct is syntactic sugar so that a.b,
+  // (the dot product) looks just right (:-)
+  struct { float a,b; } a;
+  a.b = org[0]*dir[0] + org[1]*dir[1] + org[2]*dir[2];
+  a.a = org.dot(org);
+
+  // Set up quartic in t:
+  //
+  //  4     3     2
+  // t + A t + B t + C t + D = 0
+  //
+  float R2 = m_rMajor*m_rMajor;
+  float K = a.a - m_rMinor*m_rMinor - R2;
+  float A = 4*a.b;
+  float B = 2*(2*a.b*a.b + K + 2*R2*dir[2]*dir[2]);
+  float C = 4*(K*a.b + 2*R2*org[2]*dir[2]);
+  float D = K*K + 4*R2*(org[2]*org[2] - m_rMinor*m_rMinor);
+
+  // Solve quartic...
+  double roots[4];
+  int nroots = SolveP4(roots,A,B,C,D);
+
+  *num_intersections = 0;
+  while(nroots--)
+    {
+      float t = roots[nroots];
+      float x = org[0] + t*dir[0];
+      float y = org[1] + t*dir[1];
+      float l = m_rMajor*(M_PI/2 - atan2(y,x));
+      if (/*l <= vlength &&*/ l >= 0)//TODO: clarify what is vlength
+        intersections[(*num_intersections)++] = t;
+    }
+}

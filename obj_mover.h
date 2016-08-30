@@ -11,12 +11,15 @@ struct IPhysEnt;
 
 struct STorus 
 {
+	STorus();
 	void Draw();
 	
+	int line_intersect(const Vector3f& org, const Vector3f& dir, int * num_intersections,
+			  float * intersections, float * shade) const;
 	Vector3f m_pos;
 	Quaternionf m_rot;
-	float m_rIn;
-	float m_rOut;
+	float m_rMajor;
+	float m_rMinor;
 	Vector3f m_col;
 };
 
