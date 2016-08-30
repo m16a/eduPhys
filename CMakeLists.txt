@@ -12,7 +12,7 @@ if(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND)
 
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(quaternion_demo_SRCS  gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp geometry.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp)
+  set(quaternion_demo_SRCS  gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp geometry.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp)
 
   qt4_automoc(${quaternion_demo_SRCS})
 

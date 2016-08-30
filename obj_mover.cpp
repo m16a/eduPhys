@@ -22,15 +22,6 @@ void ObjMover::OnMouseMove(const Vector3f& in)
 void ObjMover::OnSelect(IPhysEnt* e)
 {
 	m_pSelectedEnt = e;
-	m_rotHlpr.m_helpers[0].m_pos = e->m_pos;
-	m_rotHlpr.m_helpers[0].m_rot = e->m_rot;
-	m_rotHlpr.m_helpers[0].m_col = Vector3f(1.0f,0.0f,0.0f);
-	m_rotHlpr.m_helpers[1].m_pos = e->m_pos;
-	m_rotHlpr.m_helpers[1].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * e->m_rot;
-	m_rotHlpr.m_helpers[1].m_col = Vector3f(0/255.0f,255/255.0f,0/255.0f);
-	m_rotHlpr.m_helpers[2].m_pos = e->m_pos;
-	m_rotHlpr.m_helpers[2].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * Quaternionf(0.7071067811865476, 0.7071067811865476, 0, 0) * e->m_rot;
-	m_rotHlpr.m_helpers[2].m_col = Vector3f(0/255.0f,0/255.0f,255/255.0f);
 }
 
 void ObjMover::OnDeselect(IPhysEnt* e)
@@ -42,6 +33,15 @@ void ObjMover::Update()
 {
 	if (!m_pSelectedEnt)
 		return;
+	m_rotHlpr.m_helpers[0].m_pos = m_pSelectedEnt->m_pos;
+	m_rotHlpr.m_helpers[0].m_rot = m_pSelectedEnt->m_rot;
+	m_rotHlpr.m_helpers[0].m_col = Vector3f(1.0f,0.0f,0.0f);
+	m_rotHlpr.m_helpers[1].m_pos = m_pSelectedEnt->m_pos;
+	m_rotHlpr.m_helpers[1].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * m_pSelectedEnt->m_rot;
+	m_rotHlpr.m_helpers[1].m_col = Vector3f(0/255.0f,255/255.0f,0/255.0f);
+	m_rotHlpr.m_helpers[2].m_pos = m_pSelectedEnt->m_pos;
+	m_rotHlpr.m_helpers[2].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * Quaternionf(0.7071067811865476, 0.7071067811865476, 0, 0) * m_pSelectedEnt->m_rot;
+	m_rotHlpr.m_helpers[2].m_col = Vector3f(0/255.0f,0/255.0f,255/255.0f);
 		
 	glDisable(GL_LIGHTING);
 	m_rotHlpr.m_helpers[0].Draw();
