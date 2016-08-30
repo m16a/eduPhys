@@ -31,6 +31,7 @@ struct SRotationHelper
 class ObjMover
 {
 public:
+	ObjMover();
 	void OnMouseMove(const Vector3f& in);
 	
 	void OnSelect(IPhysEnt* e);	

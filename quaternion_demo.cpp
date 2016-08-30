@@ -372,7 +372,7 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 		m_lastMousePosTime = 0.0f;
 		if (m_pSelectedEnt)
 		{
-			m_pSelectedEnt->m_forces.push_back(g_Gravity);
+			//m_pSelectedEnt->m_forces.push_back(g_Gravity);//TODO:restore all forces
 			m_pSelectedEnt = 0;
 		}	
 }
@@ -708,7 +708,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
   s3->m_minv = 0.1f;
-  s3->m_v = Vector3f(1.0f, 0.f, 0.f);
+//  s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
@@ -722,7 +722,7 @@ QuaternionDemo::QuaternionDemo()
 	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
  	//s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
-	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
+	//mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 
   setCentralWidget(mRenderingWidget);
 /*

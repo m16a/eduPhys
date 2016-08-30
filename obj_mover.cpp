@@ -3,6 +3,12 @@
 #include <QtDebug>
 #include "gpuhelper.h"
 #include "geometry.h"
+#include "my_utils.h"
+
+ObjMover::ObjMover()
+{
+	m_pSelectedEnt = 0;
+}
 
 void ObjMover::OnMouseMove(const Vector3f& in)
 {
@@ -18,7 +24,7 @@ void ObjMover::OnSelect(IPhysEnt* e)
 	m_pSelectedEnt = e;
 	m_rotHlpr.m_helpers[0].m_pos = e->m_pos;
 	m_rotHlpr.m_helpers[0].m_rot = e->m_rot;
-	m_rotHlpr.m_helpers[0].m_col = Vector3f(255/255.0f,0/255.0f,0/255.0f);
+	m_rotHlpr.m_helpers[0].m_col = Vector3f(1.0f,0.0f,0.0f);
 	m_rotHlpr.m_helpers[1].m_pos = e->m_pos;
 	m_rotHlpr.m_helpers[1].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * e->m_rot;
 	m_rotHlpr.m_helpers[1].m_col = Vector3f(0/255.0f,255/255.0f,0/255.0f);
@@ -36,10 +42,12 @@ void ObjMover::Update()
 {
 	if (!m_pSelectedEnt)
 		return;
-	
+		
+	glDisable(GL_LIGHTING);
 	m_rotHlpr.m_helpers[0].Draw();
 	m_rotHlpr.m_helpers[1].Draw();
 	m_rotHlpr.m_helpers[2].Draw();
+  glEnable(GL_LIGHTING);
 }
 
 void STorus::Draw()
@@ -48,8 +56,6 @@ void STorus::Draw()
 	gpu.pushMatrix(GL_MODELVIEW);
 	gpu.multMatrix(t.matrix(),GL_MODELVIEW);
 	
-//	glColorMaterial(GL_FRONT, GL_DIFFUSE);
-//	glEnable(GL_COLOR_MATERIAL);	
 	int numc = 100, numt = 100;
 
 	double TWOPI = 2 * M_PI;
