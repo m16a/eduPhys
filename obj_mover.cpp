@@ -5,6 +5,9 @@
 #include "geometry.h"
 #include "my_utils.h"
 #include "poly34.h"
+#include "rwi.h"
+#include "float.h"
+#include "debug_draw.h"
 
 ObjMover::ObjMover()
 {
@@ -51,6 +54,42 @@ void ObjMover::Update()
   glEnable(GL_LIGHTING);
 }
 
+bool ObjMover::RWI(const SRay& r)
+{
+	if (!m_pSelectedEnt)
+		return false;
+
+	float minDist = FLT_MAX;
+	int activeHelper = -1;	
+	for (int i=0; i<1; ++i)
+	{
+		STorus tor = m_rotHlpr.m_helpers[i];
+		Vector3f org = r.m_org - tor.m_pos;
+		Vector3f dir = tor.m_rot.conjugate() * r.m_dir;
+		//gpu.drawVector(org, 1000*dir, Color(1,0,0,1));
+		DebugManager()->DrawVector(org, dir, 2);	 
+		dir.normalize();
+		int n;
+		float pts[4];		
+		tor.line_intersect(org, dir, &n, pts);
+		qDebug() << "torLine hit cnt" << n << org << dir << r.m_dir;	
+		for (int j=0; j<n; ++j)
+		{
+			if (pts[j] < minDist)
+			{
+				minDist = pts[j];
+				activeHelper = i;
+			}		
+		}	
+	}
+	if (activeHelper > -1)
+	{
+		qDebug() << "active helper" << activeHelper;
+		return true;
+	}
+	return false;
+}
+
 STorus::STorus()
 {
 	m_rMajor = 0.2;
@@ -85,20 +124,10 @@ void STorus::Draw()
 	}
 	gpu.popMatrix(GL_MODELVIEW);
 }
-/*
-struct STorus 
-{
-	
-	Vector3f m_pos;
-	Quaternionf m_rot;
-	float m_rIn;
-	float m_rOut;
-};
-*/
-int STorus::line_intersect(const Vector3f& org, const Vector3f& dir, 
+
+void STorus::line_intersect(const Vector3f& org, const Vector3f& dir, 
 			  int * num_intersections,
-			  float * intersections,
-			  float * shade) const
+			  float * intersections) const
 //              
 // Intersect ray
 //          [ax]     [bx]              
@@ -128,8 +157,11 @@ int STorus::line_intersect(const Vector3f& org, const Vector3f& dir,
 
   // Solve quartic...
   double roots[4];
+	//qDebug() << "TEST SolveP4 2 ==" << SolveP4(roots, 1,1,1,0);
+	//qDebug() << "TEST SolveP4 4 ==" << SolveP4(roots, 2,-41,-42,360);
   int nroots = SolveP4(roots,A,B,C,D);
-
+	qDebug() << A << B << C << D;	
+	
   *num_intersections = 0;
   while(nroots--)
     {

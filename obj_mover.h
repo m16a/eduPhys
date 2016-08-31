@@ -7,15 +7,15 @@ using Eigen::Vector3f;
 using Eigen::Quaternionf;
 
 struct IPhysEnt; 
-
+struct SRay;
 
 struct STorus 
 {
 	STorus();
 	void Draw();
 	
-	int line_intersect(const Vector3f& org, const Vector3f& dir, int * num_intersections,
-			  float * intersections, float * shade) const;
+	void line_intersect(const Vector3f& org, const Vector3f& dir, int * num_intersections,
+			  float * intersections) const;
 	Vector3f m_pos;
 	Quaternionf m_rot;
 	float m_rMajor;
@@ -36,10 +36,11 @@ class ObjMover
 public:
 	ObjMover();
 	void OnMouseMove(const Vector3f& in);
-	
+		
 	void OnSelect(IPhysEnt* e);	
 	void OnDeselect(IPhysEnt* e);	
 	
+	bool RWI(const SRay& r);//returns true if hit hellper
 	void Update();
 	Vector3f m_lastIn;
 	IPhysEnt* m_pSelectedEnt;

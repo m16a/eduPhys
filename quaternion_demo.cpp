@@ -347,20 +347,23 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 		SRayHit res;
 		
 		//qDebug() << "direction:" << r.m_dir;
-	
-		if (m_core->RWI(r, res))
+		bool isHelperHit = m_objMover.RWI(r);
+		if (!isHelperHit)
 		{
-			m_pSelectedEnt = res.m_pEnt;	
-//			m_pSelectedEnt->m_v= Vector3f(0,0,0);
-			m_pSelectedEnt->m_active = true; 
-			m_pSelectedEnt->m_forces.clear();
-			qDebug() << "Picked object:" << res.m_pEnt->m_id;
-			m_objMover.OnSelect(m_pSelectedEnt);
-		}
-		else	
-		{
-			m_objMover.OnDeselect(0);
-			m_pSelectedEnt = 0; 
+			if (m_core->RWI(r, res))
+			{
+				m_pSelectedEnt = res.m_pEnt;	
+	//			m_pSelectedEnt->m_v= Vector3f(0,0,0);
+				m_pSelectedEnt->m_active = true; 
+				m_pSelectedEnt->m_forces.clear();
+				qDebug() << "Picked object:" << res.m_pEnt->m_id;
+				m_objMover.OnSelect(m_pSelectedEnt);
+			}
+			else	
+			{
+				m_objMover.OnDeselect(0);
+				m_pSelectedEnt = 0; 
+			}
 		}
 	}
 }

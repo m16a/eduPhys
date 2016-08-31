@@ -67,9 +67,13 @@ void GpuHelper::drawVector(const Vector3f& position, const Vector3f& vec, const 
     float angle = 180.f/M_PI * acos(tmp.z());
     if (angle>1e-3)
         glRotatef(angle, ax.x(), ax.y(), ax.z());
-    gluCylinder(cylindre, length/aspect, length/aspect, 0.8*length, 10, 10);
+//    gluCylinder(cylindre, length/aspect, length/aspect, 0.8*length, 10, 10);
+//    glTranslatef(0.0,0.0,0.8*length);
+//    gluCylinder(cylindre, 2.0*length/aspect, 0.0, 0.2*length, 10, 10);
+
+    gluCylinder(cylindre, 0.01, 0.01, 0.8*length, 10, 10);
     glTranslatef(0.0,0.0,0.8*length);
-    gluCylinder(cylindre, 2.0*length/aspect, 0.0, 0.2*length, 10, 10);
+    gluCylinder(cylindre, 0.02, 0.0, 0.2*length, 10, 10);
 
     popMatrix(GL_MODELVIEW);
 }
