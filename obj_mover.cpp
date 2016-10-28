@@ -49,8 +49,8 @@ void ObjMover::Update()
 		
 	glDisable(GL_LIGHTING);
 	m_rotHlpr.m_helpers[0].Draw();
-	m_rotHlpr.m_helpers[1].Draw();
-	m_rotHlpr.m_helpers[2].Draw();
+//	m_rotHlpr.m_helpers[1].Draw();
+//	m_rotHlpr.m_helpers[2].Draw();
   glEnable(GL_LIGHTING);
 }
 
@@ -64,15 +64,19 @@ bool ObjMover::RWI(const SRay& r)
 	for (int i=0; i<1; ++i)
 	{
 		STorus tor = m_rotHlpr.m_helpers[i];
-		Vector3f org = r.m_org - tor.m_pos;
-		Vector3f dir = tor.m_rot.conjugate() * r.m_dir;
-		//gpu.drawVector(org, 1000*dir, Color(1,0,0,1));
+//		Vector3f org = r.m_org - tor.m_pos;
+//		Vector3f dir = tor.m_rot.conjugate() * r.m_dir;
+
+		//TODO: delete test ray
+		Vector3f org = Vector3f(0,0.5,0);
+		Vector3f dir = tor.m_rot.conjugate() * Vector3f(-5,0,0);
 		DebugManager()->DrawVector(org, dir, 2);	 
 		dir.normalize();
 		int n;
 		float pts[4];		
 		tor.line_intersect(org, dir, &n, pts);
-		qDebug() << "torLine hit cnt" << n << org << dir << r.m_dir;	
+
+		qDebug() << "torLine hit cnt:" << n << "rayOrg:" <<org << "rayDir:"<< dir;	
 		for (int j=0; j<n; ++j)
 		{
 			if (pts[j] < minDist)
@@ -81,7 +85,12 @@ bool ObjMover::RWI(const SRay& r)
 				activeHelper = i;
 			}		
 		}	
+		if (minDist < FLT_MAX)
+		{
+			qDebug() << "res point:" << minDist;
+		}
 	}
+
 	if (activeHelper > -1)
 	{
 		qDebug() << "active helper" << activeHelper;
@@ -92,8 +101,8 @@ bool ObjMover::RWI(const SRay& r)
 
 STorus::STorus()
 {
-	m_rMajor = 0.2;
-	m_rMinor = 0.003;
+	m_rMajor = 1;//0.2;
+	m_rMinor = 0.05;//0.003;
 }
 
 void STorus::Draw()
@@ -117,7 +126,7 @@ void STorus::Draw()
 				double y = (m_rMajor + m_rMinor * cos(s * TWOPI / numc)) * sin(t * TWOPI / numt);
 				double z = m_rMinor * sin(s * TWOPI / numc);
 
-				glVertex3d(2 * x, 2 * y, 2 * z);
+				glVertex3d(x, y, z);
 			}
 		}
 		glEnd();
@@ -128,40 +137,33 @@ void STorus::Draw()
 void STorus::line_intersect(const Vector3f& org, const Vector3f& dir, 
 			  int * num_intersections,
 			  float * intersections) const
-//              
-// Intersect ray
-//          [ax]     [bx]              
-//	    [ay] + t [by]
-//	    [az]     [bz]
-// with torus at origin, major radius R, minor radius r
-//
 {
+	assert(m_rMajor == 1.0f);//don't forget to normalize torus
+	assert(dir.dot(dir) - 1.0f < 0.001);
 
-  // This struct is syntactic sugar so that a.b,
-  // (the dot product) looks just right (:-)
-  struct { float a,b; } a;
-  a.b = org[0]*dir[0] + org[1]*dir[1] + org[2]*dir[2];
-  a.a = org.dot(org);
+	//transform ray to torus CS
+	Vector3f orgT = org - m_pos;
+	Vector3f dirT = m_rot.conjugate() * dir;
+	qDebug() << "Tor r:" <<m_rMinor;	
+	qDebug() << "rayInTor org:" <<orgT << "dir:"<< dirT;	
 
-  // Set up quartic in t:
-  //
-  //  4     3     2
-  // t + A t + B t + C t + D = 0
-  //
-  float R2 = m_rMajor*m_rMajor;
-  float K = a.a - m_rMinor*m_rMinor - R2;
-  float A = 4*a.b;
-  float B = 2*(2*a.b*a.b + K + 2*R2*dir[2]*dir[2]);
-  float C = 4*(K*a.b + 2*R2*org[2]*dir[2]);
-  float D = K*K + 4*R2*(org[2]*org[2] - m_rMinor*m_rMinor);
+	float orgT2 = orgT.dot(orgT);
+	float r2 =  m_rMinor * m_rMinor;
+	float beta = dirT.dot(orgT);
+	float gamma = orgT2 + 1.0f -r2; 
+
+  float B = 4*beta;
+  float C = 4*beta*beta + 2*gamma*gamma - 4*(dirT[0]*dirT[0]+dirT[1]*dirT[1]);
+  float D = 4*beta*gamma - 8*(dirT[0]*orgT[0]+dirT[1]*orgT[1]);
+  float E = gamma*gamma - 4*(orgT[0]*orgT[0]+orgT[1]*orgT[1]);
 
   // Solve quartic...
   double roots[4];
 	//qDebug() << "TEST SolveP4 2 ==" << SolveP4(roots, 1,1,1,0);
 	//qDebug() << "TEST SolveP4 4 ==" << SolveP4(roots, 2,-41,-42,360);
-  int nroots = SolveP4(roots,A,B,C,D);
-	qDebug() << A << B << C << D;	
-	
+  int nroots = SolveP4(roots,B,C,D,E);
+	qDebug() << "coefs: 1.0 " << B << C << D << E;	
+	qDebug() << "nroots:" << nroots;	
   *num_intersections = 0;
   while(nroots--)
     {
