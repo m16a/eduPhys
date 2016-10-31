@@ -11,6 +11,7 @@ using Eigen::Matrix3f;
 struct IDebugItem
 {
 	virtual void Draw() = 0;
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 };
 
 struct SDebugPlane : public IDebugItem 
@@ -19,6 +20,7 @@ struct SDebugPlane : public IDebugItem
 	float m_d;
 
 	virtual void Draw();
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 };
 
 
@@ -29,6 +31,7 @@ struct SDebugVector : public IDebugItem
 	float m_len;
 
 	virtual void Draw();
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) {assert(0);};
 };
 
 struct SDebugMngr

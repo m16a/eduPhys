@@ -35,7 +35,7 @@ class ObjMover
 {
 public:
 	ObjMover();
-	void OnMouseMove(const Vector3f& in);
+	bool OnMouseMove(const Vector3f& in, const SRay& r);
 		
 	void OnSelect(IPhysEnt* e);	
 	void OnDeselect(IPhysEnt* e);	
@@ -45,6 +45,7 @@ public:
 	Vector3f m_lastIn;
 	IPhysEnt* m_pSelectedEnt;
 	SRotationHelper m_rotHlpr;
+	int m_activeHelperIndx;
 };
 
 #endif

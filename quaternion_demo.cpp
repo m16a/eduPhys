@@ -308,6 +308,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 	m_lastMousePosTime = getCurrTime();	
 	if (e->modifiers() & Qt::ControlModifier)
 	{
+		assert(0);//TODO:review this block
 		bool fly = (mNavMode==NavFly) || (e->modifiers()&Qt::ControlModifier);
 		switch(e->button())
 		{
@@ -385,6 +386,8 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
     // tracking
     if(mCurrentTrackingMode != TM_NO_TRACK)
     {
+				assert(0);//TODO:review this block
+
         float dx =   float(e->x() - m_lastMousePos.x()) / float(mCamera.vpWidth());
         float dy = - float(e->y() - m_lastMousePos.y()) / float(mCamera.vpHeight());
 
@@ -437,8 +440,13 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
         float dx =   float(e->x() - m_lastMousePos.x()); 
         float dy = - float(e->y() - m_lastMousePos.y());
 				
-				m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0));
-				if (m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
+				SRay r;
+				r.m_org = mCamera.position();
+				r.m_dist = 1000.0f;
+				r.m_dir = mCamera.directionFromScreen(Vector2i(e->pos().x(), e->pos().y()));
+				
+				bool wasRotation = m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0), r);
+				if (!wasRotation && m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
 				{
 					Vector4f pickedWrld(m_pSelectedEnt->m_pos[0],m_pSelectedEnt->m_pos[1],m_pSelectedEnt->m_pos[2],1);
 					
@@ -708,7 +716,7 @@ QuaternionDemo::QuaternionDemo()
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 
   IPhysEnt* s3 = new Box();
-  s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
+  s3->m_pos = Vector3f(1.f, 0.f, 0.0f);
   s3->m_id = 3;
   s3->m_minv = 0.1f;
 //  s3->m_v = Vector3f(1.0f, 0.f, 0.f);

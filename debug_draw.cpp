@@ -2,6 +2,7 @@
 #include <QtDebug>
 #include "my_utils.h"
 #include "gpuhelper.h"
+#include "rwi.h"
 
 void SDebugPlane::Draw()
 {
@@ -40,6 +41,24 @@ void SDebugPlane::Draw()
 	glVertex3f(P4[0], P4[1], P4[2]);
 	glEnd();
 	glDisable(GL_BLEND);
+}
+
+int SDebugPlane::IntersectRay(const SRay& r, SRayHit& out_hit)
+{
+	int res = 0;
+	Vector3f planesPoint(0,0,0);
+	planesPoint[2] = - m_d / m_n[2];
+
+	float t = (planesPoint - r.m_org).dot(m_n) / m_n.dot(r.m_dir);
+
+	if (t >0)
+	{
+		out_hit.m_pt = r.m_org + r.m_dir * t;	
+	}
+	else
+		assert(0);//don't count back collision for now
+
+	return res;
 }
 
 void SDebugVector::Draw()
