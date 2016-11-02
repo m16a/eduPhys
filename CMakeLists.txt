@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 find_package(Qt4)
 find_package(OpenGL)
-find_package(GLUT)
 
-if(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND)
+if(QT4_FOUND AND OPENGL_FOUND)
 
   set(QT_USE_QTOPENGL TRUE)
   include(${QT_USE_FILE})
@@ -20,7 +19,7 @@ if(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND)
 
   target_link_libraries(quaternion_demo
     ${QT_QTCORE_LIBRARY}    ${QT_QTGUI_LIBRARY}
-    ${QT_QTOPENGL_LIBRARY}  ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+    ${QT_QTOPENGL_LIBRARY}  ${OPENGL_LIBRARIES} )
 
 else()
 

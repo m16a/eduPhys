@@ -787,7 +787,6 @@ int main(int argc, char *argv[])
   demo.resize(800, 600);
 	demo.move(700, 100);
 	demo.show();
-	glutInit(&argc, argv); 
 	 return app.exec();
 }
 
