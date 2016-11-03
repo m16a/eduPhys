@@ -54,6 +54,7 @@ int SDebugPlane::IntersectRay(const SRay& r, SRayHit& out_hit)
 	if (t >0)
 	{
 		out_hit.m_pt = r.m_org + r.m_dir * t;	
+		res = 1;
 	}
 	else
 		assert(0);//don't count back collision for now

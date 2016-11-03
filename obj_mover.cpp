@@ -98,12 +98,12 @@ bool ObjMover::RWI(const SRay& r)
 	int activeHelper = -1;	
 	Vector3f org = r.m_org;
 	Vector3f dir = r.m_dir;
+	//Vector3f org = Vector3f(0.0,0.0,0.5);
+	//Vector3f dir =  Vector3f(0,0.0,-1);
 	for (int i=0; i<1; ++i)
 	{
 		STorus tor = m_rotHlpr.m_helpers[i];
 
-		//Vector3f org = Vector3f(0.5,0.3,0);
-		//Vector3f dir =  Vector3f(1,0.4,0);
 		DebugManager()->DrawVector(org, dir, 2);	 
 		dir.normalize();
 		int n;
@@ -179,7 +179,7 @@ void STorus::line_intersect(const Vector3f& org, const Vector3f& dir,
 	assert(m_rMajor == 1.0f);//don't forget to normalize torus
 
 	//transform ray to torus CS
-	Vector3f orgT = org - m_pos;
+	Vector3f orgT = m_rot.conjugate() * (org - m_pos);
 	Vector3f dirT = m_rot.conjugate() * dir;
 	assert(dirT.dot(dirT) - 1.0f < 0.001);
 	qDebug() << "Tor r:" << m_rMinor << "cen: " << m_pos;	
