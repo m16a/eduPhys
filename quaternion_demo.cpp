@@ -721,7 +721,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_minv = 0.1f;
 //  s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
-	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+	//mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 	
 
@@ -731,9 +731,9 @@ QuaternionDemo::QuaternionDemo()
   s4->m_minv = 10.f;
 	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
 	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
- 	//s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
+ 	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
-	//mRenderingWidget->m_core.get()->m_objects.push_back(s4);
+	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 
   setCentralWidget(mRenderingWidget);
 /*

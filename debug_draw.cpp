@@ -57,7 +57,9 @@ int SDebugPlane::IntersectRay(const SRay& r, SRayHit& out_hit)
 		res = 1;
 	}
 	else
-		assert(0);//don't count back collision for now
+	{
+	//	assert(0);//don't count back collision for now
+	}
 
 	return res;
 }

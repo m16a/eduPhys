@@ -24,11 +24,8 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 	{
 		if (m_activeHelperIndx > -1)//rotation
 		{
-			Vector3f dR = in - m_lastIn;
 			Vector3f axis = m_pSelectedEnt->m_rot*Vector3f(0,0,1);
-			
-			Quaternionf q;  q = AngleAxis<float>(3.14/10, axis);
-			m_pSelectedEnt->m_rot *= q;	
+			axis.normalize();
 			res = true;
 
 			SDebugPlane pln;
@@ -36,18 +33,23 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 			pln.m_d = - pln.m_n.dot(m_pSelectedEnt->m_pos);
 
 			SRayHit hit;
+			float cosa = 1;
 			if (pln.IntersectRay(r, hit))
 			{
 				Vector3f planeHitPoint = hit.m_pt;		
-			
-				if (m_lastIn.dot(m_lastIn) > 0.001) //previous point is  valid	
+				qDebug() << "lastIn" << m_lastIn.dot(m_lastIn);	
+				if (m_lastIn.dot(m_lastIn) > 0.01) //previous point is  valid	
 				{
-					float cosa = m_lastIn.dot(planeHitPoint) / m_lastIn.norm() / planeHitPoint.norm();
-					qDebug() << "cosa:" << cosa;
+					cosa = m_lastIn.dot(planeHitPoint) / m_lastIn.norm() / planeHitPoint.norm();
+					qDebug() << "cosa:" << cosa << "deg:" << (acos(cosa) * 180 / 3.14f);
 				}
 
+			//	DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_lastIn - m_pSelectedEnt->m_pos, 2);	 
+			//	DebugManager()->DrawVector(m_pSelectedEnt->m_pos, planeHitPoint - m_pSelectedEnt->m_pos, 2);	 
 				m_lastIn = planeHitPoint;
 			}
+			Quaternionf q;  q = AngleAxis<float>(acos(cosa), axis);
+			m_pSelectedEnt->m_rot = q * m_pSelectedEnt->m_rot ;	
 		}
 
 	}
