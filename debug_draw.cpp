@@ -47,7 +47,14 @@ int SDebugPlane::IntersectRay(const SRay& r, SRayHit& out_hit)
 {
 	int res = 0;
 	Vector3f planesPoint(0,0,0);
-	planesPoint[2] = - m_d / m_n[2];
+
+	if (m_n[0] > 0.001)
+		planesPoint[0] = - m_d / m_n[0];
+	else if (m_n[1] > 0.001)
+		planesPoint[1] = - m_d / m_n[1];
+	else if (m_n[2] > 0.001)
+		planesPoint[2] = - m_d / m_n[2];
+	//qDebug() << "point on plane:" << planesPoint << "normal" << m_n;
 
 	float t = (planesPoint - r.m_org).dot(m_n) / m_n.dot(r.m_dir);
 
@@ -59,6 +66,7 @@ int SDebugPlane::IntersectRay(const SRay& r, SRayHit& out_hit)
 	else
 	{
 	//	assert(0);//don't count back collision for now
+	qWarning()<< "Back collision, t:"<<t;
 	}
 
 	return res;

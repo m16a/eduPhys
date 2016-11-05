@@ -24,32 +24,49 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 	{
 		if (m_activeHelperIndx > -1)//rotation
 		{
-			Vector3f axis = m_pSelectedEnt->m_rot*Vector3f(0,0,1);
+			qDebug() << "Rotation is started";
+			Vector3f axis = m_rotHlpr.m_helpers[m_activeHelperIndx].m_rot * Vector3f(0,0,1);
 			axis.normalize();
 			res = true;
 
 			SDebugPlane pln;
 			pln.m_n = axis;
 			pln.m_d = - pln.m_n.dot(m_pSelectedEnt->m_pos);
-
+			//qDebug() << "axis" << axis << "rot:" << m_pSelectedEnt->m_rot;
 			SRayHit hit;
 			float cosa = 1;
+			DebugManager()->DrawPlane(pln.m_n, pln.m_d);	 
 			if (pln.IntersectRay(r, hit))
 			{
 				Vector3f planeHitPoint = hit.m_pt;		
-				qDebug() << "lastIn" << m_lastIn.dot(m_lastIn);	
-				if (m_lastIn.dot(m_lastIn) > 0.01) //previous point is  valid	
+				Vector3f v1 = m_lastIn - m_pSelectedEnt->m_pos; 
+				Vector3f v2 = planeHitPoint - m_pSelectedEnt->m_pos;
+				if (m_lastIn.dot(m_lastIn) > 0.01 && !isVectorsEqual(planeHitPoint, m_lastIn)) //previous point is  valid	
 				{
-					cosa = m_lastIn.dot(planeHitPoint) / m_lastIn.norm() / planeHitPoint.norm();
-					qDebug() << "cosa:" << cosa << "deg:" << (acos(cosa) * 180 / 3.14f);
+					cosa = v1.dot(v2) / v1.norm()/ v2.norm();
+					if (cosa < 1.0f)	
+					{
+						Matrix3f m;
+						m << m_lastIn, planeHitPoint, pln.m_n;
+						float d = m.determinant();
+
+						//qDebug() << "lastIn" << m_lastIn << planeHitPoint << pln.m_n << d;	
+						if (fabs(d)>0.00001 && d < 0)
+							cosa *= -1;
+						//qDebug() << "cosa:" << cosa << "deg:" << (acos(cosa) * 180 / 3.14f);
+					}
 				}
 
-			//	DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_lastIn - m_pSelectedEnt->m_pos, 2);	 
-			//	DebugManager()->DrawVector(m_pSelectedEnt->m_pos, planeHitPoint - m_pSelectedEnt->m_pos, 2);	 
+			DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v1, 2);	 
+			DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v2, 2);	 
 				m_lastIn = planeHitPoint;
 			}
-			Quaternionf q;  q = AngleAxis<float>(acos(cosa), axis);
-			m_pSelectedEnt->m_rot = q * m_pSelectedEnt->m_rot ;	
+			if (cosa < 1.0f)
+			{
+				Quaternionf q;  q = AngleAxis<float>(acos(cosa), axis);
+				m_pSelectedEnt->m_rot = q * m_pSelectedEnt->m_rot ;	
+				qDebug() << "Rotation angle was:" << (acos(cosa) * 180 / 3.14f);
+			}
 		}
 
 	}
@@ -78,16 +95,16 @@ void ObjMover::Update()
 	m_rotHlpr.m_helpers[0].m_rot = m_pSelectedEnt->m_rot;
 	m_rotHlpr.m_helpers[0].m_col = Vector3f(1.0f,0.0f,0.0f);
 	m_rotHlpr.m_helpers[1].m_pos = m_pSelectedEnt->m_pos;
-	m_rotHlpr.m_helpers[1].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * m_pSelectedEnt->m_rot;
+	m_rotHlpr.m_helpers[1].m_rot = m_pSelectedEnt->m_rot * Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0);
 	m_rotHlpr.m_helpers[1].m_col = Vector3f(0/255.0f,255/255.0f,0/255.0f);
 	m_rotHlpr.m_helpers[2].m_pos = m_pSelectedEnt->m_pos;
-	m_rotHlpr.m_helpers[2].m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * Quaternionf(0.7071067811865476, 0.7071067811865476, 0, 0) * m_pSelectedEnt->m_rot;
+	m_rotHlpr.m_helpers[2].m_rot = m_pSelectedEnt->m_rot * Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0) * Quaternionf(0.7071067811865476, 0.7071067811865476, 0, 0); 
 	m_rotHlpr.m_helpers[2].m_col = Vector3f(0/255.0f,0/255.0f,255/255.0f);
 		
 	glDisable(GL_LIGHTING);
 	m_rotHlpr.m_helpers[0].Draw();
-//	m_rotHlpr.m_helpers[1].Draw();
-//	m_rotHlpr.m_helpers[2].Draw();
+	m_rotHlpr.m_helpers[1].Draw();
+	m_rotHlpr.m_helpers[2].Draw();
   glEnable(GL_LIGHTING);
 }
 
@@ -102,7 +119,7 @@ bool ObjMover::RWI(const SRay& r)
 	Vector3f dir = r.m_dir;
 	//Vector3f org = Vector3f(0.0,0.0,0.5);
 	//Vector3f dir =  Vector3f(0,0.0,-1);
-	for (int i=0; i<1; ++i)
+	for (int i=0; i<3; ++i)
 	{
 		STorus tor = m_rotHlpr.m_helpers[i];
 
