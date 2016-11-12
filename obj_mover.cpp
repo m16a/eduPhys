@@ -35,7 +35,7 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 			//qDebug() << "axis" << axis << "rot:" << m_pSelectedEnt->m_rot;
 			SRayHit hit;
 			float cosa = 1;
-			DebugManager()->DrawPlane(pln.m_n, pln.m_d);	 
+			//DebugManager()->DrawPlane(pln.m_n, pln.m_d);	 
 			if (pln.IntersectRay(r, hit))
 			{
 				Vector3f planeHitPoint = hit.m_pt;		
@@ -57,8 +57,8 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 					}
 				}
 
-			DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v1, 2);	 
-			DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v2, 2);	 
+				DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v1, 2);	 
+				DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v2, 2);	 
 				m_lastIn = planeHitPoint;
 			}
 			if (cosa < 1.0f)
@@ -79,12 +79,16 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 void ObjMover::OnSelect(IPhysEnt* e)
 {
 	m_pSelectedEnt = e;
+	m_lastIn = Vector3f(0,0,0);
+	qDebug() << "-------------------------------";
 }
 
 void ObjMover::OnDeselect(IPhysEnt* e)
 {
 	m_pSelectedEnt = 0;
 	m_activeHelperIndx = -1;
+	m_lastIn = Vector3f(0,0,0);
+	qDebug() << "OnDeselect";
 }
 
 void ObjMover::Update()
@@ -159,7 +163,7 @@ bool ObjMover::RWI(const SRay& r)
 STorus::STorus()
 {
 	m_rMajor = 1;//0.2;
-	m_rMinor = 0.05;//0.003;
+	m_rMinor = 0.02;//0.003;
 }
 
 void STorus::Draw()
