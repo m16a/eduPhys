@@ -24,7 +24,7 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 	{
 		if (m_activeHelperIndx > -1)//rotation
 		{
-			qDebug() << "Rotation is started";
+			//qDebug() << "Rotation is started";
 			Vector3f axis = m_rotHlpr.m_helpers[m_activeHelperIndx].m_rot * Vector3f(0,0,1);
 			axis.normalize();
 			res = true;
@@ -57,15 +57,15 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 					}
 				}
 
-				DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v1, 2);	 
-				DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v2, 2);	 
+				//DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v1, 2);	 
+				//DebugManager()->DrawVector(m_pSelectedEnt->m_pos, v2, 2);	 
 				m_lastIn = planeHitPoint;
 			}
 			if (cosa < 1.0f)
 			{
 				Quaternionf q;  q = AngleAxis<float>(acos(cosa), axis);
 				m_pSelectedEnt->m_rot = q * m_pSelectedEnt->m_rot ;	
-				qDebug() << "Rotation angle was:" << (acos(cosa) * 180 / 3.14f);
+				//qDebug() << "Rotation angle was:" << (acos(cosa) * 180 / 3.14f);
 			}
 		}
 
@@ -80,7 +80,7 @@ void ObjMover::OnSelect(IPhysEnt* e)
 {
 	m_pSelectedEnt = e;
 	m_lastIn = Vector3f(0,0,0);
-	qDebug() << "-------------------------------";
+	//qDebug() << "-------------------------------";
 }
 
 void ObjMover::OnDeselect(IPhysEnt* e)
@@ -88,7 +88,7 @@ void ObjMover::OnDeselect(IPhysEnt* e)
 	m_pSelectedEnt = 0;
 	m_activeHelperIndx = -1;
 	m_lastIn = Vector3f(0,0,0);
-	qDebug() << "OnDeselect";
+	//qDebug() << "OnDeselect";
 }
 
 void ObjMover::Update()
@@ -131,11 +131,11 @@ bool ObjMover::RWI(const SRay& r)
 		dir.normalize();
 		int n;
 		float pts[4];		
-		qDebug() << "----------------------------------------";
-		qDebug() << "test ray: " << org << "dir: " << dir;	
+		//qDebug() << "----------------------------------------";
+		//qDebug() << "test ray: " << org << "dir: " << dir;	
 		tor.line_intersect(org, dir, &n, pts);
 
-		qDebug() << "torLine hit cnt:" << n << "rayOrg:" <<org << "rayDir:"<< dir;	
+		//qDebug() << "torLine hit cnt:" << n << "rayOrg:" <<org << "rayDir:"<< dir;	
 		for (int j=0; j<n; ++j)
 		{
 			if (pts[j] < minDist && pts[j] > 0)
@@ -146,7 +146,7 @@ bool ObjMover::RWI(const SRay& r)
 		}	
 		if (minDist < FLT_MAX)
 		{
-			qDebug() << "res point:" << minDist;
+			//qDebug() << "res point:" << minDist;
 		}
 	}
 
@@ -154,7 +154,8 @@ bool ObjMover::RWI(const SRay& r)
 	{
 		Vector3f resPoint = (org+minDist*dir);
 		m_activeHelperIndx = activeHelper;
-		qDebug() << "active helper:" << activeHelper << "point:" << resPoint;
+		m_lastIn = Vector3f(0,0,0);
+		//qDebug() << "active helper:" << activeHelper << "point:" << resPoint;
 		return true;
 	}
 	return false;
@@ -205,8 +206,8 @@ void STorus::line_intersect(const Vector3f& org, const Vector3f& dir,
 	Vector3f orgT = m_rot.conjugate() * (org - m_pos);
 	Vector3f dirT = m_rot.conjugate() * dir;
 	assert(dirT.dot(dirT) - 1.0f < 0.001);
-	qDebug() << "Tor r:" << m_rMinor << "cen: " << m_pos;	
-	qDebug() << "rayInTor org:" << orgT << "dir:"<< dirT;	
+	//qDebug() << "Tor r:" << m_rMinor << "cen: " << m_pos;	
+	//qDebug() << "rayInTor org:" << orgT << "dir:"<< dirT;	
 
 	float orgT2 = orgT.dot(orgT);
 	float r2 =  m_rMinor * m_rMinor;
@@ -219,16 +220,16 @@ void STorus::line_intersect(const Vector3f& org, const Vector3f& dir,
   float E = gamma*gamma - 4*(orgT[0]*orgT[0]+orgT[1]*orgT[1]);
 
 
-  float D1 = 8*(dirT[2]*orgT[2]) + 4*beta*(orgT2 - 1.0f - r2);
-  float E1 = orgT[0]*orgT[0]*orgT[0]*orgT[0] + orgT[1]*orgT[1]*orgT[1]*orgT[1] + orgT[2]*orgT[2]*orgT[2]*orgT[2] + (1-r2)*(1-r2) + 2*(orgT[0]*orgT[0]*orgT[1]*orgT[1] + orgT[2]*orgT[2]*(1-r2) + (orgT[0]*orgT[0] + orgT[1]*orgT[1])*(orgT[2]*orgT[2]-1-r2));
+  //float D1 = 8*(dirT[2]*orgT[2]) + 4*beta*(orgT2 - 1.0f - r2);
+  //float E1 = orgT[0]*orgT[0]*orgT[0]*orgT[0] + orgT[1]*orgT[1]*orgT[1]*orgT[1] + orgT[2]*orgT[2]*orgT[2]*orgT[2] + (1-r2)*(1-r2) + 2*(orgT[0]*orgT[0]*orgT[1]*orgT[1] + orgT[2]*orgT[2]*(1-r2) + (orgT[0]*orgT[0] + orgT[1]*orgT[1])*(orgT[2]*orgT[2]-1-r2));
   // Solve quartic...
   double roots[4];
 	//qDebug() << "TEST SolveP4 2 ==" << SolveP4(roots, 1,1,1,0);
 	//qDebug() << "TEST SolveP4 4 ==" << SolveP4(roots, 2,-41,-42,360);
   int nroots = SolveP4(roots,B,C,D,E);
-	qDebug() << "coefs: 1.0 " << B << C << D << E;	
-	qDebug() << "diff in D: " << D-D1 << "in E:" << E-E1;	
-	qDebug() << "nroots:" << nroots;	
+	//qDebug() << "coefs: 1.0 " << B << C << D << E;	
+	//qDebug() << "diff in D: " << D-D1 << "in E:" << E-E1;	
+	//qDebug() << "nroots:" << nroots;	
   *num_intersections = 0;
   while(nroots--)
     {
