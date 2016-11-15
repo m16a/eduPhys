@@ -527,12 +527,12 @@ void RenderingWidget::paintGL()
 
 void RenderingWidget::initializeGL()
 {
-  glClearColor(0.2, 0.2, 0.2, 0.);
-  mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
+	glClearColor(0.2, 0.2, 0.2, 0.);
+	mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
 	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
 
-  mInitFrame.orientation = mCamera.orientation().inverse();
-  mInitFrame.position = mCamera.viewMatrix().translation();
+	mInitFrame.orientation = mCamera.orientation().inverse();
+	mInitFrame.position = mCamera.viewMatrix().translation();
 }
 
 void RenderingWidget::resizeGL(int width, int height)
@@ -542,7 +542,7 @@ void RenderingWidget::resizeGL(int width, int height)
 
 void RenderingWidget::setNavMode(int m)
 {
-  mNavMode = NavMode(m);
+	mNavMode = NavMode(m);
 }
 
 void RenderingWidget::setLerpMode(int m)
@@ -716,12 +716,12 @@ QuaternionDemo::QuaternionDemo()
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 
   IPhysEnt* s3 = new Box();
-  s3->m_pos = Vector3f(1.f, 0.f, 0.0f);
+  s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
   s3->m_minv = 0.1f;
-//  s3->m_v = Vector3f(1.0f, 0.f, 0.f);
+	s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
-	//mRenderingWidget->m_core.get()->m_objects.push_back(s3);
+	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 	
 
