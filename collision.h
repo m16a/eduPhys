@@ -398,6 +398,110 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 		return;
 	//TODO: check vertex-vertex and vertex-edge cases	
 }
+void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
+{
+	//http://stackoverflow.com/questions/242404/sort-four-points-in-clockwise-order
+	//Possible cases:
+	//1.ABCD
+	//2.ABDC
+	//3.ACBD
+	//4.ACBD
+	//5.ADBC
+	//6.ADCB
+	
+	qDebug() << "verticies reordering";
+	qDebug() << "\tpre:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
+	const Vector3f a = out_arr[1]-out_arr[0];
+	const Vector3f b = out_arr[2]-out_arr[0];
+	const float orntn = n.dot(a.cross(b));
+	bool badOrientation = false;	
+	if (orntn > 0.0f)
+	{
+		//cases 1,2,5
+		//check ACD	
+		const Vector3f a1 = out_arr[2]-out_arr[0];
+		const Vector3f b1 = out_arr[3]-out_arr[0];
+		const float orntn1 = n.dot(a1.cross(b1));
+		if (orntn1 > 0.0f)
+		{
+			//case 1. we have ordered vertecies, do nothing
+		}
+		else if (orntn1 < 0.0f)
+		{
+			//case 2 or 5
+			//check BDC
+			const Vector3f a2 = out_arr[3]-out_arr[1];
+			const Vector3f b2 = out_arr[2]-out_arr[1];
+			const float orntn2 = n.dot(a2.cross(b2));
+			
+			if (orntn2 > 0.0f)
+			{
+				//case 2
+				//swap D C
+				std::swap(out_arr[3], out_arr[2]);			
+			}
+			else if (orntn2 < 0.0f)
+			{
+				//case 5
+				//swap A D 
+				std::swap(out_arr[0], out_arr[3]);			
+			}
+			else 
+				badOrientation = true;
+		}
+		else 
+			badOrientation = true;
+		
+	}
+	else if (orntn < 0.0f)
+	{
+		//cases 3,4,6
+		//check ADC
+		const Vector3f a1 = out_arr[3]-out_arr[0];
+		const Vector3f b1 = out_arr[2]-out_arr[0];
+		const float orntn1 = n.dot(a1.cross(b1));
+		if (orntn1 > 0.0f)
+		{
+			//case 6
+			//swap D B
+			std::swap(out_arr[3], out_arr[1]);
+		}
+		else if (orntn1 < 0.0f)
+		{
+			//case 3 or 4
+			//check CBD
+			const Vector3f a2 = out_arr[1]-out_arr[2];
+			const Vector3f b2 = out_arr[3]-out_arr[2];
+			const float orntn2 = n.dot(a2.cross(b2));
+			if (orntn2 > 0.0f)
+			{
+				//case 3
+				//swap C B
+				std::swap(out_arr[2], out_arr[3]);	
+			}
+			else if (orntn2 < 0.0f)
+			{
+				//case 4
+				//swap A B
+				std::swap(out_arr[0], out_arr[1]);	
+			}
+			else
+				badOrientation = true;
+		}	
+		else 
+			badOrientation = true;
+	}
+	else 
+		badOrientation = true;
+
+	if (badOrientation)
+	{
+		qCritical() << "bad rect verticies";
+		assert(0);
+	}
+
+	qDebug() << "\tpost:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
+}
 
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
 {
@@ -420,7 +524,17 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[
 	}
 	out_size = indx;
 	//qDebug() << indx;
-	assert(indx >=0 && indx <= 4);
+	assert(indx >=0 && indx <= 4 && 3 != indx);
+
+	if (4 == indx)
+	{
+		reorderRectVerticies(p.n, out_arr);
+	}
+}
+
+void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f out_vrts[2], Vector3f& out_normal)
+{
+
 }
 
 void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)
@@ -518,6 +632,11 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		{
 			qWarning() << "Implement face-face intersection";
 			assert(0);
+			Vector3f tmp[2], norm;
+			if (cnt1 == 4)
+				intersectFaceSegment(vs1, vs2, tmp, norm);
+			else
+				intersectFaceSegment(vs2, vs1, tmp, norm);
 		}
 		else
 		{
