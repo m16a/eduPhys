@@ -16,11 +16,14 @@ struct IDebugItem
 
 struct SDebugPlane : public IDebugItem 
 {
-	Vector3f m_n;
-	float m_d;
-
+	SDebugPlane(){};
+	SDebugPlane(const Vector3f& point, const Vector3f& normal);
+ 
 	virtual void Draw();
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
+	
+	Vector3f m_n;
+	float m_d;
 };
 
 

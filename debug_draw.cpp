@@ -4,6 +4,12 @@
 #include "gpuhelper.h"
 #include "rwi.h"
 
+SDebugPlane::SDebugPlane(const Vector3f& point, const Vector3f& normal)
+{
+	m_n = normal;
+	m_d = ;			
+}
+
 void SDebugPlane::Draw()
 {
 	Vector3f u,v;

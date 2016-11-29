@@ -532,9 +532,10 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[
 	}
 }
 
-void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f out_vrts[2], Vector3f& out_normal)
+Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal)
 {
-
+	assert(fabs(plane_normal.dot(plane_normal) - 1.0f) < 0.001);
+	return v - v.dot(plane_normal) * plane_normal;
 }
 
 void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)
@@ -569,6 +570,29 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 		qWarning() << "Implement intersection of colinear segements";
 		assert(0);
 	}
+}
+
+void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f out_vrts[2], Vector3f& out_normal)
+{
+	const Vector3f faceNormal = face[0].cross(face[1]);
+
+	//Projecct segment onto face
+	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal);
+	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal);
+
+	//Clamp segment by 4 face edges
+	Vector3f outVs[2], notUsed;
+	int outN = 0;
+	intersectSegmentSegment(face[0], face[1], s1, s2, outVs, outN, notUsed);
+	if (outN > 0)
+	{
+		assert(outN == 1);//expecting one intersection point
+
+		//decide how to clamp, what segment's point is left and what substitute with intersection result
+		//build plane through point face[0], normal face[2]-face[0] and test segment edges. 
+			
+	}
+	//			3.Return clamped segment
 }
 
 void collide(Box* a, Box* b, Contact* c, int& out_size)
