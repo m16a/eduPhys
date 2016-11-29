@@ -1,5 +1,5 @@
 Box-box collision detection
-	Implement edge-face intersection
+	Debug edge-face intersection
 	Implement face-face intersection
 
 Provide serialization/desarialization for save/load

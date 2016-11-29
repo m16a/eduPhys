@@ -29,9 +29,7 @@ bool ObjMover::OnMouseMove(const Vector3f& in, const SRay& r)
 			axis.normalize();
 			res = true;
 
-			SDebugPlane pln;
-			pln.m_n = axis;
-			pln.m_d = - pln.m_n.dot(m_pSelectedEnt->m_pos);
+			SDebugPlane pln(m_pSelectedEnt->m_pos, axis);
 			//qDebug() << "axis" << axis << "rot:" << m_pSelectedEnt->m_rot;
 			SRayHit hit;
 			float cosa = 1;

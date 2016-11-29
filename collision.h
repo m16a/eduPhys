@@ -566,33 +566,59 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 	}
 	else //colinear case
 	{
-		out_cnt = 2;	
+		out_cnt = 0;	
 		qWarning() << "Implement intersection of colinear segements";
-		assert(0);
+		//assert(0);
 	}
 }
 
-void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f out_vrts[2], Vector3f& out_normal)
+void clampSegmentWithFacesEdge(const Vector3f faceEdge[2], const Vector3f& thirdVrtx, Vector3f in_out_segment[2])
 {
-	const Vector3f faceNormal = face[0].cross(face[1]);
-
-	//Projecct segment onto face
-	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal);
-	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal);
-
-	//Clamp segment by 4 face edges
 	Vector3f outVs[2], notUsed;
 	int outN = 0;
-	intersectSegmentSegment(face[0], face[1], s1, s2, outVs, outN, notUsed);
+	intersectSegmentSegment(faceEdge[0], faceEdge[1], in_out_segment[0], in_out_segment[1], outVs, outN, notUsed);
 	if (outN > 0)
 	{
 		assert(outN == 1);//expecting one intersection point
 
 		//decide how to clamp, what segment's point is left and what substitute with intersection result
 		//build plane through point face[0], normal face[2]-face[0] and test segment edges. 
-			
+		Vector3f n = (thirdVrtx-faceEdge[0]);
+		n.normalize();
+		SDebugPlane p(faceEdge[0], n);
+		if ((in_out_segment[0].dot(p.m_n) + p.m_d)*(thirdVrtx.dot(p.m_n) + p.m_d) < 0)
+			in_out_segment[0] = outVs[0];
+		else if ((in_out_segment[1].dot(p.m_n) + p.m_d)*(thirdVrtx.dot(p.m_n) + p.m_d) < 0)
+			in_out_segment[1] = outVs[0];
 	}
-	//			3.Return clamped segment
+}
+
+void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f /*out_*/clampedSegment[2], Vector3f& out_normal)
+{
+	Vector3f faceNormal = face[0].cross(face[1]);
+	faceNormal.normalize();
+
+	//Projecct segment onto face
+	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal);
+	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal);
+
+	//Clamp segment by 4 face edges
+	clampedSegment[0] = s1; clampedSegment[1] = s2;
+
+	Vector3f faceEdge[2];
+	faceEdge[0] = face[0]; faceEdge[1] = face[1];	
+	clampSegmentWithFacesEdge(faceEdge, face[2], clampedSegment);
+
+	faceEdge[0] = face[1]; faceEdge[1] = face[2];	
+	clampSegmentWithFacesEdge(faceEdge, face[3], clampedSegment);
+	
+	faceEdge[0] = face[2]; faceEdge[1]= face[3];	
+	clampSegmentWithFacesEdge(faceEdge, face[0], clampedSegment);
+
+	faceEdge[0] = face[3]; faceEdge[1] = face[0];	
+	clampSegmentWithFacesEdge(faceEdge, face[1], clampedSegment);
+
+	out_normal = faceNormal;//TODO:check normal direction
 }
 
 void collide(Box* a, Box* b, Contact* c, int& out_size)
@@ -649,18 +675,22 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		}
 		else if (cnt2 == 2 && cnt1 == 4 || cnt1 == 2 && cnt2 == 4)//edge-face
 		{
-			qWarning() << "Implement edge-face intersection";
-			assert(0);
-		}
-		else if (cnt2 == 4 && cnt1 == 4)//face-face
-		{
-			qWarning() << "Implement face-face intersection";
-			assert(0);
+			qDebug() << "Edge-face intersection";
 			Vector3f tmp[2], norm;
 			if (cnt1 == 4)
 				intersectFaceSegment(vs1, vs2, tmp, norm);
 			else
 				intersectFaceSegment(vs2, vs1, tmp, norm);
+
+			out_size = 2;
+			c[0].pt = tmp[0];
+			c[1].pt = tmp[1];
+			c[0].n = c[1].n = norm;
+		}
+		else if (cnt2 == 4 && cnt1 == 4)//face-face
+		{
+			qWarning() << "Implement face-face intersection";
+			assert(0);
 		}
 		else
 		{

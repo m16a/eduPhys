@@ -7,7 +7,7 @@
 SDebugPlane::SDebugPlane(const Vector3f& point, const Vector3f& normal)
 {
 	m_n = normal;
-	m_d = ;			
+	m_d = - m_n.dot(point);
 }
 
 void SDebugPlane::Draw()
