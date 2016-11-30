@@ -20,6 +20,9 @@ public:
 	void Step(float reqStep);
 	int RWI(const SRay& r, SRayHit& out_hit);
 
+	void SerializeToFile(const char* name);
+	void DeserializeFromFile(const char* name);
+
 	std::vector<IPhysEnt*> m_objects;
 private:
 	void StepAll(float dt);

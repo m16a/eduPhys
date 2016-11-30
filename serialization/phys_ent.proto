@@ -9,5 +9,35 @@ message Vector3f
 
 message SerPhys
 {
-	required Vector3f pos = 1;
+	extensions 100 to max;
+
+	enum Type
+	{
+			Sphere = 1;
+			Box = 2;
+	}
+
+	required Type type = 1;
+	required Vector3f pos = 2;
+}
+
+message Sphere 
+{
+    extend SerPhys
+    {
+        optional Sphere	serPhys = 100; 
+    }
+}
+
+message Box 
+{
+    extend SerPhys
+    {
+        optional Box serPhys = 101; 
+    }
+}
+
+message Core
+{
+	repeated SerPhys ojcts = 1;
 }
