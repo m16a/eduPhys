@@ -6,7 +6,7 @@
 #include "rwi.h"
 #include <cfloat>
 #include "my_utils.h"
-
+#include "serialization/phys_ent.pb.h"
 
 Core::Core()
 {
@@ -207,6 +207,7 @@ int Core::RWI(const SRay& r, SRayHit& out_hit)
 
 void Core::SerializeToFile(const char* name)
 {
+	ser::Vector3f vector;
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
 	{
