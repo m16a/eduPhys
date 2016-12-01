@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-message(STATUS "Path to find libraries:${CMAKE_MODULE_PATH}")
+#path to default packages: /usr/share/cmake-x.y/Modules
 find_package(Qt4)
 find_package(OpenGL)
 find_package(Protobuf)

@@ -231,10 +231,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
       case Qt::Key_G:
         grabFrame();
         break;
-      // clear the time line
-      case Qt::Key_C:
-        m_timeline.clear();
-        break;
       // move the camera to initial pos
       case Qt::Key_R:
         resetCamera();
@@ -283,6 +279,16 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
         m_solverTimeFlow = SolverBackwardTime;
         m_performPauseStep = true;
         break;
+			case Qt::Key_C:
+				{
+					m_core.get()->SerializeToFile("dump");
+					break;
+				}
+			case Qt::Key_V:
+				{
+					m_core.get()->DeserializeFromFile("dump");
+					break;
+				}
 			case Qt::Key_Space:
 			{
 				static int sIndex = 100;
@@ -719,7 +725,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
   s3->m_minv = 0.1f;
-	s3->m_v = Vector3f(1.0f, 0.f, 0.f);
+	//s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));

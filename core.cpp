@@ -7,7 +7,8 @@
 #include <cfloat>
 #include "my_utils.h"
 #include "serialization/phys_ent.pb.h"
-
+#include <iostream>
+#include <fstream>
 Core::Core()
 {
 
@@ -207,7 +208,15 @@ int Core::RWI(const SRay& r, SRayHit& out_hit)
 
 void Core::SerializeToFile(const char* name)
 {
-	ser::Vector3f vector;
+	qDebug() << "Saving scene to disk";
+	ser::Vector3f v;
+	v.set_x(1);
+	v.set_y(2);
+	v.set_z(3.14);
+	
+	std::fstream output(name, std::ios::out | std::ios::trunc | std::ios::binary);
+	v.SerializeToOstream(&output);
+
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
 	for (; it != m_objects.end(); ++it)
 	{
@@ -217,5 +226,9 @@ void Core::SerializeToFile(const char* name)
 
 void Core::DeserializeFromFile(const char* name)
 {
-	
+	qDebug() << "Load scene from disk";
+	ser::Vector3f v;
+	std::fstream input(name, std::ios::in | std::ios::binary);
+  v.ParseFromIstream(&input);
+	qDebug() << v.x() << v.y() << v.z();	
 }
