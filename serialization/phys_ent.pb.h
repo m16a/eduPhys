@@ -40,6 +40,8 @@ void protobuf_ShutdownFile_phys_5fent_2eproto();
 
 class Box;
 class Core;
+class Matrix3f;
+class Quaternionf;
 class SerPhys;
 class Sphere;
 class Vector3f;
@@ -186,6 +188,264 @@ extern ::google::protobuf::internal::ExplicitlyConstructed<Vector3f> Vector3f_de
 
 // -------------------------------------------------------------------
 
+class Quaternionf : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ser.Quaternionf) */ {
+ public:
+  Quaternionf();
+  virtual ~Quaternionf();
+
+  Quaternionf(const Quaternionf& from);
+
+  inline Quaternionf& operator=(const Quaternionf& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Quaternionf& default_instance();
+
+  static const Quaternionf* internal_default_instance();
+
+  void Swap(Quaternionf* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Quaternionf* New() const { return New(NULL); }
+
+  Quaternionf* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Quaternionf& from);
+  void MergeFrom(const Quaternionf& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Quaternionf* other);
+  void UnsafeMergeFrom(const Quaternionf& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required float x = 1;
+  bool has_x() const;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  float x() const;
+  void set_x(float value);
+
+  // required float y = 2;
+  bool has_y() const;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  float y() const;
+  void set_y(float value);
+
+  // required float z = 3;
+  bool has_z() const;
+  void clear_z();
+  static const int kZFieldNumber = 3;
+  float z() const;
+  void set_z(float value);
+
+  // required float w = 4;
+  bool has_w() const;
+  void clear_w();
+  static const int kWFieldNumber = 4;
+  float w() const;
+  void set_w(float value);
+
+  // @@protoc_insertion_point(class_scope:ser.Quaternionf)
+ private:
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_z();
+  inline void clear_has_z();
+  inline void set_has_w();
+  inline void clear_has_w();
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
+  float x_;
+  float y_;
+  float z_;
+  float w_;
+  friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
+  friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
+  friend void protobuf_AssignDesc_phys_5fent_2eproto();
+  friend void protobuf_ShutdownFile_phys_5fent_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<Quaternionf> Quaternionf_default_instance_;
+
+// -------------------------------------------------------------------
+
+class Matrix3f : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ser.Matrix3f) */ {
+ public:
+  Matrix3f();
+  virtual ~Matrix3f();
+
+  Matrix3f(const Matrix3f& from);
+
+  inline Matrix3f& operator=(const Matrix3f& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Matrix3f& default_instance();
+
+  static const Matrix3f* internal_default_instance();
+
+  void Swap(Matrix3f* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Matrix3f* New() const { return New(NULL); }
+
+  Matrix3f* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Matrix3f& from);
+  void MergeFrom(const Matrix3f& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Matrix3f* other);
+  void UnsafeMergeFrom(const Matrix3f& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required .ser.Vector3f row1 = 1;
+  bool has_row1() const;
+  void clear_row1();
+  static const int kRow1FieldNumber = 1;
+  const ::ser::Vector3f& row1() const;
+  ::ser::Vector3f* mutable_row1();
+  ::ser::Vector3f* release_row1();
+  void set_allocated_row1(::ser::Vector3f* row1);
+
+  // required .ser.Vector3f row2 = 2;
+  bool has_row2() const;
+  void clear_row2();
+  static const int kRow2FieldNumber = 2;
+  const ::ser::Vector3f& row2() const;
+  ::ser::Vector3f* mutable_row2();
+  ::ser::Vector3f* release_row2();
+  void set_allocated_row2(::ser::Vector3f* row2);
+
+  // required .ser.Vector3f row3 = 3;
+  bool has_row3() const;
+  void clear_row3();
+  static const int kRow3FieldNumber = 3;
+  const ::ser::Vector3f& row3() const;
+  ::ser::Vector3f* mutable_row3();
+  ::ser::Vector3f* release_row3();
+  void set_allocated_row3(::ser::Vector3f* row3);
+
+  // @@protoc_insertion_point(class_scope:ser.Matrix3f)
+ private:
+  inline void set_has_row1();
+  inline void clear_has_row1();
+  inline void set_has_row2();
+  inline void clear_has_row2();
+  inline void set_has_row3();
+  inline void clear_has_row3();
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
+  ::ser::Vector3f* row1_;
+  ::ser::Vector3f* row2_;
+  ::ser::Vector3f* row3_;
+  friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
+  friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
+  friend void protobuf_AssignDesc_phys_5fent_2eproto();
+  friend void protobuf_ShutdownFile_phys_5fent_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<Matrix3f> Matrix3f_default_instance_;
+
+// -------------------------------------------------------------------
+
 class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ser.SerPhys) */ {
  public:
   SerPhys();
@@ -299,6 +559,56 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::ser::Vector3f* release_pos();
   void set_allocated_pos(::ser::Vector3f* pos);
 
+  // required .ser.Quaternionf rot = 3;
+  bool has_rot() const;
+  void clear_rot();
+  static const int kRotFieldNumber = 3;
+  const ::ser::Quaternionf& rot() const;
+  ::ser::Quaternionf* mutable_rot();
+  ::ser::Quaternionf* release_rot();
+  void set_allocated_rot(::ser::Quaternionf* rot);
+
+  // required .ser.Vector3f v = 4;
+  bool has_v() const;
+  void clear_v();
+  static const int kVFieldNumber = 4;
+  const ::ser::Vector3f& v() const;
+  ::ser::Vector3f* mutable_v();
+  ::ser::Vector3f* release_v();
+  void set_allocated_v(::ser::Vector3f* v);
+
+  // required .ser.Vector3f w = 5;
+  bool has_w() const;
+  void clear_w();
+  static const int kWFieldNumber = 5;
+  const ::ser::Vector3f& w() const;
+  ::ser::Vector3f* mutable_w();
+  ::ser::Vector3f* release_w();
+  void set_allocated_w(::ser::Vector3f* w);
+
+  // required float minv = 6;
+  bool has_minv() const;
+  void clear_minv();
+  static const int kMinvFieldNumber = 6;
+  float minv() const;
+  void set_minv(float value);
+
+  // required .ser.Matrix3f Jinv = 7;
+  bool has_jinv() const;
+  void clear_jinv();
+  static const int kJinvFieldNumber = 7;
+  const ::ser::Matrix3f& jinv() const;
+  ::ser::Matrix3f* mutable_jinv();
+  ::ser::Matrix3f* release_jinv();
+  void set_allocated_jinv(::ser::Matrix3f* jinv);
+
+  // required int32 id = 8;
+  bool has_id() const;
+  void clear_id();
+  static const int kIdFieldNumber = 8;
+  ::google::protobuf::int32 id() const;
+  void set_id(::google::protobuf::int32 value);
+
   GOOGLE_PROTOBUF_EXTENSION_ACCESSORS(SerPhys)
   // @@protoc_insertion_point(class_scope:ser.SerPhys)
  private:
@@ -306,6 +616,18 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   inline void clear_has_type();
   inline void set_has_pos();
   inline void clear_has_pos();
+  inline void set_has_rot();
+  inline void clear_has_rot();
+  inline void set_has_v();
+  inline void clear_has_v();
+  inline void set_has_w();
+  inline void clear_has_w();
+  inline void set_has_minv();
+  inline void clear_has_minv();
+  inline void set_has_jinv();
+  inline void clear_has_jinv();
+  inline void set_has_id();
+  inline void clear_has_id();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -316,6 +638,12 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
   ::ser::Vector3f* pos_;
+  ::ser::Quaternionf* rot_;
+  ::ser::Vector3f* v_;
+  ::ser::Vector3f* w_;
+  ::ser::Matrix3f* jinv_;
+  float minv_;
+  ::google::protobuf::int32 id_;
   int type_;
   friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
   friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
@@ -399,16 +727,26 @@ class Sphere : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
 
   // accessors -------------------------------------------------------
 
+  // required float r = 1;
+  bool has_r() const;
+  void clear_r();
+  static const int kRFieldNumber = 1;
+  float r() const;
+  void set_r(float value);
+
   static const int kSerPhysFieldNumber = 100;
   static ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
       ::google::protobuf::internal::MessageTypeTraits< ::ser::Sphere >, 11, false >
     serPhys;
   // @@protoc_insertion_point(class_scope:ser.Sphere)
  private:
+  inline void set_has_r();
+  inline void clear_has_r();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
+  float r_;
   friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
   friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
   friend void protobuf_AssignDesc_phys_5fent_2eproto();
@@ -491,16 +829,28 @@ class Box : public ::google::protobuf::Message /* @@protoc_insertion_point(class
 
   // accessors -------------------------------------------------------
 
+  // required .ser.Vector3f size = 1;
+  bool has_size() const;
+  void clear_size();
+  static const int kSizeFieldNumber = 1;
+  const ::ser::Vector3f& size() const;
+  ::ser::Vector3f* mutable_size();
+  ::ser::Vector3f* release_size();
+  void set_allocated_size(::ser::Vector3f* size);
+
   static const int kSerPhysFieldNumber = 101;
   static ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
       ::google::protobuf::internal::MessageTypeTraits< ::ser::Box >, 11, false >
     serPhys;
   // @@protoc_insertion_point(class_scope:ser.Box)
  private:
+  inline void set_has_size();
+  inline void clear_has_size();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
+  ::ser::Vector3f* size_;
   friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
   friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
   friend void protobuf_AssignDesc_phys_5fent_2eproto();
@@ -583,17 +933,17 @@ class Core : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 
   // accessors -------------------------------------------------------
 
-  // repeated .ser.SerPhys ojcts = 1;
-  int ojcts_size() const;
-  void clear_ojcts();
-  static const int kOjctsFieldNumber = 1;
-  const ::ser::SerPhys& ojcts(int index) const;
-  ::ser::SerPhys* mutable_ojcts(int index);
-  ::ser::SerPhys* add_ojcts();
+  // repeated .ser.SerPhys objct = 1;
+  int objct_size() const;
+  void clear_objct();
+  static const int kObjctFieldNumber = 1;
+  const ::ser::SerPhys& objct(int index) const;
+  ::ser::SerPhys* mutable_objct(int index);
+  ::ser::SerPhys* add_objct();
   ::google::protobuf::RepeatedPtrField< ::ser::SerPhys >*
-      mutable_ojcts();
+      mutable_objct();
   const ::google::protobuf::RepeatedPtrField< ::ser::SerPhys >&
-      ojcts() const;
+      objct() const;
 
   // @@protoc_insertion_point(class_scope:ser.Core)
  private:
@@ -601,7 +951,7 @@ class Core : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
-  ::google::protobuf::RepeatedPtrField< ::ser::SerPhys > ojcts_;
+  ::google::protobuf::RepeatedPtrField< ::ser::SerPhys > objct_;
   friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
   friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
   friend void protobuf_AssignDesc_phys_5fent_2eproto();
@@ -696,6 +1046,251 @@ inline const Vector3f* Vector3f::internal_default_instance() {
 }
 // -------------------------------------------------------------------
 
+// Quaternionf
+
+// required float x = 1;
+inline bool Quaternionf::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Quaternionf::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Quaternionf::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Quaternionf::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline float Quaternionf::x() const {
+  // @@protoc_insertion_point(field_get:ser.Quaternionf.x)
+  return x_;
+}
+inline void Quaternionf::set_x(float value) {
+  set_has_x();
+  x_ = value;
+  // @@protoc_insertion_point(field_set:ser.Quaternionf.x)
+}
+
+// required float y = 2;
+inline bool Quaternionf::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Quaternionf::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Quaternionf::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Quaternionf::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline float Quaternionf::y() const {
+  // @@protoc_insertion_point(field_get:ser.Quaternionf.y)
+  return y_;
+}
+inline void Quaternionf::set_y(float value) {
+  set_has_y();
+  y_ = value;
+  // @@protoc_insertion_point(field_set:ser.Quaternionf.y)
+}
+
+// required float z = 3;
+inline bool Quaternionf::has_z() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Quaternionf::set_has_z() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Quaternionf::clear_has_z() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Quaternionf::clear_z() {
+  z_ = 0;
+  clear_has_z();
+}
+inline float Quaternionf::z() const {
+  // @@protoc_insertion_point(field_get:ser.Quaternionf.z)
+  return z_;
+}
+inline void Quaternionf::set_z(float value) {
+  set_has_z();
+  z_ = value;
+  // @@protoc_insertion_point(field_set:ser.Quaternionf.z)
+}
+
+// required float w = 4;
+inline bool Quaternionf::has_w() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Quaternionf::set_has_w() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Quaternionf::clear_has_w() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Quaternionf::clear_w() {
+  w_ = 0;
+  clear_has_w();
+}
+inline float Quaternionf::w() const {
+  // @@protoc_insertion_point(field_get:ser.Quaternionf.w)
+  return w_;
+}
+inline void Quaternionf::set_w(float value) {
+  set_has_w();
+  w_ = value;
+  // @@protoc_insertion_point(field_set:ser.Quaternionf.w)
+}
+
+inline const Quaternionf* Quaternionf::internal_default_instance() {
+  return &Quaternionf_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// Matrix3f
+
+// required .ser.Vector3f row1 = 1;
+inline bool Matrix3f::has_row1() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Matrix3f::set_has_row1() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Matrix3f::clear_has_row1() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Matrix3f::clear_row1() {
+  if (row1_ != NULL) row1_->::ser::Vector3f::Clear();
+  clear_has_row1();
+}
+inline const ::ser::Vector3f& Matrix3f::row1() const {
+  // @@protoc_insertion_point(field_get:ser.Matrix3f.row1)
+  return row1_ != NULL ? *row1_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* Matrix3f::mutable_row1() {
+  set_has_row1();
+  if (row1_ == NULL) {
+    row1_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.Matrix3f.row1)
+  return row1_;
+}
+inline ::ser::Vector3f* Matrix3f::release_row1() {
+  // @@protoc_insertion_point(field_release:ser.Matrix3f.row1)
+  clear_has_row1();
+  ::ser::Vector3f* temp = row1_;
+  row1_ = NULL;
+  return temp;
+}
+inline void Matrix3f::set_allocated_row1(::ser::Vector3f* row1) {
+  delete row1_;
+  row1_ = row1;
+  if (row1) {
+    set_has_row1();
+  } else {
+    clear_has_row1();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.Matrix3f.row1)
+}
+
+// required .ser.Vector3f row2 = 2;
+inline bool Matrix3f::has_row2() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Matrix3f::set_has_row2() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Matrix3f::clear_has_row2() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Matrix3f::clear_row2() {
+  if (row2_ != NULL) row2_->::ser::Vector3f::Clear();
+  clear_has_row2();
+}
+inline const ::ser::Vector3f& Matrix3f::row2() const {
+  // @@protoc_insertion_point(field_get:ser.Matrix3f.row2)
+  return row2_ != NULL ? *row2_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* Matrix3f::mutable_row2() {
+  set_has_row2();
+  if (row2_ == NULL) {
+    row2_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.Matrix3f.row2)
+  return row2_;
+}
+inline ::ser::Vector3f* Matrix3f::release_row2() {
+  // @@protoc_insertion_point(field_release:ser.Matrix3f.row2)
+  clear_has_row2();
+  ::ser::Vector3f* temp = row2_;
+  row2_ = NULL;
+  return temp;
+}
+inline void Matrix3f::set_allocated_row2(::ser::Vector3f* row2) {
+  delete row2_;
+  row2_ = row2;
+  if (row2) {
+    set_has_row2();
+  } else {
+    clear_has_row2();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.Matrix3f.row2)
+}
+
+// required .ser.Vector3f row3 = 3;
+inline bool Matrix3f::has_row3() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Matrix3f::set_has_row3() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Matrix3f::clear_has_row3() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Matrix3f::clear_row3() {
+  if (row3_ != NULL) row3_->::ser::Vector3f::Clear();
+  clear_has_row3();
+}
+inline const ::ser::Vector3f& Matrix3f::row3() const {
+  // @@protoc_insertion_point(field_get:ser.Matrix3f.row3)
+  return row3_ != NULL ? *row3_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* Matrix3f::mutable_row3() {
+  set_has_row3();
+  if (row3_ == NULL) {
+    row3_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.Matrix3f.row3)
+  return row3_;
+}
+inline ::ser::Vector3f* Matrix3f::release_row3() {
+  // @@protoc_insertion_point(field_release:ser.Matrix3f.row3)
+  clear_has_row3();
+  ::ser::Vector3f* temp = row3_;
+  row3_ = NULL;
+  return temp;
+}
+inline void Matrix3f::set_allocated_row3(::ser::Vector3f* row3) {
+  delete row3_;
+  row3_ = row3;
+  if (row3) {
+    set_has_row3();
+  } else {
+    clear_has_row3();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.Matrix3f.row3)
+}
+
+inline const Matrix3f* Matrix3f::internal_default_instance() {
+  return &Matrix3f_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
 // SerPhys
 
 // required .ser.SerPhys.Type type = 1;
@@ -768,12 +1363,264 @@ inline void SerPhys::set_allocated_pos(::ser::Vector3f* pos) {
   // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.pos)
 }
 
+// required .ser.Quaternionf rot = 3;
+inline bool SerPhys::has_rot() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SerPhys::set_has_rot() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SerPhys::clear_has_rot() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SerPhys::clear_rot() {
+  if (rot_ != NULL) rot_->::ser::Quaternionf::Clear();
+  clear_has_rot();
+}
+inline const ::ser::Quaternionf& SerPhys::rot() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.rot)
+  return rot_ != NULL ? *rot_
+                         : *::ser::Quaternionf::internal_default_instance();
+}
+inline ::ser::Quaternionf* SerPhys::mutable_rot() {
+  set_has_rot();
+  if (rot_ == NULL) {
+    rot_ = new ::ser::Quaternionf;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.rot)
+  return rot_;
+}
+inline ::ser::Quaternionf* SerPhys::release_rot() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.rot)
+  clear_has_rot();
+  ::ser::Quaternionf* temp = rot_;
+  rot_ = NULL;
+  return temp;
+}
+inline void SerPhys::set_allocated_rot(::ser::Quaternionf* rot) {
+  delete rot_;
+  rot_ = rot;
+  if (rot) {
+    set_has_rot();
+  } else {
+    clear_has_rot();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.rot)
+}
+
+// required .ser.Vector3f v = 4;
+inline bool SerPhys::has_v() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SerPhys::set_has_v() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SerPhys::clear_has_v() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SerPhys::clear_v() {
+  if (v_ != NULL) v_->::ser::Vector3f::Clear();
+  clear_has_v();
+}
+inline const ::ser::Vector3f& SerPhys::v() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.v)
+  return v_ != NULL ? *v_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* SerPhys::mutable_v() {
+  set_has_v();
+  if (v_ == NULL) {
+    v_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.v)
+  return v_;
+}
+inline ::ser::Vector3f* SerPhys::release_v() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.v)
+  clear_has_v();
+  ::ser::Vector3f* temp = v_;
+  v_ = NULL;
+  return temp;
+}
+inline void SerPhys::set_allocated_v(::ser::Vector3f* v) {
+  delete v_;
+  v_ = v;
+  if (v) {
+    set_has_v();
+  } else {
+    clear_has_v();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.v)
+}
+
+// required .ser.Vector3f w = 5;
+inline bool SerPhys::has_w() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SerPhys::set_has_w() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SerPhys::clear_has_w() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SerPhys::clear_w() {
+  if (w_ != NULL) w_->::ser::Vector3f::Clear();
+  clear_has_w();
+}
+inline const ::ser::Vector3f& SerPhys::w() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.w)
+  return w_ != NULL ? *w_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* SerPhys::mutable_w() {
+  set_has_w();
+  if (w_ == NULL) {
+    w_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.w)
+  return w_;
+}
+inline ::ser::Vector3f* SerPhys::release_w() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.w)
+  clear_has_w();
+  ::ser::Vector3f* temp = w_;
+  w_ = NULL;
+  return temp;
+}
+inline void SerPhys::set_allocated_w(::ser::Vector3f* w) {
+  delete w_;
+  w_ = w;
+  if (w) {
+    set_has_w();
+  } else {
+    clear_has_w();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.w)
+}
+
+// required float minv = 6;
+inline bool SerPhys::has_minv() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void SerPhys::set_has_minv() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void SerPhys::clear_has_minv() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void SerPhys::clear_minv() {
+  minv_ = 0;
+  clear_has_minv();
+}
+inline float SerPhys::minv() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.minv)
+  return minv_;
+}
+inline void SerPhys::set_minv(float value) {
+  set_has_minv();
+  minv_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.minv)
+}
+
+// required .ser.Matrix3f Jinv = 7;
+inline bool SerPhys::has_jinv() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void SerPhys::set_has_jinv() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void SerPhys::clear_has_jinv() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void SerPhys::clear_jinv() {
+  if (jinv_ != NULL) jinv_->::ser::Matrix3f::Clear();
+  clear_has_jinv();
+}
+inline const ::ser::Matrix3f& SerPhys::jinv() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.Jinv)
+  return jinv_ != NULL ? *jinv_
+                         : *::ser::Matrix3f::internal_default_instance();
+}
+inline ::ser::Matrix3f* SerPhys::mutable_jinv() {
+  set_has_jinv();
+  if (jinv_ == NULL) {
+    jinv_ = new ::ser::Matrix3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.Jinv)
+  return jinv_;
+}
+inline ::ser::Matrix3f* SerPhys::release_jinv() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.Jinv)
+  clear_has_jinv();
+  ::ser::Matrix3f* temp = jinv_;
+  jinv_ = NULL;
+  return temp;
+}
+inline void SerPhys::set_allocated_jinv(::ser::Matrix3f* jinv) {
+  delete jinv_;
+  jinv_ = jinv;
+  if (jinv) {
+    set_has_jinv();
+  } else {
+    clear_has_jinv();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.Jinv)
+}
+
+// required int32 id = 8;
+inline bool SerPhys::has_id() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void SerPhys::set_has_id() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void SerPhys::clear_has_id() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void SerPhys::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 SerPhys::id() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.id)
+  return id_;
+}
+inline void SerPhys::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.id)
+}
+
 inline const SerPhys* SerPhys::internal_default_instance() {
   return &SerPhys_default_instance_.get();
 }
 // -------------------------------------------------------------------
 
 // Sphere
+
+// required float r = 1;
+inline bool Sphere::has_r() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Sphere::set_has_r() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Sphere::clear_has_r() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Sphere::clear_r() {
+  r_ = 0;
+  clear_has_r();
+}
+inline float Sphere::r() const {
+  // @@protoc_insertion_point(field_get:ser.Sphere.r)
+  return r_;
+}
+inline void Sphere::set_r(float value) {
+  set_has_r();
+  r_ = value;
+  // @@protoc_insertion_point(field_set:ser.Sphere.r)
+}
 
 inline const Sphere* Sphere::internal_default_instance() {
   return &Sphere_default_instance_.get();
@@ -782,6 +1629,51 @@ inline const Sphere* Sphere::internal_default_instance() {
 
 // Box
 
+// required .ser.Vector3f size = 1;
+inline bool Box::has_size() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Box::set_has_size() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Box::clear_has_size() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Box::clear_size() {
+  if (size_ != NULL) size_->::ser::Vector3f::Clear();
+  clear_has_size();
+}
+inline const ::ser::Vector3f& Box::size() const {
+  // @@protoc_insertion_point(field_get:ser.Box.size)
+  return size_ != NULL ? *size_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* Box::mutable_size() {
+  set_has_size();
+  if (size_ == NULL) {
+    size_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.Box.size)
+  return size_;
+}
+inline ::ser::Vector3f* Box::release_size() {
+  // @@protoc_insertion_point(field_release:ser.Box.size)
+  clear_has_size();
+  ::ser::Vector3f* temp = size_;
+  size_ = NULL;
+  return temp;
+}
+inline void Box::set_allocated_size(::ser::Vector3f* size) {
+  delete size_;
+  size_ = size;
+  if (size) {
+    set_has_size();
+  } else {
+    clear_has_size();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.Box.size)
+}
+
 inline const Box* Box::internal_default_instance() {
   return &Box_default_instance_.get();
 }
@@ -789,40 +1681,44 @@ inline const Box* Box::internal_default_instance() {
 
 // Core
 
-// repeated .ser.SerPhys ojcts = 1;
-inline int Core::ojcts_size() const {
-  return ojcts_.size();
+// repeated .ser.SerPhys objct = 1;
+inline int Core::objct_size() const {
+  return objct_.size();
 }
-inline void Core::clear_ojcts() {
-  ojcts_.Clear();
+inline void Core::clear_objct() {
+  objct_.Clear();
 }
-inline const ::ser::SerPhys& Core::ojcts(int index) const {
-  // @@protoc_insertion_point(field_get:ser.Core.ojcts)
-  return ojcts_.Get(index);
+inline const ::ser::SerPhys& Core::objct(int index) const {
+  // @@protoc_insertion_point(field_get:ser.Core.objct)
+  return objct_.Get(index);
 }
-inline ::ser::SerPhys* Core::mutable_ojcts(int index) {
-  // @@protoc_insertion_point(field_mutable:ser.Core.ojcts)
-  return ojcts_.Mutable(index);
+inline ::ser::SerPhys* Core::mutable_objct(int index) {
+  // @@protoc_insertion_point(field_mutable:ser.Core.objct)
+  return objct_.Mutable(index);
 }
-inline ::ser::SerPhys* Core::add_ojcts() {
-  // @@protoc_insertion_point(field_add:ser.Core.ojcts)
-  return ojcts_.Add();
+inline ::ser::SerPhys* Core::add_objct() {
+  // @@protoc_insertion_point(field_add:ser.Core.objct)
+  return objct_.Add();
 }
 inline ::google::protobuf::RepeatedPtrField< ::ser::SerPhys >*
-Core::mutable_ojcts() {
-  // @@protoc_insertion_point(field_mutable_list:ser.Core.ojcts)
-  return &ojcts_;
+Core::mutable_objct() {
+  // @@protoc_insertion_point(field_mutable_list:ser.Core.objct)
+  return &objct_;
 }
 inline const ::google::protobuf::RepeatedPtrField< ::ser::SerPhys >&
-Core::ojcts() const {
-  // @@protoc_insertion_point(field_list:ser.Core.ojcts)
-  return ojcts_;
+Core::objct() const {
+  // @@protoc_insertion_point(field_list:ser.Core.objct)
+  return objct_;
 }
 
 inline const Core* Core::internal_default_instance() {
   return &Core_default_instance_.get();
 }
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

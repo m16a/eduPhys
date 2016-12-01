@@ -7,6 +7,21 @@ message Vector3f
 	required float z = 3;
 }
 
+message Quaternionf 
+{
+	required float x = 1;
+	required float y = 2;
+	required float z = 3;
+	required float w = 4;
+}
+
+message Matrix3f
+{
+	required Vector3f row1 = 1;
+	required Vector3f row2 = 2;
+	required Vector3f row3 = 3;
+}
+
 message SerPhys
 {
 	extensions 100 to max;
@@ -18,7 +33,17 @@ message SerPhys
 	}
 
 	required Type type = 1;
+
 	required Vector3f pos = 2;
+	required Quaternionf rot = 3;
+
+	required Vector3f v = 4;
+	required Vector3f w = 5;
+	
+	required float minv = 6;	
+	required Matrix3f Jinv = 7;	
+
+	required int32 id = 8;
 }
 
 message Sphere 
@@ -27,6 +52,7 @@ message Sphere
     {
         optional Sphere	serPhys = 100; 
     }
+	required float r = 1;
 }
 
 message Box 
@@ -35,9 +61,10 @@ message Box
     {
         optional Box serPhys = 101; 
     }
+	required Vector3f size = 1;
 }
 
 message Core
 {
-	repeated SerPhys ojcts = 1;
+	repeated SerPhys objct = 1;
 }

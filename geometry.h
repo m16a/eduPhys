@@ -4,6 +4,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <vector>
+#include "serialization/phys_ent.pb.h"
 
 using Eigen::Vector3f;
 using Eigen::Quaternionf;
@@ -23,7 +24,7 @@ struct  IPhysEnt
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f)) = 0;
 	virtual void AddAngularImpulse(Vector3f value) = 0;
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
-	
+	virtual void Serialize(ser::SerPhys* sp){};
 	Vector3f m_pos;
 	Quaternionf m_rot;
 
