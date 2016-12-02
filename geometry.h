@@ -25,6 +25,7 @@ struct  IPhysEnt
 	virtual void AddAngularImpulse(Vector3f value) = 0;
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 	virtual void Serialize(ser::SerPhys* sp){};
+
 	Vector3f m_pos;
 	Quaternionf m_rot;
 

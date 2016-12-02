@@ -12,3 +12,9 @@ IPhysEnt::IPhysEnt()
 	m_active = true;
 	m_id = 0;
 }
+
+void IPhysEnt::Serialize(ser::SerPhys* sp)
+{
+	
+}
+

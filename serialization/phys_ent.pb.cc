@@ -263,12 +263,12 @@ void protobuf_AddDesc_phys_5fent_2eproto_impl() {
     "ternionf\022\030\n\001v\030\004 \002(\0132\r.ser.Vector3f\022\030\n\001w\030"
     "\005 \002(\0132\r.ser.Vector3f\022\014\n\004minv\030\006 \002(\002\022\033\n\004Ji"
     "nv\030\007 \002(\0132\r.ser.Matrix3f\022\n\n\002id\030\010 \002(\005\"\033\n\004T"
-    "ype\022\n\n\006Sphere\020\001\022\007\n\003Box\020\002*\010\010d\020\200\200\200\200\002\"\?\n\006Sp"
-    "here\022\t\n\001r\030\001 \002(\0022*\n\007serPhys\022\014.ser.SerPhys"
-    "\030d \001(\0132\013.ser.Sphere\"K\n\003Box\022\033\n\004size\030\001 \002(\013"
-    "2\r.ser.Vector3f2\'\n\007serPhys\022\014.ser.SerPhys"
-    "\030e \001(\0132\010.ser.Box\"#\n\004Core\022\033\n\005objct\030\001 \003(\0132"
-    "\014.ser.SerPhys", 653);
+    "ype\022\n\n\006Sphere\020\001\022\007\n\003Box\020\002*\010\010d\020\200\200\200\200\002\">\n\006Sp"
+    "here\022\t\n\001r\030\001 \002(\0022)\n\006sphere\022\014.ser.SerPhys\030"
+    "d \001(\0132\013.ser.Sphere\"G\n\003Box\022\033\n\004size\030\001 \002(\0132"
+    "\r.ser.Vector3f2#\n\003box\022\014.ser.SerPhys\030e \001("
+    "\0132\010.ser.Box\"#\n\004Core\022\033\n\005objct\030\001 \003(\0132\014.ser"
+    ".SerPhys", 648);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "phys_ent.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_phys_5fent_2eproto);
@@ -2751,11 +2751,11 @@ const int Sphere::kRFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Sphere::kSerPhysFieldNumber;
+const int Sphere::kSphereFieldNumber;
 #endif
 ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
     ::google::protobuf::internal::MessageTypeTraits< ::ser::Sphere >, 11, false >
-  Sphere::serPhys(kSerPhysFieldNumber, *::ser::Sphere::internal_default_instance());
+  Sphere::sphere(kSphereFieldNumber, *::ser::Sphere::internal_default_instance());
 Sphere::Sphere()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (this != internal_default_instance()) protobuf_InitDefaults_phys_5fent_2eproto();
@@ -3034,11 +3034,11 @@ const int Box::kSizeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Box::kSerPhysFieldNumber;
+const int Box::kBoxFieldNumber;
 #endif
 ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
     ::google::protobuf::internal::MessageTypeTraits< ::ser::Box >, 11, false >
-  Box::serPhys(kSerPhysFieldNumber, *::ser::Box::internal_default_instance());
+  Box::box(kBoxFieldNumber, *::ser::Box::internal_default_instance());
 Box::Box()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (this != internal_default_instance()) protobuf_InitDefaults_phys_5fent_2eproto();

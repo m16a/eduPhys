@@ -734,10 +734,10 @@ class Sphere : public ::google::protobuf::Message /* @@protoc_insertion_point(cl
   float r() const;
   void set_r(float value);
 
-  static const int kSerPhysFieldNumber = 100;
+  static const int kSphereFieldNumber = 100;
   static ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
       ::google::protobuf::internal::MessageTypeTraits< ::ser::Sphere >, 11, false >
-    serPhys;
+    sphere;
   // @@protoc_insertion_point(class_scope:ser.Sphere)
  private:
   inline void set_has_r();
@@ -838,10 +838,10 @@ class Box : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::ser::Vector3f* release_size();
   void set_allocated_size(::ser::Vector3f* size);
 
-  static const int kSerPhysFieldNumber = 101;
+  static const int kBoxFieldNumber = 101;
   static ::google::protobuf::internal::ExtensionIdentifier< ::ser::SerPhys,
       ::google::protobuf::internal::MessageTypeTraits< ::ser::Box >, 11, false >
-    serPhys;
+    box;
   // @@protoc_insertion_point(class_scope:ser.Box)
  private:
   inline void set_has_size();

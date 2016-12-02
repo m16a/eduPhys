@@ -50,7 +50,7 @@ message Sphere
 {
     extend SerPhys
     {
-        optional Sphere	serPhys = 100; 
+        optional Sphere	sphere = 100; 
     }
 	required float r = 1;
 }
@@ -59,7 +59,7 @@ message Box
 {
     extend SerPhys
     {
-        optional Box serPhys = 101; 
+        optional Box box = 101; 
     }
 	required Vector3f size = 1;
 }
