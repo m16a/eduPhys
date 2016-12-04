@@ -153,3 +153,11 @@ void Sphere::Draw()
      gpu.popMatrix(GL_MODELVIEW);
      glDisable(GL_NORMALIZE);
 }
+
+void Sphere::Serialize(ser::SerPhys* sp)
+{
+	ser::Sphere* b = sp->MutableExtension(ser::Sphere::sphere);
+	sp->set_type(ser::SerPhys::Sphere);
+	b->set_r(m_r); 
+	IPhysEnt::Serialize(sp);
+}

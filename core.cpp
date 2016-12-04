@@ -209,15 +209,6 @@ int Core::RWI(const SRay& r, SRayHit& out_hit)
 void Core::SerializeToFile(const char* name)
 {
 	qDebug() << "Saving scene to disk";
-/*
-	ser::Vector3f v;
-	v.set_x(1);
-	v.set_y(2);
-	v.set_z(3.14);
-	
-	std::fstream output(name, std::ios::out | std::ios::trunc | std::ios::binary);
-	v.SerializeToOstream(&output);
-*/	
 	ser::Core c;
 
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
@@ -226,6 +217,8 @@ void Core::SerializeToFile(const char* name)
 		ser::SerPhys* sp = c.add_objct();		
 		(*it)->Serialize(sp);
 	}
+	std::fstream output(name, std::ios::out | std::ios::trunc | std::ios::binary);
+	c.SerializeToOstream(&output);
 }
 
 void Core::DeserializeFromFile(const char* name)

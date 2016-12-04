@@ -301,12 +301,12 @@ void getBoxVerticies(const Box* b, Vector3f out_arr[8])
 
 void Box::Serialize(ser::SerPhys* sp)
 {
-	ser::Box* b = sp->MutableExtension(Box::box);
-	ser::Vector3f size; 
-	size.set_x(m_size[0]);
-	size.set_y(m_size[1]);
-	size.set_z(m_size[2]);
-	b->set_size(size);
+	ser::Box* b = sp->MutableExtension(ser::Box::box);
+	sp->set_type(ser::SerPhys::Box);
+	ser::Vector3f* size = b->mutable_size(); 
+	size->set_x(m_size[0]);
+	size->set_y(m_size[1]);
+	size->set_z(m_size[2]);
 	IPhysEnt::Serialize(sp);
 }
 
