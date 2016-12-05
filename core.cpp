@@ -227,7 +227,9 @@ void Core::DeserializeFromFile(const char* name)
 	ser::Core c;
 	std::fstream input(name, std::ios::in | std::ios::binary);
   c.ParseFromIstream(&input);
-	
+
+	m_objects.clear();	
+
 	for (int i=0; i<c.objct_size(); ++i)
 	{
 		const ser::SerPhys& sp = c.objct(i);
@@ -246,5 +248,7 @@ void Core::DeserializeFromFile(const char* name)
 				break;
 		}	
 		assert(e);	
+		e->Deserialize(&sp);
+		m_objects.push_back(e);
 	}
 }

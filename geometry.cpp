@@ -71,7 +71,7 @@ void IPhysEnt::Serialize(ser::SerPhys* sp)
 	row3->set_z(m_Jinv(2,2));
 }
 
-void IPhysEnt::Deserialize(ser::SerPhys* sp)
+void IPhysEnt::Deserialize(const ser::SerPhys* sp)
 {
 	DeserializeVector3f(sp->pos(), m_pos);	
 	DeserializeQuaternionf(sp->rot(), m_rot);
@@ -80,4 +80,10 @@ void IPhysEnt::Deserialize(ser::SerPhys* sp)
 	m_minv = sp->minv();
 	m_id = sp->id();	
 	
+	ser::Matrix3f m = sp->jinv();
+	Vector3f r1, r2, r3;
+	DeserializeVector3f(m.row1(), r1);	
+	DeserializeVector3f(m.row2(), r2);	
+	DeserializeVector3f(m.row3(), r3);	
+	m_Jinv << r1, r2, r3;
 }

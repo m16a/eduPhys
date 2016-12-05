@@ -162,7 +162,7 @@ void Sphere::Serialize(ser::SerPhys* sp)
 	IPhysEnt::Serialize(sp);
 }
 
-void Sphere::Deserialize(ser::SerPhys* sp)
+void Sphere::Deserialize(const ser::SerPhys* sp)
 {
 	ser::Sphere b = sp->GetExtension(ser::Sphere::sphere);
 	m_r = b.r();

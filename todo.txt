@@ -2,8 +2,6 @@ Box-box collision detection
 	Debug edge-face intersection
 	Implement face-face intersection
 
-Provide serialization/desarialization for save/load
-
 Add external torque
 Unit tests would be fine
 Textures

@@ -310,7 +310,7 @@ void Box::Serialize(ser::SerPhys* sp)
 	IPhysEnt::Serialize(sp);
 }
 
-void Box::Deserialize(ser::SerPhys* sp)
+void Box::Deserialize(const ser::SerPhys* sp)
 {
 	ser::Box b = sp->GetExtension(ser::Box::box);
 	ser::Vector3f size = b.size();
