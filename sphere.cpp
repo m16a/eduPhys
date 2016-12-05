@@ -161,3 +161,10 @@ void Sphere::Serialize(ser::SerPhys* sp)
 	b->set_r(m_r); 
 	IPhysEnt::Serialize(sp);
 }
+
+void Sphere::Deserialize(ser::SerPhys* sp)
+{
+	ser::Sphere b = sp->GetExtension(ser::Sphere::sphere);
+	m_r = b.r();
+	IPhysEnt::Deserialize(sp);
+}

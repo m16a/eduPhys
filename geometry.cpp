@@ -13,6 +13,23 @@ IPhysEnt::IPhysEnt()
 	m_id = 0;
 }
 
+//TODO::move to more generic place
+void DeserializeVector3f(const ser::Vector3f s, Vector3f& out)
+{
+	out[0] = s.x();
+	out[1] = s.y();
+	out[2] = s.z();
+}
+
+//TODO::move to more generic place
+void DeserializeQuaternionf(const ser::Quaternionf s, Quaternionf& out)
+{
+	out.x() = s.x();
+	out.y() = s.y();
+	out.z() = s.z();
+	out.w() = s.w();
+}
+
 void IPhysEnt::Serialize(ser::SerPhys* sp)
 {
 	ser::Vector3f* pos = sp->mutable_pos();
@@ -54,3 +71,13 @@ void IPhysEnt::Serialize(ser::SerPhys* sp)
 	row3->set_z(m_Jinv(2,2));
 }
 
+void IPhysEnt::Deserialize(ser::SerPhys* sp)
+{
+	DeserializeVector3f(sp->pos(), m_pos);	
+	DeserializeQuaternionf(sp->rot(), m_rot);
+	DeserializeVector3f(sp->v(), m_v);	
+	DeserializeVector3f(sp->w(), m_w);	
+	m_minv = sp->minv();
+	m_id = sp->id();	
+	
+}

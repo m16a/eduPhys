@@ -208,7 +208,7 @@ int Core::RWI(const SRay& r, SRayHit& out_hit)
 
 void Core::SerializeToFile(const char* name)
 {
-	qDebug() << "Saving scene to disk";
+	qDebug() << "Saving scene to file: " << name;
 	ser::Core c;
 
 	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
@@ -223,11 +223,28 @@ void Core::SerializeToFile(const char* name)
 
 void Core::DeserializeFromFile(const char* name)
 {
-	qDebug() << "Load scene from disk";
-/*
-	ser::Vector3f v;
+	qDebug() << "Load scene from file: " << name;
+	ser::Core c;
 	std::fstream input(name, std::ios::in | std::ios::binary);
-  v.ParseFromIstream(&input);
-	qDebug() << v.x() << v.y() << v.z();	
-*/
+  c.ParseFromIstream(&input);
+	
+	for (int i=0; i<c.objct_size(); ++i)
+	{
+		const ser::SerPhys& sp = c.objct(i);
+		ser::SerPhys_Type t = sp.type();
+		IPhysEnt* e = 0;
+		switch (t)
+		{
+			case ser::SerPhys::Sphere:
+				e = new Sphere();
+				break;
+			case ser::SerPhys::Box:
+				e = new Box();
+				break;
+			default:
+				assert(0);
+				break;
+		}	
+		assert(e);	
+	}
 }
