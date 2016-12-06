@@ -128,8 +128,15 @@ float Core::FindCollisions(bool applyImpulses)
 
 void Core::Step(float reqStep)
 {
+	int subStep = 0;
 	while (reqStep > 0)
 	{
+		if (subStep > 5)
+		{
+			qCritical() << "Over 5 substeps";
+			assert(0);
+		}
+
 		StepAll(reqStep);
 		float d = FindCollisions(false);
 		StepAll(-reqStep);
@@ -167,7 +174,7 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-		//qDebug() << "step time:" << mid;
+		qDebug() << "subStep:" << subStep++ << "time:" << mid << "/" << reqStep;
 		StepAll(mid);
 		FindCollisions(true);
 

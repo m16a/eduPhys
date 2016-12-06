@@ -557,18 +557,33 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 		float s = (b*f - c*e)/d; 	
 		float t = (a*f - c*b)/d; 	
 		if (s<0 || s >1 || t<0 || t>1)
-			qWarning() << "segment-segment intersection: point lies out of segment, use more sofisticated method";
-		Vector3f p1 = (a1 + s*d1);
-		Vector3f p2 = (b1 + t*d2);
-		out_normal = p2 - p1;
-		out_normal.normalize(); 
-		out_vrts[0] = (p1 + p2) / 2.0f;
+		{	
+			//TODO:check commented warning below
+			//qWarning() << "segment-segment intersection: point lies out of segment, use more sofisticated method";
+			out_cnt = 0;
+		}else
+		{
+			out_cnt = 1;
+			Vector3f p1 = (a1 + s*d1);
+			Vector3f p2 = (b1 + t*d2);
+			out_normal = p2 - p1;
+			out_normal.normalize(); 
+			out_vrts[0] = (p1 + p2) / 2.0f;
+		}
 	}
 	else //colinear case
 	{
-		out_cnt = 0;	
-		qWarning() << "Implement intersection of colinear segements";
-		//assert(0);
+		//drop case when segments don't lie on one line
+		if ((d1.cross(a2-b1)).norm() > 0.0001)
+		{
+			out_cnt = 0;	
+		}
+		else
+		{
+			out_cnt = 0;	
+			qWarning() << "Implement intersection of colinear segements";
+			//assert(0);
+		}
 	}
 }
 
