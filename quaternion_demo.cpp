@@ -81,7 +81,7 @@ RenderingWidget::RenderingWidget()
   m_core.reset(new Core);
 
   m_performPauseStep == false;
-  m_isSolverStopped = false;
+  m_isSolverStopped = true;
   m_solverTimeFlow = SolverForwardTime;
 	m_realTimeStart = clock() / float(CLOCKS_PER_SEC);
   m_lastTime = m_realTimeStart;
@@ -725,7 +725,7 @@ QuaternionDemo::QuaternionDemo()
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
   s3->m_minv = 0.1f;
-	//s3->m_v = Vector3f(1.0f, 0.f, 0.f);
+	s3->m_v = Vector3f(1.0f, 0.f, 0.f);
 
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
