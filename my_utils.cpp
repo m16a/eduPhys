@@ -1,5 +1,15 @@
 #include "my_utils.h"
 
+//http://misc.flogisoft.com/bash/tip_colors_and_formatting
+//const char* gRed = "\033[1;31m";
+const char* gRed = "\033[41m";
+//const char* gGreen = "\033[1;32m";
+const char* gGreen = "\033[42m";
+const char* gYellow = "\033[1;33m";
+const char* gCyan = "\033[1;36m";
+const char* gMagenta = "\033[1;35m";
+const char* gReset = "\033[0m";
+
 Eigen::Matrix3f getCrossMatrix(Vector3f t)
 {
 	Eigen::Matrix3f res;

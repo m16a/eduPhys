@@ -19,4 +19,11 @@ extern Quaternion<float> quatFromPYR(float pitch, float yaw, float roll);
 extern Vector3f PYRFromQuat(Quaternionf& q);
 
 bool isVectorsEqual(const Vector3f a, const Vector3f b);
+
+extern const char* gRed;
+extern const char* gGreen;
+extern const char* gYellow;
+extern const char* gCyan;
+extern const char* gMagenta;
+extern const char* gReset;
 #endif// _MY_UTILS_H_

@@ -149,6 +149,7 @@ void Core::Step(float reqStep)
 		if (d < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
+				qDebug() << gGreen << "Collison iteration:" << gReset << i;
 				mid = (sStep + fStep) / 2.0f;
 				
 		//		qDebug() << "PRE";	
@@ -174,7 +175,7 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-		qDebug() << "subStep:" << subStep++ << "time:" << mid << "/" << reqStep;
+		qDebug() << gRed << "subStep:" << gReset << subStep++ << "time:" << mid << "/" << reqStep;
 		StepAll(mid);
 		FindCollisions(true);
 
