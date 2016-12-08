@@ -45,38 +45,38 @@ float Core::FindCollisions(bool applyImpulses)
 				IPhysEnt *b = m_objects[j];
 
 				Contact c[1];
-				int s = 1;
+				int cntct_cnt = 1;
 
 				//TODO: ugly, refactor on adding new collision geom
 				if (Box* a1 = dynamic_cast<Box*>(a))
 				{
 					if (Sphere* b1 = dynamic_cast<Sphere*>(b))
 					{
-						collide(b1, a1, c, s);
+						collide(b1, a1, c, cntct_cnt);
 						a = b1; b = a1;
 					}
 					else if (Box* b1 = dynamic_cast<Box*>(b))
 					{
-						collide(a1, b1, c, s);
+						collide(a1, b1, c, cntct_cnt);
 						a = a1; b = b1;
 					}
 				}else if (Sphere* a1 = dynamic_cast<Sphere*>(a))
 				{
 					if (Box* b1 = dynamic_cast<Box*>(b))
 					{
-						collide(a1, b1, c, s);
+						collide(a1, b1, c, cntct_cnt);
 						a = a1; b = b1;
 
 					}
 					else if (Sphere* b1 = dynamic_cast<Sphere*>(b))
  					{	
- 						collide(a1, b1, c, s);
+ 						collide(a1, b1, c, cntct_cnt);
 						a = a1; b = b1;
 					}
 
 				}
 
-				if (s > 0)
+				if (cntct_cnt > 0)
 				{
 					if (c[0].depth < res)
 						res = c[0].depth;
@@ -137,23 +137,26 @@ void Core::Step(float reqStep)
 			assert(0);
 		}
 
-		StepAll(reqStep);
-		float d = FindCollisions(false);
-		StepAll(-reqStep);
-	
 		int i = 0;
 		float sStep = 0.0f;
 		float fStep = reqStep;
 		float mid = reqStep;
-		//qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
+
+		qDebug() << gRed << "subStep[collPath]:" << gReset << subStep++ << "time:" << mid << "/" << reqStep;
+
+		StepAll(reqStep);
+		float d = FindCollisions(false);
+		StepAll(-reqStep);
+	
+		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
 		if (d < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
 				qDebug() << gGreen << "Collison iteration:" << gReset << i;
 				mid = (sStep + fStep) / 2.0f;
 				
-		//		qDebug() << "PRE";	
-		//		DumpAll();	
+			//	qDebug() << "PRE";	
+			//	DumpAll();	
 				StepAll(mid);
 			//	qDebug() << "IN";	
 			//	DumpAll();	
@@ -162,12 +165,12 @@ void Core::Step(float reqStep)
 			//	qDebug() << "POST";
 			//	DumpAll();
 
-				//qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
+			//	qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
 				
 				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
 					break;
 
-				if ( depth >= -COLLISION_DEPTH_TOLERANCE)
+				if (depth >= -COLLISION_DEPTH_TOLERANCE)
 					sStep = mid;
 				else
 					fStep = mid;						
@@ -175,7 +178,8 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
-		qDebug() << gRed << "subStep:" << gReset << subStep++ << "time:" << mid << "/" << reqStep;
+		qDebug() << gRed << "[" << gReset << "impulsePath] time:" << mid << "/" << reqStep;
+		
 		StepAll(mid);
 		FindCollisions(true);
 

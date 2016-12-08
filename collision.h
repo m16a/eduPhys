@@ -409,8 +409,8 @@ void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 	//5.ADBC
 	//6.ADCB
 	
-	qDebug() << "verticies reordering";
-	qDebug() << "\tpre:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
+	//qDebug() << "verticies reordering";
+	//qDebug() << "\tpre:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
 	const Vector3f a = out_arr[1]-out_arr[0];
 	const Vector3f b = out_arr[2]-out_arr[0];
 	const float orntn = n.dot(a.cross(b));
@@ -500,7 +500,7 @@ void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 		assert(0);
 	}
 
-	qDebug() << "\tpost:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
+	//qDebug() << "\tpost:\t" << out_arr[0] << out_arr[1] << out_arr[2] << out_arr[3];
 }
 
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
