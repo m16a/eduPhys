@@ -44,8 +44,8 @@ float Core::FindCollisions(bool applyImpulses)
 				IPhysEnt *a = m_objects[i];
 				IPhysEnt *b = m_objects[j];
 
-				Contact c[1];
-				int cntct_cnt = 1;
+				Contact c[4];
+				int cntct_cnt = 0;
 
 				//TODO: ugly, refactor on adding new collision geom
 				if (Box* a1 = dynamic_cast<Box*>(a))
@@ -84,6 +84,14 @@ float Core::FindCollisions(bool applyImpulses)
 					if (!applyImpulses)
 						continue;
 					
+					//TODO: remove after LCP implementing
+					if (cntct_cnt == 2)
+					{
+						c[0].n *= -1;
+						qDebug() << "two pnts:" << c[0].pt << c[0].n << c[1].pt << c[0].n;
+						qDebug() << "objXpos a:" << a->m_pos[0] << "b:" << b->m_pos[0];
+						c[0].pt = (c[0].pt + c[1].pt) * 0.5;	
+					}
 					assert(c[0].n.norm() > 0.1);
 					Vector3f rAP = c[0].pt - a->m_pos;
 					Vector3f rBP = c[0].pt - b->m_pos;
@@ -108,7 +116,8 @@ float Core::FindCollisions(bool applyImpulses)
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
-					qDebug() << "COLLISION";
+					p *= 10;
+					qDebug() << "COLLISION numOfPts:" << cntct_cnt;
 					qDebug() << " point:" << c[0].pt <<" v_con:"<< v_contact.norm()<< 
 									" impulse:" << p;
 	
