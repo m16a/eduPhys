@@ -693,13 +693,18 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			Vector3f tmp[2], norm;
 			if (cnt1 == 4)
 			{
-				//TODO:adjust normal a->b
-				assert(0);
 				intersectFaceSegment(vs1, vs2, tmp, norm);
+				//adjust normal a->b
+				if (norm.dot(b->m_pos-c[0].pt) < 0)
+					norm *= -1.0f;
 			}
 			else
+			{
 				intersectFaceSegment(vs2, vs1, tmp, norm);
-
+				//adjust normal a->b
+				if (norm.dot(a->m_pos-c[0].pt) < 0)
+					norm *= -1.0f;
+			}
 			out_size = 2;
 			c[0].pt = tmp[0];
 			c[1].pt = tmp[1];
