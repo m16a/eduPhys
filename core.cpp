@@ -116,7 +116,6 @@ float Core::FindCollisions(bool applyImpulses)
 						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
-					p *= 10;
 					qDebug() << "COLLISION numOfPts:" << cntct_cnt;
 					qDebug() << " point:" << c[0].pt <<" v_con:"<< v_contact.norm()<< 
 									" impulse:" << p;

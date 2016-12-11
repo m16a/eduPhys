@@ -610,8 +610,7 @@ void clampSegmentWithFacesEdge(const Vector3f faceEdge[2], const Vector3f& third
 
 void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vector3f /*out_*/clampedSegment[2], Vector3f& out_normal)
 {
-	assert(0);//TODO: fix normal calculation
-	Vector3f faceNormal = face[0].cross(face[1]);
+	Vector3f faceNormal = (face[0]-face[1]).cross(face[2]-face[1]);
 	faceNormal.normalize();
 
 	//Projecct segment onto face
@@ -695,6 +694,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			if (cnt1 == 4)
 			{
 				//TODO:adjust normal a->b
+				assert(0);
 				intersectFaceSegment(vs1, vs2, tmp, norm);
 			}
 			else
