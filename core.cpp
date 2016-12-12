@@ -117,16 +117,14 @@ float Core::FindCollisions(bool applyImpulses)
 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
 						);
 					qDebug() << "COLLISION numOfPts:" << cntct_cnt;
-					qDebug() << " point:" << c[0].pt <<" v_con:"<< v_contact.norm()<< 
-									" impulse:" << p;
 	
-					qDebug() << " normal:" << c[0].n << " depth:" << c[0].depth;
+					qDebug() << "pt:"<<c[0].pt <<  "normal:" << c[0].n << " depth:" << c[0].depth;
 					
 					a->AddImpulse(-p * c[0].n, c[0].pt);
 					b->AddImpulse(p * c[0].n, c[0].pt);
 						
-					DebugManager()->DrawVector(c[0].pt, c[0].n, p);	 
-					DebugManager()->DrawVector(c[0].pt, -c[0].n, p);	 
+					DebugManager()->DrawVector(c[0].pt, c[0].n, p*3);	 
+					DebugManager()->DrawVector(c[0].pt, -c[0].n, p*3);	 
 				}			
 			}
 		}

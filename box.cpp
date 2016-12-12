@@ -74,9 +74,11 @@ void Box::Step(float t)
 
 void Box::AddImpulse(Vector3f value, Vector3f pt)
 {
+
+	qDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;
 	if (value.norm() < 0.0001)
 	{
-		qDebug() << "Small impulse";
+		qDebug() << "Small norm impulse";
 		return;
 	}
 	
@@ -113,7 +115,7 @@ void Box::AddAngularImpulse(Vector3f value)
 //	qDebug() << "angular impulse " << value.norm();
 	if (value.norm() < 0.0001)
 	{
-		qDebug() << "Small impulse";
+		qDebug() << "Small angular impulse";
 		return;
 	}
 

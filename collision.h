@@ -532,10 +532,11 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[
 	}
 }
 
-Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal)
+Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal, const Vector3f& plane_point)
 {
 	assert(fabs(plane_normal.dot(plane_normal) - 1.0f) < 0.001);
-	return v - v.dot(plane_normal) * plane_normal;
+	Vector3f a = v - plane_point;
+	return v - a.dot(plane_normal) * plane_normal;
 }
 
 void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)
@@ -614,9 +615,9 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 	faceNormal.normalize();
 
 	//Projecct segment onto face
-	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal);
-	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal);
-
+	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal, face[0]);
+	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal, face[0]);
+	qDebug() << "projected:" << s1 << s2;
 	//Clamp segment by 4 face edges
 	clampedSegment[0] = s1; clampedSegment[1] = s2;
 
@@ -694,17 +695,21 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			if (cnt1 == 4)
 			{
 				intersectFaceSegment(vs1, vs2, tmp, norm);
-				//adjust normal a->b
-				if (norm.dot(b->m_pos-c[0].pt) < 0)
-					norm *= -1.0f;
+				qDebug() << "interest points:" << vs2[0] << vs2[1];
+				qDebug() << "interest points2:" << vs1[0] << vs1[1]<< vs1[2] << vs1[3];
 			}
 			else
 			{
 				intersectFaceSegment(vs2, vs1, tmp, norm);
-				//adjust normal a->b
-				if (norm.dot(a->m_pos-c[0].pt) < 0)
-					norm *= -1.0f;
 			}
+			qDebug() << "normNeg:" << a->m_pos << b->m_pos << tmp[0];
+			//adjust normal a->b
+			if (norm.dot(b->m_pos-tmp[0]) < 0)
+			{
+				norm *= -1.0f;
+				qDebug() << "normal negation";
+			}
+
 			out_size = 2;
 			c[0].pt = tmp[0];
 			c[1].pt = tmp[1];

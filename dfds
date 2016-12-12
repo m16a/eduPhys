@@ -1,0 +1,142 @@
+[1mdiff --git a/box.cpp b/box.cpp[m
+[1mindex 9dd5405..766cbf3 100644[m
+[1m--- a/box.cpp[m
+[1m+++ b/box.cpp[m
+[36m@@ -74,9 +74,11 @@[m [mvoid Box::Step(float t)[m
+ [m
+ void Box::AddImpulse(Vector3f value, Vector3f pt)[m
+ {[m
+[32m+[m
+[32m+[m	[32mqDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;[m
+ 	if (value.norm() < 0.0001)[m
+ 	{[m
+[31m-		qDebug() << "Small impulse";[m
+[32m+[m		[32mqDebug() << "Small norm impulse";[m
+ 		return;[m
+ 	}[m
+ 	[m
+[36m@@ -113,7 +115,7 @@[m [mvoid Box::AddAngularImpulse(Vector3f value)[m
+ //	qDebug() << "angular impulse " << value.norm();[m
+ 	if (value.norm() < 0.0001)[m
+ 	{[m
+[31m-		qDebug() << "Small impulse";[m
+[32m+[m		[32mqDebug() << "Small angular impulse";[m
+ 		return;[m
+ 	}[m
+ [m
+[1mdiff --git a/collision.h b/collision.h[m
+[1mindex fbf78df..d1f5b4d 100644[m
+[1m--- a/collision.h[m
+[1m+++ b/collision.h[m
+[36m@@ -532,10 +532,11 @@[m [mvoid getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[[m
+ 	}[m
+ }[m
+ [m
+[31m-Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal)[m
+[32m+[m[32mVector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal, const Vector3f& plane_point)[m
+ {[m
+ 	assert(fabs(plane_normal.dot(plane_normal) - 1.0f) < 0.001);[m
+[31m-	return v - v.dot(plane_normal) * plane_normal;[m
+[32m+[m	[32mVector3f a = v - plane_point;[m
+[32m+[m	[32mreturn v - a.dot(plane_normal) * plane_normal;[m
+ }[m
+ [m
+ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)[m
+[36m@@ -614,9 +615,9 @@[m [mvoid intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec[m
+ 	faceNormal.normalize();[m
+ [m
+ 	//Projecct segment onto face[m
+[31m-	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal);[m
+[31m-	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal);[m
+[31m-[m
+[32m+[m	[32mVector3f s1 = projectVectorOntoPlane(segment[0], faceNormal, face[0]);[m
+[32m+[m	[32mVector3f s2 = projectVectorOntoPlane(segment[1], faceNormal, face[0]);[m
+[32m+[m	[32mqDebug() << "projected:" << s1 << s2;[m
+ 	//Clamp segment by 4 face edges[m
+ 	clampedSegment[0] = s1; clampedSegment[1] = s2;[m
+ [m
+[36m@@ -694,17 +695,21 @@[m [mvoid collide(Box* a, Box* b, Contact* c, int& out_size)[m
+ 			if (cnt1 == 4)[m
+ 			{[m
+ 				intersectFaceSegment(vs1, vs2, tmp, norm);[m
+[31m-				//adjust normal a->b[m
+[31m-				if (norm.dot(b->m_pos-c[0].pt) < 0)[m
+[31m-					norm *= -1.0f;[m
+[32m+[m				[32mqDebug() << "interest points:" << vs2[0] << vs2[1];[m
+[32m+[m				[32mqDebug() << "interest points2:" << vs1[0] << vs1[1]<< vs1[2] << vs1[3];[m
+ 			}[m
+ 			else[m
+ 			{[m
+ 				intersectFaceSegment(vs2, vs1, tmp, norm);[m
+[31m-				//adjust normal a->b[m
+[31m-				if (norm.dot(a->m_pos-c[0].pt) < 0)[m
+[31m-					norm *= -1.0f;[m
+ 			}[m
+[32m+[m			[32mqDebug() << "normNeg:" << a->m_pos << b->m_pos << tmp[0];[m
+[32m+[m			[32m//adjust normal a->b[m
+[32m+[m			[32mif (norm.dot(b->m_pos-tmp[0]) < 0)[m
+[32m+[m			[32m{[m
+[32m+[m				[32mnorm *= -1.0f;[m
+[32m+[m				[32mqDebug() << "normal negation";[m
+[32m+[m			[32m}[m
+[32m+[m
+ 			out_size = 2;[m
+ 			c[0].pt = tmp[0];[m
+ 			c[1].pt = tmp[1];[m
+[1mdiff --git a/core.cpp b/core.cpp[m
+[1mindex 98c5f3c..82ba2cd 100644[m
+[1m--- a/core.cpp[m
+[1m+++ b/core.cpp[m
+[36m@@ -117,16 +117,14 @@[m [mfloat Core::FindCollisions(bool applyImpulses)[m
+ 											   + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)[m
+ 						);[m
+ 					qDebug() << "COLLISION numOfPts:" << cntct_cnt;[m
+[31m-					qDebug() << " point:" << c[0].pt <<" v_con:"<< v_contact.norm()<< [m
+[31m-									" impulse:" << p;[m
+ 	[m
+[31m-					qDebug() << " normal:" << c[0].n << " depth:" << c[0].depth;[m
+[32m+[m					[32mqDebug() << "pt:"<<c[0].pt <<  "normal:" << c[0].n << " depth:" << c[0].depth;[m
+ 					[m
+ 					a->AddImpulse(-p * c[0].n, c[0].pt);[m
+ 					b->AddImpulse(p * c[0].n, c[0].pt);[m
+ 						[m
+[31m-					DebugManager()->DrawVector(c[0].pt, c[0].n, p);	 [m
+[31m-					DebugManager()->DrawVector(c[0].pt, -c[0].n, p);	 [m
+[32m+[m					[32mDebugManager()->DrawVector(c[0].pt, c[0].n, p*3);[m[41m	 [m
+[32m+[m					[32mDebugManager()->DrawVector(c[0].pt, -c[0].n, p*3);[m[41m	 [m
+ 				}			[m
+ 			}[m
+ 		}[m
+[1mdiff --git a/dump b/dump[m
+[1mindex 9fdd914..780f8c9 100644[m
+Binary files a/dump and b/dump differ
+[1mdiff --git a/quaternion_demo.cpp b/quaternion_demo.cpp[m
+[1mindex dc6742f..d0bf994 100644[m
+[1m--- a/quaternion_demo.cpp[m
+[1m+++ b/quaternion_demo.cpp[m
+[36m@@ -724,21 +724,22 @@[m [mQuaternionDemo::QuaternionDemo()[m
+   IPhysEnt* s3 = new Box();[m
+   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);[m
+   s3->m_id = 3;[m
+[31m-  s3->m_minv = 0.1f;[m
+[31m-	s3->m_v = Vector3f(1.0f, 0.f, 0.f);[m
+[32m+[m[32m  s3->m_minv = 10.f;[m
+[32m+[m	[32ms3->m_v = Vector3f(1.f, 0.f, 0.f);[m
+ [m
+ 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);[m
+   //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));[m
+ 	[m
+ [m
+   IPhysEnt* s4 = new Box();[m
+[31m-  s4->m_pos = Vector3f(1.f, 0.f, 0.0f);[m
+[32m+[m[32m  s4->m_pos = Vector3f(1.f, -0.1f, 0.0f);[m
+   s4->m_id = 4;[m
+   s4->m_minv = 10.f;[m
+ 	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); [m
+ 	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); [m
+  	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); [m
+ 	s4->m_rot.normalize();[m
+[32m+[m	[32m//s4->m_v = Vector3f(-1.f, 0.f, 0.f);[m
+ 	mRenderingWidget->m_core.get()->m_objects.push_back(s4);[m
+ [m
+   setCentralWidget(mRenderingWidget);[m
