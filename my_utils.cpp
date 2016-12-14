@@ -1,4 +1,6 @@
 #include "my_utils.h"
+#include <sstream>
+#include <iomanip>
 
 //http://misc.flogisoft.com/bash/tip_colors_and_formatting
 //const char* gRed = "\033[1;31m";
@@ -83,4 +85,12 @@ bool isVectorsEqual(const Vector3f a, const Vector3f b)
 			return false;
 	}
 	return true;
+}
+
+std::string VecToStr(const Vector3f& v)
+{
+	std::ostringstream stringStream;
+  stringStream <<	std::setprecision(3)  << std::fixed << "(" << v.x() << ", " << v.y() <<  ", " << v.z() << ")";
+  std::string res = stringStream.str();
+	return res; 
 }

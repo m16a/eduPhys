@@ -3,6 +3,7 @@
 
 #include <Eigen/Geometry>
 #include <QtDebug>
+#include <string>
 
 using namespace Eigen;
 
@@ -19,6 +20,8 @@ extern Quaternion<float> quatFromPYR(float pitch, float yaw, float roll);
 extern Vector3f PYRFromQuat(Quaternionf& q);
 
 bool isVectorsEqual(const Vector3f a, const Vector3f b);
+
+std::string VecToStr(const Vector3f& v);
 
 extern const char* gRed;
 extern const char* gGreen;

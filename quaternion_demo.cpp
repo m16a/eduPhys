@@ -88,6 +88,7 @@ RenderingWidget::RenderingWidget()
 	m_realTime = 0.0f;
 	m_physTime = 0.0f;
 	
+	m_pSelectedEnt = 0;
   // required to capture key press events
   setFocusPolicy(Qt::ClickFocus);
 }
@@ -181,6 +182,12 @@ void RenderingWidget::drawScene()
 	if (m_realTime > 0.01)
 		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
 
+	if (m_pSelectedEnt)
+	{
+		renderText(500,12, QString("Slctd objct: %1").arg(m_pSelectedEnt->m_id));
+		renderText(500,32, QString("v: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_v)))); 
+		renderText(500,52, QString("w: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_w)))); 
+	}
 }
 
 float getCurrTime()
@@ -383,7 +390,7 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 		if (m_pSelectedEnt)
 		{
 			//m_pSelectedEnt->m_forces.push_back(g_Gravity);//TODO:restore all forces
-			m_pSelectedEnt = 0;
+			//m_pSelectedEnt = 0;
 		}	
 }
 
@@ -707,7 +714,7 @@ QuaternionDemo::QuaternionDemo()
 	//s1->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * 200.f /*Vector3f(10,10,10)*/);
 	//s1->m_forces.push_back(g_Gravity);
 	 
-  //mRenderingWidget->m_core.get()->m_objects.push_back(s1);
+ // mRenderingWidget->m_core.get()->m_objects.push_back(s1);
 
   IPhysEnt* s2 = new Sphere();
   s2->m_pos = Vector3f(-0.5f, -1.f, 1.3f);
@@ -727,16 +734,14 @@ QuaternionDemo::QuaternionDemo()
   s3->m_minv = 10.f;
 	s3->m_v = Vector3f(1.f, 0.f, 0.f);
 
+  //s3->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * .1f, Vector3f(1,-1,0));
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
-  //s3->AddImpulse(Vector3f(10.f, 0.f, 0.f) * 100.f, Vector3f(10,10,0));
 	
 
   IPhysEnt* s4 = new Box();
   s4->m_pos = Vector3f(1.f, -0.1f, 0.0f);
   s4->m_id = 4;
   s4->m_minv = 10.f;
-	s4->m_rot = Quaternionf(0.8923991008325228,0.0990457605412876,-0.36964381061438606,0.2391176183943345); 
-	//s4->m_rot = Quaternionf(0.9238795325112867,0, -0.3826834323650897,0); 
  	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
 	//s4->m_v = Vector3f(-1.f, 0.f, 0.f);
