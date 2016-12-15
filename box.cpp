@@ -83,23 +83,16 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 	}
 	
 
-	if (pt.norm() > 0.0001)
+	if ( pt.norm() > 0.0001)
 	{
-		Vector3f n = (m_pos - pt);
-		n.normalize();
-
-		Vector3f normImpulse = (n.dot(value)) * n;
-
 /*		
 		qDebug() << "m_pos: " << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();	
 		qDebug() << "nn: " << n.x() << " " << n.y() << " " << n.z();	
 		qDebug() << "impulse: " << value.x() << " " << value.y() << " " << value.z();	
-	
-		qDebug() << "normal impulse: " << normImpulse.x() << " " <<  normImpulse.y() << " " <<	 normImpulse.z();	
 */
-		AddAngularImpulse((pt - m_pos).cross(value - normImpulse));
+		AddAngularImpulse((pt - m_pos).cross(value));
 
-		Vector3f dv = normImpulse * m_minv;
+		Vector3f dv = value * m_minv;
 		m_v += dv;
 
 	}

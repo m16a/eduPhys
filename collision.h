@@ -650,7 +650,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	{
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
-		DebugManager()->DrawPlane(p.n, p.d);	 
+		//DebugManager()->DrawPlane(p.n, p.d);	 
 		//qDebug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
@@ -731,7 +731,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	{
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
-		DebugManager()->DrawPlane(p.n, p.d);	 
+		//DebugManager()->DrawPlane(p.n, p.d);	 
 	}
 }
 

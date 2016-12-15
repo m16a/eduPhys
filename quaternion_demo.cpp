@@ -741,7 +741,7 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s4 = new Box();
   s4->m_pos = Vector3f(1.f, -0.1f, 0.0f);
   s4->m_id = 4;
-  s4->m_minv = 10.f;
+  s4->m_minv = 0.1f;
  	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
 	//s4->m_v = Vector3f(-1.f, 0.f, 0.f);
