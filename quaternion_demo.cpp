@@ -731,20 +731,25 @@ QuaternionDemo::QuaternionDemo()
   IPhysEnt* s3 = new Box();
   s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
   s3->m_id = 3;
-  s3->m_minv = 10.f;
-	s3->m_v = Vector3f(1.f, 0.f, 0.f);
-
-  //s3->AddImpulse(Vector3f(-1.f, 0.f, 0.f) * .1f, Vector3f(1,-1,0));
+  s3->m_minv = .1f;
+	//s3->m_v = Vector3f(1.f, 0.f, 0.f);
+	
+	Vector3f pt(.0f, .1f, -0.f);
+	Vector3f dir(-1.f, 0.f, 0.f);
+	dir.normalize();
+	float val = 1;
+	//s3->AddImpulse(dir*val, pt); 
+	//DebugManager()->DrawVector(pt, dir, val);	 
 	mRenderingWidget->m_core.get()->m_objects.push_back(s3);
 	
 
   IPhysEnt* s4 = new Box();
-  s4->m_pos = Vector3f(1.f, -0.1f, 0.0f);
+  s4->m_pos = Vector3f(1.f, -0.1f, 0.1f);
   s4->m_id = 4;
-  s4->m_minv = 0.1f;
- 	s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
+  s4->m_minv = 1.f;
+ 	//s4->m_rot = Quaternionf(0.7071067811865476 ,0, -0.7071067811865476,0); 
 	s4->m_rot.normalize();
-	//s4->m_v = Vector3f(-1.f, 0.f, 0.f);
+	s4->m_v = Vector3f(-1.f, 0.f, 0.f);
 	mRenderingWidget->m_core.get()->m_objects.push_back(s4);
 
   setCentralWidget(mRenderingWidget);

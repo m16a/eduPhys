@@ -25,7 +25,7 @@ Camera::Camera()
     mViewMatrix.setIdentity();
     
     mFovY = M_PI/3.;
-    mNearDist = 1.;
+    mNearDist = 0.1;
     mFarDist = 500.;
     
     mVpX = 0;

@@ -10,13 +10,13 @@ Box::Box()
 	m_size = Vector3f(0.1f, 0.2f, 0.3f);
 
 	Matrix3f J;
-	float a = 1.f/12.f / m_minv * (m_size[1]*m_size[1]+ m_size[2]*m_size[2]);
-
+	float a = 1.f/12.f / m_minv * (m_size[1]*m_size[1] + m_size[2]*m_size[2]);
 	float b = 1.f/12.f / m_minv * (m_size[0]*m_size[0] + m_size[2]*m_size[2]);
 	float c = 1.f/12.f / m_minv * (m_size[1]*m_size[1] + m_size[0]*m_size[0]);
+
 	J <<	a, 0, 0,
-			0, b, 0,
-			0, 0, c;
+				0, b, 0,
+				0, 0, c;
 
 	m_Jinv = J.inverse();
 
