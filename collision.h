@@ -539,6 +539,19 @@ Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal,
 	return v - a.dot(plane_normal) * plane_normal;
 }
 
+Vector3f projectVectorOntoPlane(const Vector3f& v, const SPlane& plane)
+{
+	Vector3f p(0,0,0);
+	if (plane.n[0] > 0)
+		p[0] = -plane.d / plane.n[0];
+	else if (plane.n[1] > 0)
+		p[1] = -plane.d / plane.n[1];
+	else
+		p[2] = -plane.d / plane.n[2];
+
+	return projectVectorOntoPlane(v, plane.n, p);
+}
+
 void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vector3f& b1, const Vector3f& b2, Vector3f out_vrts[2], int& out_cnt, Vector3f& out_normal)
 {
 	Vector3f d1 = a2 - a1;
@@ -639,7 +652,13 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 
 void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[4], size_t& out_size, Vector3f& out_normal)
 {
-
+	//project both faces to contact plane
+	Vector3f prjFace1[4], prjFace2[4];
+	for (int i=0; i < 4; ++i)
+	{
+		prjFace1[i] = projectVectorOntoPlane(face1[i], contact_plane);
+		prjFace2[i] = projectVectorOntoPlane(face2[i], contact_plane);
+	}
 }
 
 void collide(Box* a, Box* b, Contact* c, int& out_size)
