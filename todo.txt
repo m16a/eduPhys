@@ -1,6 +1,11 @@
 Box-box collision detection
-	Debug edge-face intersection
 	Implement face-face intersection
+		*	project face verticies on to support plane
+		* built B matricies
+		* grep pure contacts
+		* grep intersected contacts
+
+	Debug 4 0 intersection cases
 
 Add external torque
 Unit tests would be fine
@@ -13,4 +18,3 @@ Make smooth key scene rotation
 Review old camera code
 Clear timeline
 Clear animation
-

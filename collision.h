@@ -637,6 +637,11 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 	out_normal = faceNormal;//TODO:check normal direction
 }
 
+void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[4], size_t& out_size, Vector3f& out_normal)
+{
+
+}
+
 void collide(Box* a, Box* b, Contact* c, int& out_size)
 {
 	out_size = 0;
@@ -717,8 +722,9 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		}
 		else if (cnt2 == 4 && cnt1 == 4)//face-face
 		{
-			qWarning() << "Implement face-face intersection";
-			assert(0);
+			Vector3f res[4], normal;
+			size_t res_cnt = 0;
+			intersectFaceFace(vs1, vs2, p, res, res_cnt, normal);
 		}
 		else
 		{
