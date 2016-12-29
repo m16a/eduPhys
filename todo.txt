@@ -1,9 +1,10 @@
 Box-box collision detection
 	Implement face-face intersection
 		+	project face verticies on to support plane
-		* built B matricies
-		* grep pure contacts
-		* grep intersected contacts
+		+ built B matricies
+		+ grep pure contacts
+		+ grep intersected contacts
+		* debug all above
 
 	Debug 4 0 intersection cases
 

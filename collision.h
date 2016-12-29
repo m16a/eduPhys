@@ -546,8 +546,12 @@ Vector3f projectVectorOntoPlane(const Vector3f& v, const SPlane& plane)
 		p[0] = -plane.d / plane.n[0];
 	else if (plane.n[1] > 0)
 		p[1] = -plane.d / plane.n[1];
-	else
+	else if (plane.n[2] > 0)
 		p[2] = -plane.d / plane.n[2];
+	else
+	{
+		assert(0);
+	}
 
 	return projectVectorOntoPlane(v, plane.n, p);
 }
@@ -652,6 +656,7 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 
 void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[4], size_t& out_size, Vector3f& out_normal)
 {
+	out_size = 0;
 	//project both faces to contact plane
 	Vector3f prjFace1[4], prjFace2[4];
 	for (int i=0; i < 4; ++i)
@@ -659,6 +664,74 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 		prjFace1[i] = projectVectorOntoPlane(face1[i], contact_plane);
 		prjFace2[i] = projectVectorOntoPlane(face2[i], contact_plane);
 	}
+	
+	//bild 4x4 matrices to determime how vertices of one face lay towards edges of another face
+	Matrix4i B1, B2;
+	for (int i=0; i<4; ++i)
+		for (int j=0; j<4; ++j)
+		{
+			{
+				//test face1 to face2
+				const Vector3f a = face1[i] - face2[j];
+				const Vector3f b = face2[(j+2) % 4] - face2[(j+1) % 4];
+				B1(i,j) = a.dot(b) > 0 ? 1 : 0;
+			}
+
+			{
+				//test face2 to face1
+				const Vector3f a = face2[i] - face1[j];
+				const Vector3f b = face1[(j+2) % 4] - face1[(j+1) % 4];
+				B2(i,j) = a.dot(b) > 0 ? 1 : 0;
+			}
+		}	
+
+	//process matrices
+	for (int i=0; i<4; ++i)
+	{
+		int tmp1 = 1;
+		int tmp2 = 1;
+		for (int j=0; j<4; ++j)
+		{
+			tmp1 *= B1(i,j);	
+			tmp2 *= B2(i,j);	
+		}
+
+		
+		{
+			//case when vertex is incide other face
+			if (1 == tmp1)
+				out_res[out_size++] = face1[i];
+
+			if (1 == tmp2)
+				out_res[out_size++] = face2[i];
+		}
+	}
+
+	//no more them 4 contacts can be
+	assert(4>= out_size);
+	
+	//case when one face is liee completly inside another
+	if (4 == out_size)
+		return;
+
+	//check edge-edge intersections
+	for (int i=0; i<4; ++i)
+		for (int j=0; j<4; ++j)
+		{
+			if (B1(i,j) ^ B1((i+1)%4,j) && B2(j,i) ^ B2((j+1)%4,i))
+			{
+				//segment i,i+1 intersects with  j,j+1
+				Vector3f out_vrts[2];
+				int cnt = 0;	
+				Vector3f n;
+				intersectSegmentSegment(face1[i], face1[(i+1)%4], face2[j], face2[(j+1)%4], out_vrts, cnt, n);
+				assert(cnt > 0);
+				
+				for (int k=0; k<cnt; ++k)
+					out_res[out_size++] = out_vrts[k];
+			}
+		}
+	assert(4 >= out_size);
 }
 
 void collide(Box* a, Box* b, Contact* c, int& out_size)
