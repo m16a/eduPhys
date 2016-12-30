@@ -542,11 +542,11 @@ Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal,
 Vector3f projectVectorOntoPlane(const Vector3f& v, const SPlane& plane)
 {
 	Vector3f p(0,0,0);
-	if (plane.n[0] > 0)
+	if (fabs(plane.n[0]) > 0)
 		p[0] = -plane.d / plane.n[0];
-	else if (plane.n[1] > 0)
+	else if (fabs(plane.n[1]) > 0)
 		p[1] = -plane.d / plane.n[1];
-	else if (plane.n[2] > 0)
+	else if (fabs(plane.n[2]) > 0)
 		p[2] = -plane.d / plane.n[2];
 	else
 	{
@@ -698,7 +698,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 
 		
 		{
-			//case when vertex is incide other face
+			//case when vertex is inside other face
 			if (1 == tmp1)
 				out_res[out_size++] = face1[i];
 
@@ -757,7 +757,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		Vector3f vs2[4];
 		size_t cnt2;
 		getVerticiesOnSupportPlane(b, p, vs2, cnt2);
-		assert(cnt2 >= 0 && cnt2 <=4);
+		assert(cnt2 >= 0 && cnt2 <=	4);
 
 		qDebug() << "BOX OVERLAP" << cnt1 << cnt2;
 	
