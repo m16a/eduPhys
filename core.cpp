@@ -9,6 +9,10 @@
 #include "serialization/phys_ent.pb.h"
 #include <iostream>
 #include <fstream>
+
+#define DEBUG_STEP 0
+
+
 Core::Core()
 {
 
@@ -85,13 +89,15 @@ float Core::FindCollisions(bool applyImpulses)
 						continue;
 					
 					//TODO: remove after LCP implementing
-					if (cntct_cnt == 2)
+					if (cntct_cnt > 1)
 					{
-						c[0].n *= -1;
-						qDebug() << "two pnts:" << c[0].pt << c[0].n << c[1].pt << c[0].n;
-						qDebug() << "objXpos a:" << a->m_pos[0] << "b:" << b->m_pos[0];
-						c[0].pt = (c[0].pt + c[1].pt) * 0.5;	
+						Vector3f tmp(0,0,0);
+						for (int cnt_i=0; cnt_i<cntct_cnt; ++cnt_i)
+							tmp += c[cnt_i].pt;
+
+						c[0].pt = tmp / cntct_cnt;
 					}
+
 					assert(c[0].n.norm() > 0.1);
 					Vector3f rAP = c[0].pt - a->m_pos;
 					Vector3f rBP = c[0].pt - b->m_pos;
@@ -148,17 +154,24 @@ void Core::Step(float reqStep)
 		float fStep = reqStep;
 		float mid = reqStep;
 
+#if DEBUG_STEP
 		qDebug() << gRed << "subStep[collPath]:" << gReset << subStep++ << "time:" << mid << "/" << reqStep;
+#endif
 
 		StepAll(reqStep);
 		float d = FindCollisions(false);
 		StepAll(-reqStep);
 	
+#if DEBUG_STEP
 		qDebug() << "penetration depth:" << d << "/"<< COLLISION_DEPTH_TOLERANCE;
+#endif
+
 		if (d < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)
 			{
+#if DEBUG_STEP
 				qDebug() << gGreen << "Collison iteration:" << gReset << i;
+#endif
 				mid = (sStep + fStep) / 2.0f;
 				
 			//	qDebug() << "PRE";	
@@ -184,8 +197,10 @@ void Core::Step(float reqStep)
 				++i;
 			}
 		
+#if DEBUG_STEP
 		qDebug() << gRed << "[" << gReset << "impulsePath] time:" << mid << "/" << reqStep;
-		
+#endif
+
 		StepAll(mid);
 		FindCollisions(true);
 

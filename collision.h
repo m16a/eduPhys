@@ -564,22 +564,23 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 	if (fabs(d1.cross(d2).norm()) > 1e-2)//segment are not colinear
 	{
 		//lets try lines intersection first
-		out_cnt = 1;	
 		float a = d1.dot(d1);
 		float b = d1.dot(d2);
 		Vector3f r = a1 - b1;
 		float c = d1.dot(r);
 		float e = d2.dot(d2);
 		float f = d2.dot(r);
-		float d = a*c - b*b;
+		float d = a*e - b*b;
 		float s = (b*f - c*e)/d; 	
-		float t = (a*f - c*b)/d; 	
-		if (s<0 || s >1 || t<0 || t>1)
+		float t = (a*f - b*c)/d; 	
+		if (s<0 || s>1 || t<0 || t>1)
 		{	
+			//qDebug() << "s:" << s << "t:" << t;	
 			//TODO:check commented warning below
 			//qWarning() << "segment-segment intersection: point lies out of segment, use more sofisticated method";
 			out_cnt = 0;
-		}else
+		}
+		else
 		{
 			out_cnt = 1;
 			Vector3f p1 = (a1 + s*d1);
@@ -659,7 +660,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 	out_size = 0;
 	//project both faces to contact plane
 	Vector3f prjFace1[4], prjFace2[4];
-	for (int i=0; i < 4; ++i)
+	for (int i=0; i<4; ++i)
 	{
 		prjFace1[i] = projectVectorOntoPlane(face1[i], contact_plane);
 		prjFace2[i] = projectVectorOntoPlane(face2[i], contact_plane);
@@ -672,19 +673,20 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 		{
 			{
 				//test face1 to face2
-				const Vector3f a = face1[i] - face2[j];
-				const Vector3f b = face2[(j+2) % 4] - face2[(j+1) % 4];
+				const Vector3f a = prjFace1[i] - prjFace2[j];
+				const Vector3f b = prjFace2[(j+2) % 4] - prjFace2[(j+1) % 4];
 				B1(i,j) = a.dot(b) > 0 ? 1 : 0;
 			}
 
 			{
 				//test face2 to face1
-				const Vector3f a = face2[i] - face1[j];
-				const Vector3f b = face1[(j+2) % 4] - face1[(j+1) % 4];
+				const Vector3f a = prjFace2[i] - prjFace1[j];
+				const Vector3f b = prjFace1[(j+2) % 4] - prjFace1[(j+1) % 4];
 				B2(i,j) = a.dot(b) > 0 ? 1 : 0;
 			}
 		}	
 
+	//qDebug() << "B1:" << B1 << "B2:"<< B2;
 	//process matrices
 	for (int i=0; i<4; ++i)
 	{
@@ -700,10 +702,10 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 		{
 			//case when vertex is inside other face
 			if (1 == tmp1)
-				out_res[out_size++] = face1[i];
+				out_res[out_size++] = prjFace1[i];
 
 			if (1 == tmp2)
-				out_res[out_size++] = face2[i];
+				out_res[out_size++] = prjFace2[i];
 		}
 	}
 
@@ -724,7 +726,10 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 				Vector3f out_vrts[2];
 				int cnt = 0;	
 				Vector3f n;
-				intersectSegmentSegment(face1[i], face1[(i+1)%4], face2[j], face2[(j+1)%4], out_vrts, cnt, n);
+				intersectSegmentSegment(prjFace1[i], prjFace1[(i+1)%4], prjFace2[j], prjFace2[(j+1)%4], out_vrts, cnt, n);
+				//qDebug() << "Seg-seg intersection:";
+				//qDebug() << prjFace1[i] << prjFace1[(i+1)%4];
+				//qDebug() << prjFace2[j] << prjFace2[(j+1)%4];;
 				assert(cnt > 0);
 				
 				for (int k=0; k<cnt; ++k)
@@ -817,6 +822,13 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			Vector3f res[4], normal;
 			size_t res_cnt = 0;
 			intersectFaceFace(vs1, vs2, p, res, res_cnt, normal);
+			
+			for (int i=0; i<res_cnt; ++i)
+			{
+				c[i].pt = res[i];
+				c[i].n =	p.n;
+			}
+			out_size = res_cnt;
 		}
 		else
 		{
