@@ -90,7 +90,7 @@ RenderingWidget::RenderingWidget()
 	
 	m_pSelectedEnt = 0;
   // required to capture key press events
-  setFocusPolicy(Qt::ClickFocus);
+  setFocusPolicy(Qt::StrongFocus);
 }
 
 void RenderingWidget::grabFrame(void)
@@ -704,7 +704,6 @@ QWidget* RenderingWidget::createNavigationControlWidget()
 QuaternionDemo::QuaternionDemo()
 {
   mRenderingWidget = new RenderingWidget();
-
   //set phys initial world
   IPhysEnt* s1 = new Sphere();
   s1->m_pos = Vector3f(1.f, 1.f, 1.0f);
@@ -804,7 +803,8 @@ int main(int argc, char *argv[])
   demo.resize(800, 600);
 	demo.move(700, 100);
 	demo.show();
-	 return app.exec();
+
+	return app.exec();
 }
 
 #include "quaternion_demo.moc"
