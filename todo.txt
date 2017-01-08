@@ -5,7 +5,6 @@ Add external torque
 Unit tests would be fine
 Textures
 Contact solver
-Linux rendering bug, scene disappearing. Seems like linux toucpad issue. No problems with mouse
 
 Make smooth key scene rotation
 

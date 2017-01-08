@@ -476,8 +476,7 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 					Vector4f pickedClip = proj_m * mv_m * pickedWrld;
 					float pickedNormDepth = pickedClip[2] / pickedClip[3];	
 
-					//TODO: provide getter for window width, height
-					Vector4f newMouseNorm(e->x()*2/800.0f - 1.f, -1.f* (e->y()*2/600.0f - 1.f), pickedNormDepth, 1);
+					Vector4f newMouseNorm(e->x()*2/float(mCamera.vpWidth()) - 1.f, -1.f* (e->y()*2/float(mCamera.vpHeight()) - 1.f), pickedNormDepth, 1);
 					
 					Vector4f newMouseWrld = (proj_m * mv_m).inverse() * newMouseNorm;
 					{
