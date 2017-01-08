@@ -125,7 +125,7 @@ bool ObjMover::RWI(const SRay& r)
 	{
 		STorus tor = m_rotHlpr.m_helpers[i];
 
-		DebugManager()->DrawVector(org, dir, 2);	 
+		//DebugManager()->DrawVector(org, dir, 2);	 
 		dir.normalize();
 		int n;
 		float pts[4];		
