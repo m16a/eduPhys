@@ -15,7 +15,7 @@ class Sphere : public IPhysEnt
 
 public:
 	static IcoSphere m_icoSphere;
-	Sphere();
+	Sphere(bool isStatic = false);
 	virtual ~Sphere(){};
 
 	virtual void Draw();

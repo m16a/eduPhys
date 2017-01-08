@@ -18,7 +18,7 @@ extern const Vector3f g_Gravity;
 struct  IPhysEnt
 {
 	virtual ~IPhysEnt(){};
-	IPhysEnt();
+	IPhysEnt(bool isStatic = false);
 	virtual void Draw() = 0;
 	virtual void Step(float t) = 0;
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f)) = 0;

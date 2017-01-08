@@ -728,7 +728,5 @@ QuaternionDemo::QuaternionDemo()
 */
 }
 
-
-
 #include "quaternion_demo.moc"
 

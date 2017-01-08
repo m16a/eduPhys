@@ -1,16 +1,28 @@
 #include "geometry.h" 
 const Vector3f g_Gravity(0.0f, 0.0f, -98.8f); 
 
-IPhysEnt::IPhysEnt() 
+IPhysEnt::IPhysEnt(bool isStatic) 
 { 
 	m_pos = Vector3f(0.f, 0.f, 0.f); 
 	m_rot = Quaternionf::Identity();
 
 	m_v = Vector3f(0.f, 0.f, 0.f);
 	m_w = Vector3f(0.f, 0.f, 0.f);
-	m_minv = 0.01;//100kg
 	m_active = true;
 	m_id = 0;
+	
+	if (isStatic)
+	{
+		//infinite inertia tensor
+		m_Jinv <<	0, 0, 0,
+							0, 0, 0,
+							0, 0, 0;
+		m_minv = 0.0f;
+	}
+	else
+	{
+		m_minv = 0.01;//100kg
+	}
 }
 
 //TODO::move to more generic place

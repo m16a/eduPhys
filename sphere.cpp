@@ -9,17 +9,19 @@
 
 IcoSphere Sphere::m_icoSphere = IcoSphere();
 
-Sphere::Sphere()
+Sphere::Sphere(bool isStatic):IPhysEnt(isStatic)
 {
 	m_r = 0.2;
 
-	Matrix3f J;
-	float a = 2.f/5.f / m_minv * m_r*m_r;
-	J <<	a, 0, 0,
-			0, a, 0,
-			0, 0, a;
-
-	m_Jinv = J.inverse();
+	if (!isStatic)
+	{
+		Matrix3f J;
+		float a = 2.f/5.f / m_minv * m_r*m_r;
+		J <<	a, 0, 0,
+				0, a, 0,
+				0, 0, a;
+		m_Jinv = J.inverse();
+	}
 }
 
 

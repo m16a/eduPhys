@@ -13,7 +13,7 @@ class Box : public IPhysEnt
 {
 
 public:
-	Box();
+	Box(bool isStatic = false);
 	virtual ~Box(){};
 
 	virtual void Draw();
