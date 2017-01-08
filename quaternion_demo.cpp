@@ -175,8 +175,8 @@ void RenderingWidget::drawScene()
 	Vector3f ypr = PYRFromQuat(dir); 
 	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
-	if (m_realTime > 0.01)
-		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3").arg(QString::number(m_realTime,'f',2),QString::number(m_physTime,'f',2),QString::number(m_physTime / m_realTime,'f',2)));
+	if (m_realTime > 0.01 && dt > 0.0001)
+		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/dt,'f',1)));
 
 	if (m_pSelectedEnt)
 	{

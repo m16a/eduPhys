@@ -48,19 +48,49 @@ int main(int argc, char *argv[])
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
 
-  IPhysEnt* s3 = new Box(true);
-  s3->m_pos = Vector3f(0.f, 0.f, 0.0f);
+  Box* s3 = new Box(true);
+  s3->m_pos = Vector3f(-3.f, 0.f, 0.0f);
   s3->m_id = 3;
-  s3->m_minv = 0;
-	//s3->m_v = Vector3f(1.f, 0.f, 0.f);
-	Vector3f pt(.0f, .1f, -0.f);
-	Vector3f dir(-1.f, 0.f, 0.f);
-	dir.normalize();
-	float val = 1;
-	//s3->AddImpulse(dir*val, pt); 
-	//DebugManager()->DrawVector(pt, dir, val);	 
+	s3->m_size = Vector3f(.2f,6.f,6.f);
 	demo.getCore()->m_objects.push_back(s3);
-	
+
+  Box* s4 = new Box(true);
+  s4->m_pos = Vector3f(3.f, 0.f, 0.0f);
+  s4->m_id = 4;
+	s4->m_size = Vector3f(.2f,6.f,6.f);
+	demo.getCore()->m_objects.push_back(s4);
+
+  Box* s5 = new Box(true);
+  s5->m_pos = Vector3f(.0f, -3.1f, .0f);
+  s5->m_id = 5;
+	s5->m_size = Vector3f(6.f,.2f,6.f);
+	demo.getCore()->m_objects.push_back(s5);
+
+  Box* s6 = new Box(true);
+  s6->m_pos = Vector3f(.0f, 3.1f, .0f);
+  s6->m_id = 6;
+	s6->m_size = Vector3f(6.f,.2f,6.f);
+	demo.getCore()->m_objects.push_back(s6);
+
+  Box* s7 = new Box(true);
+  s7->m_pos = Vector3f(.0f,.0f,-3.1f);
+  s7->m_id = 7;
+	s7->m_size = Vector3f(6.f,6.f,.2f);
+	demo.getCore()->m_objects.push_back(s7);
+
+  Box* s8 = new Box(true);
+  s8->m_pos = Vector3f(.0f,.0f,3.1f);
+  s8->m_id = 8;
+	s8->m_size = Vector3f(6.f,6.f,.2f);
+	demo.getCore()->m_objects.push_back(s8);
+
+  Box* s9 = new Box();
+  s9->m_pos = Vector3f(.0f,.0f,.0f);
+  s9->m_id = 9;
+	s9->m_size = Vector3f(.5f,.5f,.5f);
+	s9->m_v = Vector3f(-1.f, 0.f, 0.f);
+	demo.getCore()->m_objects.push_back(s9);
+/*	
   IPhysEnt* s4 = new Box();
   s4->m_pos = Vector3f(1.f, -0.1f, 0.1f);
   s4->m_id = 4;
@@ -69,7 +99,7 @@ int main(int argc, char *argv[])
 	s4->m_rot.normalize();
 	s4->m_v = Vector3f(-1.f, 0.f, 0.f);
 	demo.getCore()->m_objects.push_back(s4);
-
+*/
 	demo.show();
 	return app.exec();
 }

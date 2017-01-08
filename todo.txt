@@ -11,3 +11,5 @@ Make smooth key scene rotation
 Review old camera code
 Clear timeline
 Clear animation
+
+Debug low FPS
