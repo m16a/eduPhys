@@ -278,7 +278,6 @@ Vector3f Camera::directionFromScreen(const Vector2i& uv)
 		Eigen::Map<Eigen::Matrix4f> proj_m(tmp2);	
 		//std::cout << "Projection" << std::endl << proj_m << std::endl;
 
-		qDebug() << mVpWidth; 
 		Vector4f pOnScr(uv[0]*2.0f/(float)mVpWidth  - 1.f, -1.f* (uv[1]*2.0f/(float)mVpHeight- 1.f), -1.0f, 1);
 		//std::cout << "pOnScr: " << pOnScr[0] << " " << pOnScr[1] << std::endl; 
 		
