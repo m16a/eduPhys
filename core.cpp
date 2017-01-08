@@ -45,6 +45,9 @@ float Core::FindCollisions(bool applyImpulses)
 		{
 			if (m_objects[i]->m_id < m_objects[j]->m_id)
 			{
+				if (m_objects[i]->m_minv == 0.0f && m_objects[j]->m_minv == 0.0f)
+					continue;
+
 				IPhysEnt *a = m_objects[i];
 				IPhysEnt *b = m_objects[j];
 
