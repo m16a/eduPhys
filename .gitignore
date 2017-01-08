@@ -7,6 +7,6 @@ CMakeCache.txt
 *.moc_parameters
 *.cmake
 *.out
-quaternion_demo
+eduPhys
 Makefile
 tags

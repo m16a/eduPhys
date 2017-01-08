@@ -15,15 +15,15 @@ if(QT4_FOUND AND OPENGL_FOUND)
 	
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(quaternion_demo_SRCS  gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp geometry.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
+  set(quaternion_demo_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp geometry.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
 
 	add_subdirectory("${PROJECT_SOURCE_DIR}/serialization")
 
   qt4_automoc(${quaternion_demo_SRCS})
 
-  add_executable(quaternion_demo ${quaternion_demo_SRCS})
+  add_executable(eduPhys ${quaternion_demo_SRCS})
 
-  target_link_libraries(quaternion_demo
+  target_link_libraries(eduPhys
     ${QT_QTCORE_LIBRARY}    ${QT_QTGUI_LIBRARY}
     ${QT_QTOPENGL_LIBRARY}  ${OPENGL_LIBRARIES} ${PROTOBUF_LIBRARIES} )
 

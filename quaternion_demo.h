@@ -25,8 +25,9 @@
 #include <memory>
 #include "obj_mover.h"
 
-class Core;
-class IPhysEnt;
+#include "sphere.h"
+#include "core.h"
+#include "box.h"
 
 class RenderingWidget : public QGLWidget
 {
@@ -124,7 +125,7 @@ class RenderingWidget : public QGLWidget
     ~RenderingWidget() { }
 
     QWidget* createNavigationControlWidget();
-
+		Core* getCore() {return m_core.get();};
     std::auto_ptr<Core> m_core;
     float m_lastTime; //seconds
 	
@@ -142,6 +143,7 @@ class QuaternionDemo : public QMainWindow
   Q_OBJECT
   public:
     QuaternionDemo();
+		Core* getCore() {return mRenderingWidget->getCore();};
   protected:
     RenderingWidget* mRenderingWidget;
 };

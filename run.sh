@@ -1,4 +1,4 @@
 
 
 make
-./quaternion_demo
+./eduPhys
