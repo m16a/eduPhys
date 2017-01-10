@@ -58,31 +58,31 @@ int main(int argc, char *argv[])
   s4->m_pos = Vector3f(3.f, 0.f, 0.0f);
   s4->m_id = 4;
 	s4->m_size = Vector3f(.2f,6.f,6.f);
-	demo.getCore()->m_objects.push_back(s4);
+	//demo.getCore()->m_objects.push_back(s4);
 
   Box* s5 = new Box(true);
   s5->m_pos = Vector3f(.0f, -3.1f, .0f);
   s5->m_id = 5;
 	s5->m_size = Vector3f(6.f,.2f,6.f);
-	demo.getCore()->m_objects.push_back(s5);
+	//demo.getCore()->m_objects.push_back(s5);
 
   Box* s6 = new Box(true);
   s6->m_pos = Vector3f(.0f, 3.1f, .0f);
   s6->m_id = 6;
 	s6->m_size = Vector3f(6.f,.2f,6.f);
-	demo.getCore()->m_objects.push_back(s6);
+	//demo.getCore()->m_objects.push_back(s6);
 
   Box* s7 = new Box(true);
   s7->m_pos = Vector3f(.0f,.0f,-3.1f);
   s7->m_id = 7;
 	s7->m_size = Vector3f(6.f,6.f,.2f);
-	demo.getCore()->m_objects.push_back(s7);
+	//demo.getCore()->m_objects.push_back(s7);
 
   Box* s8 = new Box(true);
   s8->m_pos = Vector3f(.0f,.0f,3.1f);
   s8->m_id = 8;
 	s8->m_size = Vector3f(6.f,6.f,.2f);
-	demo.getCore()->m_objects.push_back(s8);
+	//demo.getCore()->m_objects.push_back(s8);
 
   Box* s9 = new Box();
   s9->m_pos = Vector3f(.0f,.0f,.0f);

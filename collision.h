@@ -398,6 +398,7 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 		return;
 	//TODO: check vertex-vertex and vertex-edge cases	
 }
+
 void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 {
 	//http://stackoverflow.com/questions/242404/sort-four-points-in-clockwise-order
@@ -505,7 +506,7 @@ void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
 {
-	const float TOLERANCE = 1e-2f;
+	const float TOLERANCE = 0.015f;
 	out_size = 0;		
 	Vector3f bVs[8];	
 	getBoxVerticies(b, bVs);
@@ -515,6 +516,7 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[
 	{	
 		float d = p.n[0]*bVs[i][0] + p.n[1]*bVs[i][1] + p.n[2]*bVs[i][2] + p.d;
 		//qDebug() << "test vertex" << bVs[i];
+	//	qDebug() << "d:" << d;
 		if (fabs(d) <= TOLERANCE)
 		{
 			out_arr[indx++] = bVs[i];
@@ -739,6 +741,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 	assert(4 >= out_size);
 }
 
+//NB: contact normal should be pointed outward *a* (a -> b)
 void collide(Box* a, Box* b, Contact* c, int& out_size)
 {
 	out_size = 0;
@@ -747,7 +750,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	float penDepth;
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	separationAxe.normalized();
-	//qDebug() << penDepth;
+	qDebug() << "penDepth:" << penDepth;
 	if (penDepth < 0)
 	{
 		SPlane p;
@@ -764,19 +767,19 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		getVerticiesOnSupportPlane(b, p, vs2, cnt2);
 		assert(cnt2 >= 0 && cnt2 <=	4);
 
-		qDebug() << "BOX OVERLAP" << cnt1 << cnt2;
+		qDebug() << "BOX OVERLAP:" << "id1:" << a->m_id << ":" << cnt1 << b->m_id << ":" << cnt2;
 	
 		c[0].depth = penDepth;
 		out_size = 1;
 		if (cnt1 == 1)
 		{
 			c[0].pt = vs1[0];
-			c[0].n = p.n;//TODO:check statement	
+			c[0].n = -p.n;//TODO:check statement	
 		}
 		else if (cnt2 == 1)
 		{
 			c[0].pt = vs2[0];
-			c[0].n = p.n;//TODO:check statement	
+			c[0].n = -p.n;//TODO:check statement	
 		}
 		else if (cnt2 == 2 && cnt1 == 2)//edge-edge
 		{
@@ -815,7 +818,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			out_size = 2;
 			c[0].pt = tmp[0];
 			c[1].pt = tmp[1];
-			c[0].n = c[1].n = norm;
+			c[0].n = c[1].n = Vector3f(1,0,0);//-norm;
 		}
 		else if (cnt2 == 4 && cnt1 == 4)//face-face
 		{

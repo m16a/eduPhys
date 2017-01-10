@@ -29,6 +29,7 @@
 #include <QtDebug>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "my_eulerAngles.h"
 #include "geometry.h"
@@ -153,6 +154,11 @@ void RenderingWidget::drawScene()
       m_core.get()->Step(dir * dt);
       m_performPauseStep = false;
     }
+		else
+		{
+			//don't waste CPU on pause
+			usleep(10000);
+		}
 		m_physTime+=dt;
   }
   m_core.get()->Draw();
