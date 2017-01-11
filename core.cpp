@@ -144,10 +144,11 @@ float Core::FindCollisions(bool applyImpulses)
 					qDebug() << invJ2;
 
 					float p = -(1 + e)*v_contact.dot(c[0].n) / 
-						(a->m_minv + b->m_minv + (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n)
-																	 + (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n)
+						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n)
+																	 - (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n)
 						);
-					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n);
+					float tmp = (invJ2 * rBP.cross(c[0].n).cross(rBP)).dot(c[0].n);
+					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n) << tmp;
 					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
 	
 					qDebug() << "pt:"<< c[0].pt << "normal:" << c[0].n << " depth:" << c[0].depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(c[0].n);
