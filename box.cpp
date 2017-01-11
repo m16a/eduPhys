@@ -5,9 +5,9 @@
 #include "my_eulerAngles.h"
 #include "rwi.h"
 
-Box::Box(bool isStatic):IPhysEnt(isStatic)
+Box::Box(const Vector3f& size, bool isStatic):IPhysEnt(isStatic)
 {
-	m_size = Vector3f(0.1f, 0.2f, 0.3f);
+	m_size = size;
 	if (!isStatic)
 	{
 		Matrix3f J;
@@ -19,7 +19,9 @@ Box::Box(bool isStatic):IPhysEnt(isStatic)
 					0, b, 0,
 					0, 0, c;
 
+		//qDebug() << J;
 		m_Jinv = J.inverse();
+		//qDebug() << m_Jinv;;
 	}
 }
 

@@ -48,12 +48,11 @@ int main(int argc, char *argv[])
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
 
-  Box* s3 = new Box(true);
+  Box* s3 = new Box(Vector3f(.2f,6.f,6.f), true);
   s3->m_pos = Vector3f(-3.f, 0.f, 0.0f);
   s3->m_id = 3;
-	s3->m_size = Vector3f(.2f,6.f,6.f);
 	demo.getCore()->m_objects.push_back(s3);
-
+/*
   Box* s4 = new Box(true);
   s4->m_pos = Vector3f(3.f, 0.f, 0.0f);
   s4->m_id = 4;
@@ -83,11 +82,10 @@ int main(int argc, char *argv[])
   s8->m_id = 8;
 	s8->m_size = Vector3f(6.f,6.f,.2f);
 	//demo.getCore()->m_objects.push_back(s8);
-
-  Box* s9 = new Box();
+*/
+  Box* s9 = new Box(Vector3f(.5f,.5f,.5f), false);
   s9->m_pos = Vector3f(.0f,.0f,.0f);
   s9->m_id = 9;
-	s9->m_size = Vector3f(.5f,.5f,.5f);
 	s9->m_v = Vector3f(-1.f, 0.f, 0.f);
 	demo.getCore()->m_objects.push_back(s9);
 /*	
