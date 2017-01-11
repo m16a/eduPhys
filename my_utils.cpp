@@ -52,6 +52,13 @@ QDebug operator<<(QDebug dbg, const Matrix4i& m)
 	return dbg.space();
 }
 
+QDebug operator<<(QDebug dbg, const Matrix3f& m)
+{
+	dbg.space() <<		'\n' << m(0,0) << m(0,1) << m(0,2) <<  
+										'\n' << m(1,0) << m(1,1) << m(1,2) << 
+										'\n' << m(2,0) << m(2,1) << m(2,2) << '\n'; 
+	return dbg.space();
+}
 Matrix3f matrixFromPYR(float pitch, float yaw, float roll)
 {
 	Eigen::AngleAxisf rollAngle(roll, Eigen::Vector3f::UnitZ());

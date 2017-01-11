@@ -122,11 +122,21 @@ float Core::FindCollisions(bool applyImpulses)
 
 					a->m_active = true;
 					b->m_active = true;	
+
+					Matrix3f rotM1 = a->m_rot.toRotationMatrix();
+					Matrix3f rotM2 = b->m_rot.toRotationMatrix();
+
+					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
+					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
+				
+					qDebug() << b->m_Jinv;
+					qDebug() << invJ2;
+
 					float p = -(1 + e)*v_contact.dot(c[0].n) / 
-						(a->m_minv + b->m_minv + (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n)
-																	 + (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n)
+						(a->m_minv + b->m_minv + (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n)
+																	 + (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n)
 						);
-					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*a->m_Jinv*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*b->m_Jinv*rBPcross * c[0].n).dot(c[0].n);
+					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n);
 					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
 	
 					qDebug() << "pt:"<< c[0].pt << "normal:" << c[0].n << " depth:" << c[0].depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(c[0].n);

@@ -106,7 +106,9 @@ void Box::AddAngularImpulse(Vector3f value)
 		return;
 	}
 
-	Vector3f dw = m_Jinv * value;
+	Matrix3f rotM1 = m_rot.toRotationMatrix();
+	Matrix3f invJ1 = rotM1 * m_Jinv * rotM1.transpose(); 
+	Vector3f dw = invJ1 * value;
 	m_w += dw;
 //	qDebug() << "sphere rotation was added";
 
