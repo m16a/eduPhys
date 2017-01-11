@@ -20,6 +20,8 @@ public:
 	virtual void Step(float t);
 	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f));
 	virtual void AddAngularImpulse(Vector3f value);
+	virtual float CalcKineticEnergy();
+
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);
 	Vector3f Size() const

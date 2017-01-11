@@ -68,6 +68,18 @@ void Box::Step(float t)
 	}
 }
 
+float Box::CalcKineticEnergy()
+{
+	//TODO: count zero inertia tensor too
+	if (m_minv == .0f)
+		return 0.0f;
+
+	Matrix3f rotM1 = m_rot.toRotationMatrix();
+	Matrix3f invJ1 = rotM1 * m_Jinv * rotM1.transpose(); 
+
+	return 0.5f * (m_v.dot(m_v) / m_minv + (invJ1 * m_w).dot(m_w));
+}
+
 void Box::AddImpulse(Vector3f value, Vector3f pt)
 {
 

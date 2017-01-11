@@ -27,6 +27,17 @@ void Core::DumpAll()
 	}
 }
 
+float Core::CalcKineticEnergy()
+{
+	float result = 0;
+	int size = m_objects.size();
+	for (int i = 0; i < size; ++i)
+	{
+		result += m_objects[i]->CalcKineticEnergy(); 
+	}
+	return result;
+}
+
 void Core::StepAll(float dt)
 {
 	//qDebug() << "step:" << dt;

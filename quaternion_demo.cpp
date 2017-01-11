@@ -184,6 +184,8 @@ void RenderingWidget::drawScene()
 	if (m_realTime > 0.01 && dt > 0.0001)
 		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/dt,'f',1)));
 
+	renderText(10,92, QString("E_kin:%1").arg(QString::number(m_core.get()->CalcKineticEnergy(),'f',2)));
+
 	if (m_pSelectedEnt)
 	{
 		renderText(500,12, QString("Slctd objct: %1").arg(m_pSelectedEnt->m_id));
