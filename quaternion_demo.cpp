@@ -191,6 +191,9 @@ void RenderingWidget::drawScene()
 		renderText(500,12, QString("Slctd objct: %1").arg(m_pSelectedEnt->m_id));
 		renderText(500,32, QString("v: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_v)))); 
 		renderText(500,52, QString("w: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_w)))); 
+		
+		//draw axis of rotation
+		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_pSelectedEnt->m_w, 0.5);
 	}
 }
 
