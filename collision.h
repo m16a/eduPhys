@@ -818,7 +818,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			out_size = 2;
 			c[0].pt = tmp[0];
 			c[1].pt = tmp[1];
-			c[0].n = c[1].n = Vector3f(1,0,0);//-norm;
+			c[0].n = c[1].n = norm;
 		}
 		else if (cnt2 == 4 && cnt1 == 4)//face-face
 		{
@@ -829,7 +829,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			for (int i=0; i<res_cnt; ++i)
 			{
 				c[i].pt = res[i];
-				c[i].n =	p.n;
+				c[i].n =	-p.n;
 			}
 			out_size = res_cnt;
 		}

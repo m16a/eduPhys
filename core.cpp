@@ -121,7 +121,7 @@ float Core::FindCollisions(bool applyImpulses)
 					
 					float e = 1;//0.8f;//restitution coef
 					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-				
+						
 					if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
 					{
 						qDebug() << "vCon" << v_contact << c[0].n;	
@@ -131,6 +131,13 @@ float Core::FindCollisions(bool applyImpulses)
 						continue;
 					}
 
+					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
+					qDebug() << "pt:"<< c[0].pt << "normal:" << c[0].n << " depth:" << c[0].depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(c[0].n);
+					if (v_contact.dot(c[0].n) > 0)
+					{					
+						qDebug() << "Positive contact speed:" << v_contact.dot(c[0].n);
+						continue;
+					}
 					a->m_active = true;
 					b->m_active = true;	
 
@@ -146,9 +153,6 @@ float Core::FindCollisions(bool applyImpulses)
 						);
 					float tmp = (invJ2 * rBP.cross(c[0].n).cross(rBP)).dot(c[0].n);
 					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n) << tmp;
-					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
-	
-					qDebug() << "pt:"<< c[0].pt << "normal:" << c[0].n << " depth:" << c[0].depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(c[0].n);
 					
 					a->AddImpulse(-p * c[0].n, c[0].pt);
 					b->AddImpulse(p * c[0].n, c[0].pt);

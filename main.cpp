@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
   s3->m_pos = Vector3f(-3.f, 0.f, 0.0f);
   s3->m_id = 3;
 	demo.getCore()->m_objects.push_back(s3);
+
 /*
-  Box* s4 = new Box(true);
+  Box* s4 = new Box(Vector3f(.2f,6.f,6.f), true);
   s4->m_pos = Vector3f(3.f, 0.f, 0.0f);
-  s4->m_id = 4;
-	s4->m_size = Vector3f(.2f,6.f,6.f);
-	//demo.getCore()->m_objects.push_back(s4);
+  s4->m_id = 40;
+	demo.getCore()->m_objects.push_back(s4);
 
   Box* s5 = new Box(true);
   s5->m_pos = Vector3f(.0f, -3.1f, .0f);
