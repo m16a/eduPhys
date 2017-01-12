@@ -75,9 +75,9 @@ float Box::CalcKineticEnergy()
 		return 0.0f;
 
 	Matrix3f rotM1 = m_rot.toRotationMatrix();
-	Matrix3f invJ1 = rotM1 * m_Jinv * rotM1.transpose(); 
+	Matrix3f J1 = rotM1 * m_Jinv.inverse() * rotM1.transpose(); 
 
-	return 0.5f * (m_v.dot(m_v) / m_minv + (invJ1 * m_w).dot(m_w));
+	return 0.5f * (m_v.dot(m_v) / m_minv + (J1 * m_w).dot(m_w));
 }
 
 void Box::AddImpulse(Vector3f value, Vector3f pt)

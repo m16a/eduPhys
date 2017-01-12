@@ -1,8 +1,6 @@
 Box-box collision detection
 	Debug 4 0 intersection cases
 
-Fix energy loss after collision with e = 1.0f
-
 Add external torque
 Unit tests would be fine
 Textures

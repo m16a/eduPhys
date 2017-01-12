@@ -119,7 +119,7 @@ float Core::FindCollisions(bool applyImpulses)
 					Matrix3f rAPcross = getCrossMatrix(rAP);
 					Matrix3f rBPcross = getCrossMatrix(rBP);
 					
-					float e = 0.8f;//restitution coef
+					float e = 1;//0.8f;//restitution coef
 					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
 				
 					if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
@@ -140,9 +140,6 @@ float Core::FindCollisions(bool applyImpulses)
 					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
 					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 				
-					qDebug() << b->m_Jinv;
-					qDebug() << invJ2;
-
 					float p = -(1 + e)*v_contact.dot(c[0].n) / 
 						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n)
 																	 - (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n)
