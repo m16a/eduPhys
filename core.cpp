@@ -103,62 +103,70 @@ float Core::FindCollisions(bool applyImpulses)
 						continue;
 					
 					//TODO: remove after LCP implementing
-					if (cntct_cnt > 1)
+					if (0 && cntct_cnt > 1)
 					{
+
 						Vector3f tmp(0,0,0);
 						for (int cnt_i=0; cnt_i<cntct_cnt; ++cnt_i)
 							tmp += c[cnt_i].pt;
 
 						c[0].pt = tmp / cntct_cnt;
+
+
 					}
-
-					assert(fabs(c[0].n.norm()-1.0f) < 0.001);
-					Vector3f rAP = c[0].pt - a->m_pos;
-					Vector3f rBP = c[0].pt - b->m_pos;
-
-					Matrix3f rAPcross = getCrossMatrix(rAP);
-					Matrix3f rBPcross = getCrossMatrix(rBP);
-					
-					float e = 1;//0.8f;//restitution coef
-					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-						
-					if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
+					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
 					{
-						qDebug() << "vCon" << v_contact << c[0].n;	
-						a->m_active = false;
-						b->m_active = false;
-						a->m_v = b->m_v = Vector3f(0,0,0);	
-						continue;
-					}
+						Contact cntct = c[cnt_indx];	
+						assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+						Vector3f rAP = cntct.pt - a->m_pos;
+						Vector3f rBP = cntct.pt - b->m_pos;
 
-					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
-					qDebug() << "pt:"<< c[0].pt << "normal:" << c[0].n << " depth:" << c[0].depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(c[0].n);
-					if (v_contact.dot(c[0].n) > 0)
-					{					
-						qDebug() << "Positive contact speed:" << v_contact.dot(c[0].n);
-						continue;
-					}
-					a->m_active = true;
-					b->m_active = true;	
-
-					Matrix3f rotM1 = a->m_rot.toRotationMatrix();
-					Matrix3f rotM2 = b->m_rot.toRotationMatrix();
-
-					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
-					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
-				
-					float p = -(1 + e)*v_contact.dot(c[0].n) / 
-						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n)
-																	 - (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n)
-						);
-					float tmp = (invJ2 * rBP.cross(c[0].n).cross(rBP)).dot(c[0].n);
-					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(c[0].n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * c[0].n).dot(c[0].n) << (rBPcross*invJ2*rBPcross * c[0].n).dot(c[0].n) << tmp;
-					
-					a->AddImpulse(-p * c[0].n, c[0].pt);
-					b->AddImpulse(p * c[0].n, c[0].pt);
+						Matrix3f rAPcross = getCrossMatrix(rAP);
+						Matrix3f rBPcross = getCrossMatrix(rBP);
 						
-					DebugManager()->DrawVector(c[0].pt, c[0].n, p*3);	 
-					DebugManager()->DrawVector(c[0].pt, -c[0].n, p*3);	 
+						Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+							
+						/*
+						if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
+						{
+							qDebug() << "vCon" << v_contact << c[0].n;	
+							a->m_active = false;
+							b->m_active = false;
+							a->m_v = b->m_v = Vector3f(0,0,0);	
+							continue;
+						}
+						*/
+
+						qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
+						qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
+						if (v_contact.dot(cntct.n) > 0)
+						{					
+							qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
+							continue;
+						}
+						a->m_active = true;
+						b->m_active = true;	
+
+						Matrix3f rotM1 = a->m_rot.toRotationMatrix();
+						Matrix3f rotM2 = b->m_rot.toRotationMatrix();
+
+						Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
+						Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
+					
+						float e = 1;//0.8f;//restitution coef
+						float p = -(1 + e)*v_contact.dot(cntct.n) / 
+							(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * cntct.n).dot(cntct.n)
+																		 - (rBPcross*invJ2*rBPcross * cntct.n).dot(cntct.n)
+							);
+						float tmp = (invJ2 * rBP.cross(cntct.n).cross(rBP)).dot(cntct.n);
+						qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(cntct.n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * cntct.n).dot(cntct.n) << (rBPcross*invJ2*rBPcross * cntct.n).dot(cntct.n) << tmp;
+						
+						a->AddImpulse(-p * cntct.n, cntct.pt);
+						b->AddImpulse(p * cntct.n, cntct.pt);
+							
+						DebugManager()->DrawVector(cntct.pt, cntct.n, p*3);	 
+						DebugManager()->DrawVector(cntct.pt, -cntct.n, p*3);	 
+					}
 				}			
 			}
 		}
@@ -192,6 +200,9 @@ void Core::Step(float reqStep)
 		float finishDepth = startDepth;
 		StepAll(-reqStep);
 	
+#if DEBUG_STEP
+		qDebug() << "start depth" << startDepth;
+#endif
 
 		if (startDepth < -COLLISION_DEPTH_TOLERANCE)
 			while (i<MAX_COLLISIONS_ITERATIONS)

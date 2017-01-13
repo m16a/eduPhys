@@ -750,7 +750,6 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	float penDepth;
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	separationAxe.normalized();
-	qDebug() << "penDepth:" << penDepth;
 	if (penDepth < 0)
 	{
 		SPlane p;
