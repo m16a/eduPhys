@@ -143,15 +143,16 @@ void RenderingWidget::drawScene()
   float dt = (currTime - m_lastTime);
 	m_realTime = currTime - m_realTimeStart;
 
-	float reqStep = 0.001f;
+	float reqStep = 0.01f;
+	bool fixedStep = true;
   if (dt > reqStep)
 	{
 //		qDebug() << "step:" <<dt;
-		m_lastTime = currTime;  
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
     {
       float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-      m_core.get()->Step(dir * dt);
+			float t = (fixedStep ? reqStep : dt);
+      m_core.get()->Step(dir * t);
       m_performPauseStep = false;
     }
 		else
@@ -159,7 +160,8 @@ void RenderingWidget::drawScene()
 			//don't waste CPU on pause
 			usleep(10000);
 		}
-		m_physTime+=dt;
+		m_physTime += fixedStep ? reqStep : dt;
+		m_lastTime = m_physTime;//currTime;  
   }
   m_core.get()->Draw();
 	m_objMover.Update();	

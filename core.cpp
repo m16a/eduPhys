@@ -96,8 +96,14 @@ float Core::FindCollisions(bool applyImpulses)
 
 				if (cntct_cnt > 0)
 				{
-					if (c[0].depth < res)
-						res = c[0].depth;
+					float min_depth = 10000.f;
+					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
+					{
+						if (c[cnt_indx].depth < min_depth)
+							min_depth = c[cnt_indx].depth;
+					}
+					if (min_depth < res)
+						res = min_depth; 
 
 					if (!applyImpulses)
 						continue;
