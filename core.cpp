@@ -99,8 +99,25 @@ float Core::FindCollisions(bool applyImpulses)
 					float min_depth = 10000.f;
 					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
 					{
+						bool isSeparatingContact = true;
+						{
+							Contact cntct = c[cnt_indx];	
+							assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+							Vector3f rAP = cntct.pt - a->m_pos;
+							Vector3f rBP = cntct.pt - b->m_pos;
+
+							Matrix3f rAPcross = getCrossMatrix(rAP);
+							Matrix3f rBPcross = getCrossMatrix(rBP);
+							
+							Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+							isSeparatingContact = v_contact.dot(cntct.n) > 0;
+						}
 						if (c[cnt_indx].depth < min_depth)
-							min_depth = c[cnt_indx].depth;
+							if (!isSeparatingContact)
+								min_depth = c[cnt_indx].depth;
+							else
+								qDebug() << "separating contact was skipped";
+
 					}
 					if (min_depth < res)
 						res = min_depth; 
@@ -145,6 +162,7 @@ float Core::FindCollisions(bool applyImpulses)
 
 						qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
 						qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
+						a->FullDump();
 						if (v_contact.dot(cntct.n) > 0)
 						{					
 							qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
@@ -228,8 +246,10 @@ void Core::Step(float reqStep)
 			//	qDebug() << "POST";
 			//	DumpAll();
 
-			//	qDebug() << "coll iter:" << i <<" mid:" << mid <<" depth:" << depth;
-				
+#if DEBUG_STEP
+				qDebug() << "mid:" << mid <<" depth:" << depth;
+#endif
+
 				finishDepth = depth;
 				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
 					break;

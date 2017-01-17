@@ -25,10 +25,11 @@ struct  IPhysEnt
 	virtual void AddAngularImpulse(Vector3f value) = 0;
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 	virtual float CalcKineticEnergy() = 0;
+	virtual void FullDump(){};
 
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);
-
+	
 	Vector3f m_pos;
 	Quaternionf m_rot;
 

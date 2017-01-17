@@ -48,9 +48,17 @@ void Box::Step(float t)
 		float n = dw.norm();
 		if (n > 0)
 		{
+			/*
 			Vector3f r = dw / n * sin(n/2.f) ;
 			Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
 			m_rot *= dq;
+			*/
+			Quaternionf tmp = Quaternionf(.0f, m_w[0], m_w[1], m_w[2]) * m_rot;
+			m_rot.w() += .5f*t*tmp.w();
+			m_rot.x() += .5f*t*tmp.x();
+			m_rot.y() += .5f*t*tmp.y();
+			m_rot.z() += .5f*t*tmp.z();
+			m_rot.normalize();
 		}
 	}else
 	{
@@ -301,6 +309,18 @@ void getBoxVerticies(const Box* b, Vector3f out_arr[8])
 	{	
 		Vector3f v_wrld = b->m_pos + b->m_rot * (Vector3f(i*b->m_size[0]/2.0f, j*b->m_size[1]/2.0f, k*b->m_size[2]/2.0f));
 		out_arr[indx++] = v_wrld;
+	}
+}
+
+void Box::FullDump()
+{
+	Vector3f vtcs[8];
+	getBoxVerticies(this, vtcs);
+	for (int i=0; i<8; ++i)
+	{
+		Vector3f v = m_v + m_w.cross(vtcs[i]-m_pos);
+		Vector3f pos_next = vtcs[i] + 0.01 * v;
+		qDebug() << "\t" << vtcs[i] << v << pos_next;	
 	}
 }
 

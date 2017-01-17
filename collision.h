@@ -766,7 +766,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		getVerticiesOnSupportPlane(b, p, vs2, cnt2);
 		assert(cnt2 >= 0 && cnt2 <=	4);
 
-		qDebug() << "BOX OVERLAP:" << "id1:" << a->m_id << ":" << cnt1 << b->m_id << ":" << cnt2;
+		qDebug() << "BOX OVERLAP:" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")";
 	
 		c[0].depth = penDepth;
 		out_size = 1;
