@@ -196,7 +196,7 @@ void RenderingWidget::drawScene()
 		
 		//draw axis of rotation
 		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_pSelectedEnt->m_w, 0.5);
-		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, -m_pSelectedEnt->m_w, 0.5);
+		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, -m_pSelectedEnt->m_w, 0.2);
 	}
 }
 

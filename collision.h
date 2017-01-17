@@ -506,7 +506,7 @@ void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, Vector3f out_arr[4], size_t& out_size)
 {
-	const float TOLERANCE = 0.015f;
+	const float TOLERANCE = 0.05f;
 	out_size = 0;		
 	Vector3f bVs[8];	
 	getBoxVerticies(b, bVs);
@@ -752,6 +752,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	separationAxe.normalized();
 	if (penDepth < 0)
 	{
+		qDebug() << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		//DebugManager()->DrawPlane(p.n, p.d);	 
@@ -759,24 +760,26 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, vs1, cnt1);
-		assert(cnt1 >= 0 && cnt1 <=4);
+		assert(cnt1 > 0 && cnt1 <=4);
 
 		Vector3f vs2[4];
 		size_t cnt2;
 		getVerticiesOnSupportPlane(b, p, vs2, cnt2);
-		assert(cnt2 >= 0 && cnt2 <=	4);
+		b->FullDump();
+		assert(cnt2 > 0 && cnt2 <=	4);
 
-		qDebug() << "BOX OVERLAP:" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")";
+		qDebug() << "BOX OVERLAP:" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
 	
 		c[0].depth = penDepth;
-		out_size = 1;
 		if (cnt1 == 1)
 		{
+			out_size = 1;
 			c[0].pt = vs1[0];
 			c[0].n = -p.n;//TODO:check statement	
 		}
 		else if (cnt2 == 1)
 		{
+			out_size = 1;
 			c[0].pt = vs2[0];
 			c[0].n = -p.n;//TODO:check statement	
 		}
