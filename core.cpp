@@ -162,7 +162,6 @@ float Core::FindCollisions(bool applyImpulses)
 
 						qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
 						qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
-						a->FullDump();
 						if (v_contact.dot(cntct.n) > 0)
 						{					
 							qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
