@@ -144,9 +144,9 @@ void RenderingWidget::drawScene()
 	m_realTime = currTime - m_realTimeStart;
 
 	static float physSimTime = 0.0f; 
-	float reqStep = 0.02f;
-	bool fixedStep = true;
-  if (dt > reqStep)
+	float reqStep = 0.020f;
+	bool fixedStep = false;
+  if (!fixedStep || dt > reqStep)
 	{
 //		qDebug() << "step:" <<dt;
     if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
