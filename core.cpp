@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 
-#define DEBUG_STEP 1
+#define DEBUG_STEP 0
 
 
 Core::Core()

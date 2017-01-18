@@ -764,7 +764,6 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		Vector3f vs2[4];
 		size_t cnt2;
 		getVerticiesOnSupportPlane(b, p, -penDepth*1.1, vs2, cnt2);
-		b->FullDump();
 		assert(cnt2 > 0 && cnt2 <=	4);
 
 		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;

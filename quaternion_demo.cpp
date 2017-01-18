@@ -143,7 +143,8 @@ void RenderingWidget::drawScene()
   float dt = (currTime - m_lastTime);
 	m_realTime = currTime - m_realTimeStart;
 
-	float reqStep = 0.01f;
+	static float physSimTime = 0.0f; 
+	float reqStep = 0.02f;
 	bool fixedStep = true;
   if (dt > reqStep)
 	{
@@ -154,6 +155,11 @@ void RenderingWidget::drawScene()
 			float t = (fixedStep ? reqStep : dt);
       m_core.get()->Step(dir * t);
       m_performPauseStep = false;
+			float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
+			physSimTime = stepFinishTime - currTime;
+			//qDebug() << "Step time:" << physSimTime; 
+			if (fixedStep && physSimTime > reqStep)
+				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
     }
 		else
 		{
@@ -163,6 +169,7 @@ void RenderingWidget::drawScene()
 		m_physTime += fixedStep ? reqStep : dt;
 		m_lastTime = m_physTime;//currTime;  
   }
+
   m_core.get()->Draw();
 	m_objMover.Update();	
 	DebugManager()->Draw(m_isSolverStopped);	
@@ -184,7 +191,7 @@ void RenderingWidget::drawScene()
 	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
 	if (m_realTime > 0.01 && dt > 0.0001)
-		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/dt,'f',1)));
+		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/physSimTime,'f',1)));
 
 	renderText(10,92, QString("E_kin:%1").arg(QString::number(m_core.get()->CalcKineticEnergy(),'f',2)));
 
