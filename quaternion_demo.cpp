@@ -145,7 +145,7 @@ void RenderingWidget::drawScene()
 
 	static float physSimTime = 0.0f; 
 	float reqStep = 0.020f;
-	bool fixedStep = false;
+	bool fixedStep = true;
   if (!fixedStep || dt > reqStep)
 	{
 //		qDebug() << "step:" <<dt;
@@ -187,7 +187,7 @@ void RenderingWidget::drawScene()
 	d = dir * d;
 	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
 	
-	Vector3f ypr = PYRFromQuat(dir); 
+	Vector3f ypr = PYRAnglesFromQuat(dir); 
 	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
 	if (m_realTime > 0.01 && dt > 0.0001)
@@ -557,8 +557,8 @@ void RenderingWidget::paintGL()
 void RenderingWidget::initializeGL()
 {
 	glClearColor(0.2, 0.2, 0.2, 0.);
-	mCamera.setPosition(Vector3f(2.23f, 1.88f, 1.51f));
-	mCamera.setOrientation(Quaternionf(-0.354753,-0.248882, -0.471565, -0.768007));
+	mCamera.setPosition(Vector3f(0.0f, -2.0f, 1.0f));
+	mCamera.setOrientation(quatFromPYRAngles(90.0f, 0.0f, 0.0f));
 
 	mInitFrame.orientation = mCamera.orientation().inverse();
 	mInitFrame.position = mCamera.viewMatrix().translation();

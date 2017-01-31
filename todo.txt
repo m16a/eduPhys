@@ -14,4 +14,4 @@ Review old camera code
 Clear timeline
 Clear animation
 
-Debug low FPS
+Profile low FPS

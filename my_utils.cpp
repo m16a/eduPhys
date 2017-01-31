@@ -80,6 +80,19 @@ Quaternion<float> quatFromPYR(float pitch, float yaw, float roll)
 	return q;
 }
 
+Quaternion<float> quatFromPYRAngles(float pitch, float yaw, float roll)
+{
+	pitch *= M_PI / 180.0f;
+	yaw *= M_PI / 180.0f;
+	roll *= M_PI / 180.0f;
+	Eigen::AngleAxisf rollAngle(roll, Eigen::Vector3f::UnitZ());
+	Eigen::AngleAxisf yawAngle(yaw, Eigen::Vector3f::UnitY());
+	Eigen::AngleAxisf pitchAngle(pitch, Eigen::Vector3f::UnitX());
+	Eigen::Quaternion<float> q = rollAngle * yawAngle * pitchAngle;
+
+	return q;
+}
+
 Vector3f PYRFromQuat(Quaternionf& q)
 {
 	float roll  =	atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*q.y()*q.y() - 2*q.z()*q.z());
@@ -91,6 +104,11 @@ Vector3f PYRFromQuat(Quaternionf& q)
   Matrix3f m = q.toRotationMatrix();
 	Vector3f ea = m.eulerAngles(0,1,2);
 	return ea /* 180.0f / M_PI*/;
+}
+
+Vector3f PYRAnglesFromQuat(Quaternionf& q)
+{
+	return PYRFromQuat(q) * 180.0f / M_PI;
 }
 
 bool isVectorsEqual(const Vector3f a, const Vector3f b)

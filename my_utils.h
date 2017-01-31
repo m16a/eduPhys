@@ -18,8 +18,10 @@ extern QDebug operator<<(QDebug dbg, const Matrix4i& m);
 extern Eigen::Matrix3f matrixFromPYR(float pitch, float yaw, float roll);
 
 extern Quaternion<float> quatFromPYR(float pitch, float yaw, float roll);
+extern Quaternion<float> quatFromPYRAngles(float pitch, float yaw, float roll);
 
 extern Vector3f PYRFromQuat(Quaternionf& q);
+extern Vector3f PYRAnglesFromQuat(Quaternionf& q);
 
 bool isVectorsEqual(const Vector3f a, const Vector3f b);
 
