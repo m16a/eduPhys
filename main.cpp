@@ -1,6 +1,8 @@
 #include "quaternion_demo.h"
 #include <iostream>
+#include <QtDebug>
 
+#include "my_utils.h"
 using namespace Eigen;
 
 int main(int argc, char *argv[])
@@ -87,9 +89,12 @@ int main(int argc, char *argv[])
 
   Box* s9 = new Box(Vector3f(0.1f, 0.1f, 0.1f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
+  //s9->m_rot = quatFromPYRAngles(45, 45, 0);
+	qDebug() << s9->m_rot;
 	s9->m_minv = 1.0f;
   s9->m_id = 9;
-	s9->m_v = Vector3f(-1.f, 0.0f, 0.0f);
+	//s9->m_v = Vector3f(-1.f, 0.0f, 0.0f);
+	s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
 	demo.getCore()->m_objects.push_back(s9);
 
 /*	

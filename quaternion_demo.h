@@ -118,6 +118,9 @@ class RenderingWidget : public QGLWidget
 		virtual void wheelEvent(QWheelEvent * event);
     //--------------------------------------------------------------------------------
 
+	private:
+		void drawDebugInfo(float dt, float physSimTime);
+		void updateCore();
   public: 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     

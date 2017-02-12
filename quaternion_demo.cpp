@@ -135,16 +135,26 @@ void RenderingWidget::drawScene()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  
 	glEnable(GL_LIGHT1);
 
+	updateCore();
+  m_core.get()->Draw();
+	m_objMover.Update();	
+	DebugManager()->Draw(m_isSolverStopped);	
+	
+	glDisable(GL_LIGHTING);
+  update();
 
+}
+
+void RenderingWidget::updateCore()
+{
 	float currTime = clock() / float(CLOCKS_PER_SEC);
   float dt = (currTime - m_lastTime);
 	m_realTime = currTime - m_realTimeStart;
 
 	static float physSimTime = 0.0f; 
-	float reqStep = 0.020f;
+	float reqStep = 0.010f;
 	bool fixedStep = true;
   if (!fixedStep || dt > reqStep)
 	{
@@ -170,13 +180,11 @@ void RenderingWidget::drawScene()
 		m_lastTime = m_physTime;//currTime;  
   }
 
-  m_core.get()->Draw();
-	m_objMover.Update();	
-	DebugManager()->Draw(m_isSolverStopped);	
-	
-	glDisable(GL_LIGHTING);
-  update();
+	drawDebugInfo(dt, physSimTime);
+}
 
+void RenderingWidget::drawDebugInfo(float dt, float physSimTime) 
+{
 	glColor4f(1.0, 1.0, 1.0, 0.9);
 	//Print camera info
 	Vector3f camPos = mCamera.position();
@@ -205,6 +213,7 @@ void RenderingWidget::drawScene()
 		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_pSelectedEnt->m_w, 0.5);
 		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, -m_pSelectedEnt->m_w, 0.2);
 	}
+
 }
 
 float getCurrTime()
