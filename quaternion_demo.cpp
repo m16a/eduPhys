@@ -148,43 +148,42 @@ void RenderingWidget::drawScene()
 
 void RenderingWidget::updateCore()
 {
-	float currTime = clock() / float(CLOCKS_PER_SEC);
-  float dt = (currTime - m_lastTime);
+	const bool fixedStep = true;
+	const float reqStep = 0.010f;
+	const float currTime = clock() / float(CLOCKS_PER_SEC);
+  const float dt = (currTime - m_lastTime);
 
 	static float physSimTime = 0.0f; 
-	static float unperforemedStep = 0.0f; 
-	float reqStep = 0.010f;
-	bool fixedStep = true;
+	static float unperformedStep = 0.0f; 
+
+	if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
 	{
-//		qDebug() << "step:" <<dt;
-    if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
-    {
-			if (dt < reqStep && unperforemedStep < reqStep)
-			{
-				unperforemedStep += dt;
-			}
-			else
-			{
-				float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-				float t = (fixedStep ? reqStep : dt);
-				m_core.get()->Step(dir * t);
-				m_performPauseStep = false;
-				float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
-				physSimTime = stepFinishTime - currTime;
-				//qDebug() << "Step time:" << physSimTime; 
-				if (fixedStep && physSimTime > reqStep)
-					qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
-				m_physTime += fixedStep ? reqStep : dt;
-				unperforemedStep -= reqStep;
-			}
-				m_realTime += dt;
-    }
+		if (dt < reqStep && unperformedStep < reqStep)
+		{
+			unperformedStep += dt;
+		}
 		else
 		{
-			//don't waste CPU on pause
-			usleep(10000);
+			const float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
+			const float t = (fixedStep ? reqStep : dt);
+			m_core.get()->Step(dir * t);
+			m_performPauseStep = false;
+			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
+			physSimTime = stepFinishTime - currTime;
+			qDebug() << "sT:" << m_physTime; 
+			m_core.get()->Dump(9);
+			if (fixedStep && physSimTime > reqStep)
+				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
+			m_physTime += fixedStep ? reqStep : dt;
+			unperformedStep -= reqStep;
 		}
-  }
+		m_realTime += dt;
+	}
+	else
+	{
+		//don't waste CPU on pause
+		usleep(10000);
+	}
 
 	m_lastTime = currTime;  
 

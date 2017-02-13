@@ -24,21 +24,21 @@ Eigen::Matrix3f getCrossMatrix(Vector3f t)
 
 QDebug operator<<(QDebug dbg, const Vector3f& v)
 {
-    dbg.nospace() << "(" << v.x() << ", " << v.y() <<  ", " << v.z() << ")";
+    dbg.nospace() << "(" << v.x() << "," << v.y() <<  "," << v.z() << ")";
 
     return dbg.space();
 }
 
 QDebug operator<<(QDebug dbg, const Vector4f& v)
 {
-    dbg.nospace() << "(" << v[0]/v[3] << ", " << v[1]/v[3] <<  ", " << v[2]/v[3] << ", " << v[3] <<")";
+    dbg.nospace() << "(" << v[0]/v[3] << "," << v[1]/v[3] <<  "," << v[2]/v[3] << "," << v[3] <<")";
 
     return dbg.space();
 }
 
 QDebug operator<<(QDebug dbg, const Quaternionf& q)
 {
-    dbg.nospace() <<"["<<q.w() <<"," << q.x() << ", " << q.y() <<  ", " << q.z() << "]";
+    dbg.nospace() <<"["<<q.w() <<"," << q.x() << "," << q.y() <<  "," << q.z() << "]";
 
     return dbg.space();
 }
