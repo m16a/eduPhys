@@ -50,12 +50,12 @@ int main(int argc, char *argv[])
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
 
-  Box* s3 = new Box(Vector3f(0.1f, 1.f, 1.f), true);
+  Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
   s3->m_id = 3;
 	demo.getCore()->m_objects.push_back(s3);
 
-  Box* s4 = new Box(Vector3f(0.1f, 1.f, 1.f), true);
+  Box* s4 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s4->m_pos = Vector3f(1.0f, 0.0f, 1.0f);
   s4->m_id = 40;
 	demo.getCore()->m_objects.push_back(s4);
@@ -87,14 +87,13 @@ int main(int argc, char *argv[])
 	//demo.getCore()->m_objects.push_back(s10);
 #endif
 
-  Box* s9 = new Box(Vector3f(0.1f, 0.1f, 0.1f), false);
+  Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
   //s9->m_rot = quatFromPYRAngles(45, 45, 0);
 	qDebug() << s9->m_rot;
-	s9->m_minv = 1.0f;
   s9->m_id = 9;
 	//s9->m_v = Vector3f(-1.f, 0.0f, 0.0f);
-	s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
+	s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 0.5));
 	demo.getCore()->m_objects.push_back(s9);
 
 /*	

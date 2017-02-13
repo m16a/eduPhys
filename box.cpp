@@ -5,8 +5,9 @@
 #include "my_eulerAngles.h"
 #include "rwi.h"
 
-Box::Box(const Vector3f& size, bool isStatic):IPhysEnt(isStatic)
+Box::Box(const float minv, const Vector3f& size, bool isStatic):IPhysEnt(isStatic)
 {
+	m_minv = minv;
 	m_size = size;
 	if (!isStatic)
 	{

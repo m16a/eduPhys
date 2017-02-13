@@ -13,7 +13,7 @@ class Box : public IPhysEnt
 {
 
 public:
-	Box(const Vector3f& size = Vector3f(.1f,.2f,.3f), bool isStatic = false);
+	Box(float minv = 1.0f, const Vector3f& size = Vector3f(.1f,.2f,.3f), bool isStatic = false);
 	virtual ~Box(){};
 
 	virtual void Draw();
