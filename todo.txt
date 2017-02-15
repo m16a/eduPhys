@@ -1,7 +1,10 @@
 Box-box collision detection
 	Face 3 point collision case	
 
+Provide precision to qDebug()
+
 Compare result with another phys engine
+	* impulse applying was compared with ODE
 
 Add external torque
 Unit tests would be fine
@@ -14,4 +17,4 @@ Review old camera code
 Clear timeline
 Clear animation
 
-Profile low FPS
+Profile low FPS on collision
