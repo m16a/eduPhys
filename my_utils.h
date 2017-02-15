@@ -33,4 +33,19 @@ extern const char* gYellow;
 extern const char* gCyan;
 extern const char* gMagenta;
 extern const char* gReset;
+
+struct Debug 
+{
+	Debug() : d(qDebug())
+	{
+	}
+
+  template< class T >
+  QDebug &operator<<( T val )
+  {
+		return d.nospace() << fixed << qSetRealNumberPrecision(3) << val;
+  }
+
+	QDebug d;
+};
 #endif// _MY_UTILS_H_

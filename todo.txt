@@ -1,8 +1,6 @@
 Box-box collision detection
 	Face 3 point collision case	
 
-Provide precision to qDebug()
-
 Compare result with another phys engine
 	* impulse applying was compared with ODE
 

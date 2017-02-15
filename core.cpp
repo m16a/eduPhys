@@ -24,7 +24,7 @@ void Core::Dump(int entId)
 	for (; it != m_objects.end(); ++it)
 	{
 		if (entId == -1 || entId == (*it)->m_id)
-		qDebug().nospace() << "\tObjID:" << (*it)->m_id << " pos" <<  (*it)->m_pos << " vel" << (*it)->m_v << " rot" << (*it)->m_rot << " w_rot" << (*it)->m_w;
+		Debug()<< "\tObjID:" << (*it)->m_id << " pos" <<  (*it)->m_pos << " vel" << (*it)->m_v << " rot" << (*it)->m_rot << " w_rot" << (*it)->m_w;
 	}
 }
 

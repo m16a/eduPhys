@@ -757,9 +757,7 @@ QuaternionDemo::QuaternionDemo()
   mRenderingWidget = new RenderingWidget();
 	qInstallMsgHandler(myMessageOutput);	
   setCentralWidget(mRenderingWidget);
-	
 
-	qDebug() << fixed << qSetRealNumberPrecision(3);
 /*
   QDockWidget* panel = new QDockWidget("navigation", this);
   panel->setAllowedAreas((QFlags<Qt::DockWidgetArea>)(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea));
