@@ -137,6 +137,8 @@ class RenderingWidget : public QGLWidget
 		
 		float m_realTime;
 		float m_physTime;
+		
+		int m_frameNumber;
 };
 
 class QuaternionDemo : public QMainWindow

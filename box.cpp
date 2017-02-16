@@ -61,7 +61,8 @@ void Box::Step(float t)
 			m_rot.z() += .5f*t*tmp.z();
 			m_rot.normalize();
 		}
-	}else
+	}
+	else
 	{
 		Vector3f dw = m_w*t;
 		float n = dw.norm();

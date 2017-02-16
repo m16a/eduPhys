@@ -87,6 +87,7 @@ RenderingWidget::RenderingWidget()
 	m_pSelectedEnt = 0;
   // required to capture key press events
   setFocusPolicy(Qt::StrongFocus);
+	m_frameNumber = 0;
 }
 
 void RenderingWidget::grabFrame(void)
@@ -170,11 +171,12 @@ void RenderingWidget::updateCore()
 			m_performPauseStep = false;
 			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
 			physSimTime = stepFinishTime - currTime;
-			qDebug() << "sT:" << m_physTime; 
+			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime; 
 			m_core.get()->Dump(9);
 			if (fixedStep && physSimTime > reqStep)
 				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
 			m_physTime += fixedStep ? reqStep : dt;
+			m_frameNumber++;
 			unperformedStep -= reqStep;
 		}
 		m_realTime += dt;
