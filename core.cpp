@@ -190,6 +190,7 @@ float Core::FindCollisions(bool applyImpulses)
 							
 						DebugManager()->DrawVector(cntct.pt, cntct.n, p*3);	 
 						DebugManager()->DrawVector(cntct.pt, -cntct.n, p*3);	 
+						DebugManager()->DrawSphere(cntct.pt, 0.02, Color(0,1,0,1));	 
 					}
 				}			
 			}

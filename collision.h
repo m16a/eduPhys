@@ -792,11 +792,13 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 
 		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
 	
+		/*
 		for (int i=0; i<cnt1; ++i)
 			DebugManager()->DrawSphere(vs1[i], 0.02, Color(0,1,0,1));	 
 
 		for (int i=0; i<cnt2; ++i)
 			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,1,0,1));	 
+		*/
 
 		c[0].depth = penDepth;
 		if (cnt1 == 1)
