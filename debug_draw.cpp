@@ -4,6 +4,8 @@
 #include "gpuhelper.h"
 #include "rwi.h"
 
+IcoSphere SDebugSphere::m_icoSphere = IcoSphere();
+
 SDebugPlane::SDebugPlane(const Vector3f& point, const Vector3f& normal)
 {
 	m_n = normal;
@@ -92,7 +94,28 @@ void SDebugMngr::DrawPlane(const Vector3f& n, float d)
 	m_list.push_front(p);
 }
 
-void SDebugMngr::DrawVector(const Vector3f& pos, const Vector3f& dir, const float len)
+void SDebugSphere::Draw()
+{
+	glEnable(GL_NORMALIZE);
+	Affine3f t = Translation3f(m_pos) * Scaling(m_r);
+	glColor4fv(m_color.data());
+	gpu.pushMatrix(GL_MODELVIEW);
+	gpu.multMatrix(t.matrix(),GL_MODELVIEW);
+	m_icoSphere.draw(2);
+	gpu.popMatrix(GL_MODELVIEW);
+	glDisable(GL_NORMALIZE);
+}
+
+void SDebugMngr::DrawSphere(const Vector3f& pos, float r, const Color& col)
+{
+	SDebugSphere* v = new SDebugSphere();
+	v->m_pos = pos;
+	v->m_r = r;
+	v->m_color = col;
+	m_list.push_front(v);
+}
+
+void SDebugMngr::DrawVector(const Vector3f& pos, const Vector3f& dir, float len)
 {
 	SDebugVector* v = new SDebugVector();
 	v->m_pos = pos;

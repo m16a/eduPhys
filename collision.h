@@ -525,7 +525,7 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 	}
 	out_size = indx;
 	//qDebug() << indx;
-	assert(indx >=0 && indx <= 4 && 3 != indx);
+	assert(indx >=0 && indx <= 4);
 
 	if (4 == indx)
 	{
@@ -768,6 +768,9 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 
 		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
 	
+		for (int i=0; i<cnt2; ++i)
+			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,1,0,1));	 
+
 		c[0].depth = penDepth;
 		if (cnt1 == 1)
 		{

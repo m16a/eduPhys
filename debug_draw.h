@@ -3,6 +3,8 @@
 
 #include "geometry.h"
 #include <list>
+#include "icosphere.h"
+#include "gpuhelper.h"
 
 using Eigen::Vector3f;
 using Eigen::Quaternionf;
@@ -37,11 +39,23 @@ struct SDebugVector : public IDebugItem
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) {assert(0);};
 };
 
+struct SDebugSphere: public IDebugItem 
+{
+	static IcoSphere m_icoSphere;
+
+	Vector3f m_pos;
+	float m_r;
+	Color m_color;
+
+	virtual void Draw();
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) {assert(0);};
+};
 struct SDebugMngr
 {
 //	void AddDebugItem(const IDebugItem* pDI);
-	void DrawPlane(const Vector3f& n, const float d);
-	void DrawVector(const Vector3f& pos, const Vector3f& dir, const float len);
+	void DrawPlane(const Vector3f& n, float d);
+	void DrawSphere(const Vector3f& pos, float r, const Color& col);
+	void DrawVector(const Vector3f& pos, const Vector3f& dir, float len);
 	std::list<IDebugItem*> m_list;
 	void Draw(bool isPause = false);
 };
