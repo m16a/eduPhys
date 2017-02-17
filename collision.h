@@ -523,14 +523,38 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 		}
 		//else qDebug() << "NOTpass";
 	}
-	out_size = indx;
 	//qDebug() << indx;
 	assert(indx >=0 && indx <= 4);
 
-	if (4 == indx)
+	if (3 == indx)
 	{
-		reorderRectVerticies(p.n, out_arr);
+		//add fours vertex to make a face
+		for (int i=0; i<8; ++i)
+		{
+			//skip already kept vertex
+			if (isVectorsEqual(out_arr[0], bVs[i]) ||
+					isVectorsEqual(out_arr[1], bVs[i]) ||  
+					isVectorsEqual(out_arr[2], bVs[i]))
+					continue;
+				
+			//test 4 points on plane
+			Matrix3f m;
+			m << out_arr[0]-bVs[i], out_arr[1]-bVs[i], out_arr[2]-bVs[i];
+			float d = m.determinant();
+
+			//qDebug() << "lastIn" << m_lastIn << planeHitPoint << pln.m_n << d;	
+			if (fabs(d)<0.001)
+			{
+				out_arr[indx++] = bVs[i];
+				break;
+			}
+		}
 	}
+
+	if (4 == indx)
+		reorderRectVerticies(p.n, out_arr);
+
+	out_size = indx;
 }
 
 Vector3f projectVectorOntoPlane(const Vector3f& v, const Vector3f& plane_normal, const Vector3f& plane_point)
