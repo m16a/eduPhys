@@ -26,6 +26,13 @@ Box::Box(const float minv, const Vector3f& size, bool isStatic):IPhysEnt(isStati
 	}
 }
 
+void dDQfromW (const Vector3f& w, const Quaternionf& q, Quaternionf& dq)
+{
+    dq.w() = (0.5)*(- w[0]*q.x() - w[1]*q.y() - w[2]*q.z());
+    dq.x() = (0.5)*(  w[0]*q.w() + w[1]*q.z() - w[2]*q.y());
+    dq.y() = (0.5)*(- w[0]*q.z() + w[1]*q.w() + w[2]*q.x());
+    dq.z() = (0.5)*(  w[0]*q.y() - w[1]*q.x() + w[2]*q.w());
+}
 
 void Box::Step(float t)
 {
@@ -45,32 +52,34 @@ void Box::Step(float t)
 		m_v += f_sum * m_minv * t;
 		m_pos += m_v * t;
 
-		Vector3f dw = m_w*t;
-		float n = dw.norm();
+		float n = m_w.norm();
 		if (n > 0)
 		{
-			/*
-			Vector3f r = dw / n * sin(n/2.f) ;
-			Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
-			m_rot *= dq;
-			*/
-			Quaternionf tmp = Quaternionf(.0f, m_w[0], m_w[1], m_w[2]) * m_rot;
-			m_rot.w() += .5f*t*tmp.w();
-			m_rot.x() += .5f*t*tmp.x();
-			m_rot.y() += .5f*t*tmp.y();
-			m_rot.z() += .5f*t*tmp.z();
+			Quaternionf dq;
+			dDQfromW(m_w, m_rot,dq);
+
+			m_rot.w() += t * dq.w();
+			m_rot.x() += t * dq.x();
+			m_rot.y() += t * dq.y();
+			m_rot.z() += t * dq.z();
+
 			m_rot.normalize();
 		}
 	}
 	else
 	{
-		Vector3f dw = m_w*t;
-		float n = dw.norm();
+		float n = m_w.norm();
 		if (n > 0)
 		{
-			Vector3f r = dw / n * sin(n/2.f) ;
-			Quaternionf dq(cos(n/2.f), r.x(), r.y(), r.z());
-			m_rot *= dq;
+			Quaternionf dq;
+			dDQfromW(-m_w, m_rot,dq);
+
+			m_rot.w() += -t * dq.w();
+			m_rot.x() += -t * dq.x();
+			m_rot.y() += -t * dq.y();
+			m_rot.z() += -t * dq.z();
+
+			m_rot.normalize();
 		}
 
 		m_pos += m_v * t;

@@ -3,6 +3,7 @@ Box-box collision detection
 
 Compare result with another phys engine
 	* impulse applying was compared with ODE
+	* rotation quaternion integration was fixed and compared with ODE
 
 Add external torque
 Unit tests would be fine
