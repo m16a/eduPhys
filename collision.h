@@ -656,7 +656,7 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 	out_normal = faceNormal;//TODO:check normal direction
 }
 
-void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[4], size_t& out_size, Vector3f& out_normal)
+void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[5], size_t& out_size, Vector3f& out_normal)
 {
 	out_size = 0;
 	//project both faces to contact plane
@@ -710,8 +710,8 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 		}
 	}
 
-	//no more them 4 contacts can be
-	assert(4>= out_size);
+	//no more them 5 contacts can be
+	assert(5 >= out_size);
 	
 	//case when one face is liee completly inside another
 	if (4 == out_size)
@@ -737,7 +737,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 					out_res[out_size++] = out_vrts[k];
 			}
 		}
-	assert(4 >= out_size);
+	assert(5 >= out_size);
 }
 
 //NB: contact normal should be pointed outward *a* (a -> b)
@@ -768,6 +768,9 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 
 		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
 	
+		for (int i=0; i<cnt1; ++i)
+			DebugManager()->DrawSphere(vs1[i], 0.02, Color(0,1,0,1));	 
+
 		for (int i=0; i<cnt2; ++i)
 			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,1,0,1));	 
 
@@ -825,7 +828,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		}
 		else if (cnt2 == 4 && cnt1 == 4)//face-face
 		{
-			Vector3f res[4], normal;
+			Vector3f res[5], normal;
 			size_t res_cnt = 0;
 			intersectFaceFace(vs1, vs2, p, res, res_cnt, normal);
 			
