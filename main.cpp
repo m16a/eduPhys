@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
-
+#if 0
+	//ODE comparision test
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
   s3->m_id = 3;
@@ -60,33 +61,6 @@ int main(int argc, char *argv[])
   s4->m_id = 40;
 	demo.getCore()->m_objects.push_back(s4);
 
-#if 0
-  Box* s5 = new Box(Vector3f(6.f,.2f,6.f), true);
-  s5->m_pos = Vector3f(.0f, -3.1f, .0f);
-  s5->m_id = 5;
-	demo.getCore()->m_objects.push_back(s5);
-
-  Box* s6 = new Box(Vector3f(6.f,.2f,6.f), true);
-  s6->m_pos = Vector3f(.0f, 3.1f, .0f);
-  s6->m_id = 6;
-	demo.getCore()->m_objects.push_back(s6);
-
-  Box* s7 = new Box(Vector3f(6.f,6.f,.2f), true);
-  s7->m_pos = Vector3f(.0f,.0f,-3.1f);
-  s7->m_id = 7;
-	demo.getCore()->m_objects.push_back(s7);
-
-  Box* s8 = new Box(Vector3f(6.f,6.f,.2f), true);
-  s8->m_pos = Vector3f(.0f,.0f,3.1f);
-  s8->m_id = 8;
-	demo.getCore()->m_objects.push_back(s8);
-
-  Box* s10 = new Box(Vector3f(.5f,.5f,.5f), false);
-  s10->m_pos = Vector3f(.2f,.2f,1.0f);
-  s10->m_id = 10;
-	//demo.getCore()->m_objects.push_back(s10);
-#endif
-
   Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
   s9->m_rot = quatFromPYRAngles(45, 45, 0);
@@ -95,6 +69,102 @@ int main(int argc, char *argv[])
 	s9->m_v = Vector3f(-1.f, 0.0f, 0.0f);
 	//s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
 	demo.getCore()->m_objects.push_back(s9);
+#endif
+
+#if 1
+	//2 box collision
+  Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
+  s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
+  s3->m_id = 3;
+	demo.getCore()->m_objects.push_back(s3);
+
+  Box* s4 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
+  s4->m_pos = Vector3f(1.0f, 0.0f, 1.0f);
+  s4->m_id = 40;
+	demo.getCore()->m_objects.push_back(s4);
+
+  Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
+  s9->m_pos = Vector3f(0.5f, 0.0f, 1.0f);
+  s9->m_rot = quatFromPYRAngles(45, 45, 0);
+	qDebug() << s9->m_rot;
+  s9->m_id = 9;
+	s9->m_v = Vector3f(-1.f, 0.0f, 0.0f);
+	//s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
+	demo.getCore()->m_objects.push_back(s9);
+
+  Box* s20 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
+  s20->m_pos = Vector3f(-0.5f, 0.0f, 1.0f);
+  s20->m_rot = quatFromPYRAngles(45, 45, 0);
+  s20->m_id = 20;
+	s20->m_v = Vector3f(1.f, 0.0f, 0.0f);
+	demo.getCore()->m_objects.push_back(s20);
+#endif
+#if 0
+	//big scene. cubes inside box
+  Box* s3 = new Box(0.0f, Vector3f(0.2f, 6.f, 6.f), true);
+  s3->m_pos = Vector3f(-3.1f, 0.0f, 0.0f);
+  s3->m_id = 3;
+	demo.getCore()->m_objects.push_back(s3);
+
+  Box* s4 = new Box(0.0f, Vector3f(0.2f, 6.f, 6.f), true);
+  s4->m_pos = Vector3f(3.1f, 0.0f, 0.0f);
+  s4->m_id = 40;
+	demo.getCore()->m_objects.push_back(s4);
+
+  Box* s5 = new Box(0.0f, Vector3f(6.f,.2f,6.f), true);
+  s5->m_pos = Vector3f(.0f, -3.1f, .0f);
+  s5->m_id = 5;
+	demo.getCore()->m_objects.push_back(s5);
+
+  Box* s6 = new Box(0.0f, Vector3f(6.f,.2f,6.f), true);
+  s6->m_pos = Vector3f(.0f, 3.1f, .0f);
+  s6->m_id = 6;
+	demo.getCore()->m_objects.push_back(s6);
+
+  Box* s7 = new Box(0.0f, Vector3f(6.f,6.f,.2f), true);
+  s7->m_pos = Vector3f(.0f,.0f,-3.1f);
+  s7->m_id = 7;
+	demo.getCore()->m_objects.push_back(s7);
+
+  Box* s8 = new Box(0.0f, Vector3f(6.f,6.f,.2f), true);
+  s8->m_pos = Vector3f(.0f,.0f,3.1f);
+  s8->m_id = 8;
+	demo.getCore()->m_objects.push_back(s8);
+
+  Box* s10 = new Box(0.0f, Vector3f(.5f,.5f,.5f), false);
+  s10->m_pos = Vector3f(.2f,.2f,1.0f);
+  s10->m_id = 10;
+	//demo.getCore()->m_objects.push_back(s10);
+
+  Box* s9 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
+  s9->m_rot = quatFromPYRAngles(45, 45, 0);
+	qDebug() << s9->m_rot;
+  s9->m_id = 9;
+	s9->m_v = Vector3f(-1.f, 0.4f, 0.0f);
+	//demo.getCore()->m_objects.push_back(s9);
+
+  Box* s20 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s20->m_pos = Vector3f(0.0f, 0.0f, -1.0f);
+  s20->m_rot = quatFromPYRAngles(45, 45, 0);
+  s20->m_id = 20;
+	s20->m_v = Vector3f(-1.f, 0.4f, 0.2f);
+	//demo.getCore()->m_objects.push_back(s20);
+
+  Box* s21 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s21->m_pos = Vector3f(0.0f, 1.0f, 0.0f);
+  s21->m_rot = quatFromPYRAngles(45, 45, 0);
+  s21->m_id = 21;
+	s21->m_v = Vector3f(1.f, 0.4f, 0.2f);
+	demo.getCore()->m_objects.push_back(s21);
+
+  Box* s22 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s22->m_pos = Vector3f(0.0f, -1.0f, 0.0f);
+  s22->m_rot = quatFromPYRAngles(45, 45, 0);
+  s22->m_id = 22;
+	s22->m_v = Vector3f(1.f, -0.4f, 0.2f);
+	demo.getCore()->m_objects.push_back(s22);
+#endif
 
 /*	
   IPhysEnt* s4 = new Box();
