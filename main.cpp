@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   QuaternionDemo demo;
   demo.resize(800, 600);
 	demo.move(700, 100);
-
+	std::vector<IPhysEnt*> objcts = demo.getCore()->m_objects;
   //set phys initial world
 	/*
   IPhysEnt* s1 = new Sphere();
@@ -106,6 +106,10 @@ int main(int argc, char *argv[])
 	s4->m_v = Vector3f(-1.f, 0.f, 0.f);
 	demo.getCore()->m_objects.push_back(s4);
 */
+
+	for (int i=0; i<objcts.size(); ++i)
+		objcts[i]->UpdateBBox();
+	
 	demo.show();
 	return app.exec();
 }

@@ -26,6 +26,7 @@ struct  IPhysEnt
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 	virtual float CalcKineticEnergy() = 0;
 	virtual void FullDump(){};
+	virtual void UpdateBBox() = 0;
 
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);
@@ -40,7 +41,7 @@ struct  IPhysEnt
 	Matrix3f m_Jinv;
 	bool m_active;
 	std::vector<Vector3f> m_forces;
-
+	Vector3f m_bbox[2];
 	int m_id;
 };
 

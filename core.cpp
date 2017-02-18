@@ -48,6 +48,14 @@ void Core::StepAll(float dt)
 	//DumpAll();
 }
 
+
+static bool overlapTestAABB(Vector3f a[2], Vector3f b[2]) 
+{
+  return (a[0][0] <= b[1][0] && a[1][0] >= b[0][0]) &&
+         (a[0][1] <= b[1][1] && a[1][1] >= b[0][1]) &&
+         (a[0][2] <= b[1][2] && a[1][2] >= b[0][2]);
+}
+
 float Core::FindCollisions(bool applyImpulses)
 {
 	float res = 10000.0f;
@@ -60,9 +68,14 @@ float Core::FindCollisions(bool applyImpulses)
 				if (m_objects[i]->m_minv == 0.0f && m_objects[j]->m_minv == 0.0f)
 					continue;
 
-				IPhysEnt *a = m_objects[i];
-				IPhysEnt *b = m_objects[j];
+				IPhysEnt* a = m_objects[i];
+				IPhysEnt* b = m_objects[j];
 
+				//aka broad phase					
+				if (!overlapTestAABB(a->m_bbox, b->m_bbox))
+					continue;
+
+				//aka narraw phase					
 				Contact c[4];
 				int cntct_cnt = 0;
 

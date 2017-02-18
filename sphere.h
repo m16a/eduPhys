@@ -24,6 +24,8 @@ public:
 	virtual void AddAngularImpulse(Vector3f value);
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 	virtual float CalcKineticEnergy() {assert(0); return 0;};
+	virtual void UpdateBBox();
+
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);
 

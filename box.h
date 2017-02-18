@@ -22,7 +22,8 @@ public:
 	virtual void AddAngularImpulse(Vector3f value);
 	virtual float CalcKineticEnergy();
 	virtual void FullDump();
-
+	virtual void UpdateBBox();
+	
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);
 	Vector3f Size() const

@@ -85,6 +85,7 @@ void Box::Step(float t)
 		m_pos += m_v * t;
 		m_v += f_sum * m_minv * t;
 	}
+	UpdateBBox();
 }
 
 float Box::CalcKineticEnergy()
@@ -333,6 +334,26 @@ void Box::FullDump()
 		Vector3f pos_next = vtcs[i] + 0.01 * v;
 		qDebug() << "\t" << vtcs[i] << v << pos_next;	
 	}
+}
+
+void Box::UpdateBBox()
+{
+	Vector3f vrtcs[8];	
+	getBoxVerticies(this, vrtcs);
+
+	m_bbox[0] = m_bbox[1] = vrtcs[0];
+	for (int i=1; i<8; ++i)
+	{
+		m_bbox[0][0] = std::min(m_bbox[0][0], vrtcs[i][0]);
+		m_bbox[0][1] = std::min(m_bbox[0][1], vrtcs[i][1]);
+		m_bbox[0][2] = std::min(m_bbox[0][2], vrtcs[i][2]);
+
+		
+		m_bbox[1][0] = std::max(m_bbox[1][0], vrtcs[i][0]);
+		m_bbox[1][1] = std::max(m_bbox[1][1], vrtcs[i][1]);
+		m_bbox[1][2] = std::max(m_bbox[1][2], vrtcs[i][2]);
+	}
+
 }
 
 void Box::Serialize(ser::SerPhys* sp)

@@ -65,6 +65,7 @@ void Sphere::Step(float t)
 		m_v += f_sum * m_minv * t;
 	}
 	
+	UpdateBBox();	
 
 //	qDebug() << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();
 }
@@ -144,6 +145,10 @@ int Sphere::IntersectRay(const SRay& r, SRayHit& out_hit)
 	return res;
 }
 
+void Sphere::UpdateBBox()
+{
+	assert(!"Implement BBox for sphere");
+}
 
 void Sphere::Draw()
 {
