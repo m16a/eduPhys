@@ -16,3 +16,5 @@ Clear timeline
 Clear animation
 
 Profile low FPS on collision
+	* gprof analys was made
+	* provide AABB for boxes
