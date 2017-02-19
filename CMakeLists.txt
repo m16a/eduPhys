@@ -23,9 +23,17 @@ if(QT4_FOUND AND OPENGL_FOUND)
 
   add_executable(eduPhys ${quaternion_demo_SRCS})
 
+# for anti stack-smash
+#	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")
+#	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-stack-protector")
+#	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fno-stack-protector")
+
+# for gprof profiling
 #	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
 #	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
 #	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
+# set(CMAKE_BUILD_TYPE Debug)
 
   target_link_libraries(eduPhys
     ${QT_QTCORE_LIBRARY}    ${QT_QTGUI_LIBRARY}

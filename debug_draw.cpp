@@ -143,5 +143,11 @@ void SDebugMngr::Draw(bool isPause)
 	}
 
 	if(!isPause)
+	{
+		for (std::list<IDebugItem*>::iterator it = m_list.begin() ; it != m_list.end(); ++it)
+		{
+		 delete (*it);
+		} 
 		m_list.clear();
+	}
 }

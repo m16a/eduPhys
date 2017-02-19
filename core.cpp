@@ -48,7 +48,6 @@ void Core::StepAll(float dt)
 	//DumpAll();
 }
 
-
 static bool overlapTestAABB(Vector3f a[2], Vector3f b[2]) 
 {
   return (a[0][0] <= b[1][0] && a[1][0] >= b[0][0]) &&
@@ -76,7 +75,7 @@ float Core::FindCollisions(bool applyImpulses)
 					continue;
 
 				//aka narraw phase					
-				Contact c[4];
+				Contact c[5];
 				int cntct_cnt = 0;
 
 				//TODO: ugly, refactor on adding new collision geom
