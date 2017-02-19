@@ -171,7 +171,7 @@ void RenderingWidget::updateCore()
 			m_performPauseStep = false;
 			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
 			physSimTime = stepFinishTime - currTime;
-//			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime; 
+			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime; 
 //			m_core.get()->Dump(9);
 			if (fixedStep && physSimTime > reqStep)
 				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
@@ -740,7 +740,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 	 //in this function, you can write the message to any stream!
 	 switch (type) {
 	 case QtDebugMsg:
-			 fprintf(stderr, "[Debug]: %s\n", msg);
+			 fprintf(stdout, "[Debug]: %s\n", msg);
 			 break;
 	 case QtWarningMsg:
 			 fprintf(stderr, "[Warning]: %s\n", msg);

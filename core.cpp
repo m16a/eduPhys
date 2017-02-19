@@ -229,8 +229,9 @@ void Core::Step(float reqStep)
 		float mid = reqStep;
 
 #if DEBUG_STEP
-		qDebug() << gRed << "subStep[collPath]:" << gReset << subStep++;
+		qDebug() << gRed << "subStep[collPath]:" << gReset << subStep;
 #endif
+		subStep++;
 
 		StepAll(reqStep);
 		const float startDepth = FindCollisions(false);
@@ -283,7 +284,7 @@ void Core::Step(float reqStep)
 #if DEBUG_STEP
 		qDebug() << "penetration depthes - start:" << startDepth << "finish:" << finishDepth << "/"<< COLLISION_DEPTH_TOLERANCE;
 		qDebug() << gRed << "[" << gReset << "impulsePath] performed time:" << mid << "left:" << reqStep << "full:" << fullStep;
-		DumpAll();
+		Dump();
 #endif
 	};
 	//DumpAll();
