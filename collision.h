@@ -586,7 +586,7 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 	Vector3f d1 = a2 - a1;
 	Vector3f d2 = b2 - b1;
 	
-	if (fabs(d1.cross(d2).norm()) > 1e-2)//segment are not colinear
+	if (fabs(d1.cross(d2).norm()) > 1e-6)//segments are not colinear
 	{
 		//lets try lines intersection first
 		float a = d1.dot(d1);
@@ -598,6 +598,7 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 		float d = a*e - b*b;
 		float s = (b*f - c*e)/d; 	
 		float t = (a*f - b*c)/d; 	
+
 		if (s<0 || s>1 || t<0 || t>1)
 		{	
 			//qDebug() << "s:" << s << "t:" << t;	
@@ -752,9 +753,9 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 				int cnt = 0;	
 				Vector3f n;
 				intersectSegmentSegment(prjFace1[i], prjFace1[(i+1)%4], prjFace2[j], prjFace2[(j+1)%4], out_vrts, cnt, n);
-				//qDebug() << "Seg-seg intersection:";
-				//qDebug() << prjFace1[i] << prjFace1[(i+1)%4];
-				//qDebug() << prjFace2[j] << prjFace2[(j+1)%4];;
+				qDebug() << "Seg-seg intersection:";
+				Debug() << "" << prjFace1[i] << prjFace1[(i+1)%4];
+				Debug() << "" << prjFace2[j] << prjFace2[(j+1)%4];;
 				assert(cnt > 0);
 				
 				for (int k=0; k<cnt; ++k)
