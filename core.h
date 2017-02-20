@@ -12,7 +12,7 @@ class Core
 {
 public:
 	static const int MAX_COLLISIONS_ITERATIONS = 10;
-	static const float COLLISION_DEPTH_TOLERANCE = 2*1e-3;
+	static const float COLLISION_DEPTH_TOLERANCE;
 	static const float RESTING_CONTACT_SPEED = 1e-2;	
 
 	Core();

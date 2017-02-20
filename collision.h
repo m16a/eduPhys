@@ -8,7 +8,6 @@
 #include "float.h"
 #include "debug_draw.h"
 
-
 using Eigen::Vector3d;
 using Eigen::Vector3f;
 
@@ -392,7 +391,7 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 			out_s = -tmp;
 		}
 	}
-
+	out_s.normalize();
 	//qDebug() << out_d << out_s;
 	if (out_d <= 0)
 		return;
@@ -681,7 +680,7 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 	out_normal = faceNormal;//TODO:check normal direction
 }
 
-void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[5], size_t& out_size, Vector3f& out_normal)
+void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const SPlane& contact_plane, Vector3f out_res[8], size_t& out_size, Vector3f& out_normal)
 {
 	out_size = 0;
 	//project both faces to contact plane
@@ -736,7 +735,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 	}
 
 	//no more them 5 contacts can be
-	assert(5 >= out_size);
+	assert(8 >= out_size);
 	
 	//case when one face is liee completly inside another
 	if (4 == out_size)
@@ -763,7 +762,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 					out_res[out_size++] = out_vrts[k];
 			}
 		}
-	assert(5 >= out_size);
+	assert(8 >= out_size);
 }
 
 //NB: contact normal should be pointed outward *a* (a -> b)
@@ -777,11 +776,13 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	separationAxe.normalized();
 	if (penDepth < 0)
 	{
+		penDepth = std::min(penDepth, -Core::COLLISION_DEPTH_TOLERANCE); 
+
 		qDebug() << "box-box. penDepth:" << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
-		//DebugManager()->DrawPlane(p.n, p.d);	 
-		//qDebug() << "spPlane " << p.n << p.d;
+		DebugManager()->DrawPlane(p.n, p.d);	 
+		Debug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, -penDepth*1.1, vs1, cnt1);
@@ -793,15 +794,13 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		assert(cnt2 > 0 && cnt2 <=	4);
 
 		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
-	
-		/*
+/*	
 		for (int i=0; i<cnt1; ++i)
-			DebugManager()->DrawSphere(vs1[i], 0.02, Color(0,1,0,1));	 
+			DebugManager()->DrawSphere(vs1[i], 0.02, Color(0,0,1,1));	 
 
 		for (int i=0; i<cnt2; ++i)
-			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,1,0,1));	 
-		*/
-
+			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,0,1,1));	 
+*/
 		if (cnt1 == 1)
 		{
 			out_size = 1;
@@ -858,7 +857,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		}
 		else if (cnt2 == 4 && cnt1 == 4)//face-face
 		{
-			Vector3f res[5], normal;
+			Vector3f res[8], normal;
 			size_t res_cnt = 0;
 			intersectFaceFace(vs1, vs2, p, res, res_cnt, normal);
 			

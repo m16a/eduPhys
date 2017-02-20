@@ -10,8 +10,9 @@
 #include <iostream>
 #include <fstream>
 
-#define DEBUG_STEP 0
+#define DEBUG_STEP 1
 
+const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 
 Core::Core()
 {
@@ -75,7 +76,7 @@ float Core::FindCollisions(bool applyImpulses)
 					continue;
 
 				//aka narraw phase					
-				Contact c[5];
+				Contact c[8];
 				int cntct_cnt = 0;
 
 				//TODO: ugly, refactor on adding new collision geom
