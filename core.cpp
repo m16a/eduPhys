@@ -157,9 +157,10 @@ float Core::FindCollisions(bool applyImpulses)
 							tmp += c[cnt_i].pt;
 
 						c[0].pt = tmp / cntct_cnt;
-
-
 					}
+					Vector3f center(0,0,0);
+					int separatingContactsCount = 0;
+					Vector3f normal;
 					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
 					{
 						Contact cntct = c[cnt_indx];	
@@ -167,9 +168,6 @@ float Core::FindCollisions(bool applyImpulses)
 						Vector3f rAP = cntct.pt - a->m_pos;
 						Vector3f rBP = cntct.pt - b->m_pos;
 
-						Matrix3f rAPcross = getCrossMatrix(rAP);
-						Matrix3f rBPcross = getCrossMatrix(rBP);
-						
 						Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
 							
 						/*
@@ -190,30 +188,51 @@ float Core::FindCollisions(bool applyImpulses)
 							qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
 							continue;
 						}
-						a->m_active = true;
-						b->m_active = true;	
-
-						Matrix3f rotM1 = a->m_rot.toRotationMatrix();
-						Matrix3f rotM2 = b->m_rot.toRotationMatrix();
-
-						Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
-						Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
-					
-						float e = 1;//0.8f;//restitution coef
-						float p = -(1 + e)*v_contact.dot(cntct.n) / 
-							(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * cntct.n).dot(cntct.n)
-																		 - (rBPcross*invJ2*rBPcross * cntct.n).dot(cntct.n)
-							);
-						float tmp = (invJ2 * rBP.cross(cntct.n).cross(rBP)).dot(cntct.n);
-						qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(cntct.n) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * cntct.n).dot(cntct.n) << (rBPcross*invJ2*rBPcross * cntct.n).dot(cntct.n) << tmp;
-						
-						a->AddImpulse(-p * cntct.n, cntct.pt);
-						b->AddImpulse(p * cntct.n, cntct.pt);
-							
-						DebugManager()->DrawVector(cntct.pt, cntct.n, p*3);	 
-						DebugManager()->DrawVector(cntct.pt, -cntct.n, p*3);	 
-						DebugManager()->DrawSphere(cntct.pt, 0.02, Color(0,1,0,1));	 
+						center += cntct.pt;
+						separatingContactsCount++; 
+						normal = cntct.n;
 					}
+
+					if (!separatingContactsCount)
+						return res;
+
+					assert(separatingContactsCount);
+					
+					assert(fabs(normal.norm()-1.0f) < 0.001);
+					
+					center /= separatingContactsCount;
+
+					Vector3f rAP = center - a->m_pos;
+					Vector3f rBP = center - b->m_pos;
+
+					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+
+					Matrix3f rAPcross = getCrossMatrix(rAP);
+					Matrix3f rBPcross = getCrossMatrix(rBP);
+
+					a->m_active = true;
+					b->m_active = true;	
+
+					Matrix3f rotM1 = a->m_rot.toRotationMatrix();
+					Matrix3f rotM2 = b->m_rot.toRotationMatrix();
+
+					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
+					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
+				
+					float e = 1;//0.8f;//restitution coef
+					float p = -(1 + e)*v_contact.dot(normal) / 
+						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
+																	 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
+						);
+					float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
+					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
+					
+					a->AddImpulse(-p * normal, center);
+					b->AddImpulse(p * normal, center);
+						
+					DebugManager()->DrawVector(center, normal, p*3);	 
+					DebugManager()->DrawVector(center, normal, p*3);	 
+					DebugManager()->DrawSphere(center, 0.02, Color(0,1,0,1));	 
 				}			
 			}
 		}

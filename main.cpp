@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s9);
 #endif
 
-#if 1
+#if 0
 	//2 box collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 	s20->m_v = Vector3f(1.f, 0.0f, 0.0f);
 	demo.getCore()->m_objects.push_back(s20);
 #endif
-#if 0
+#if 1
 	//big scene. cubes inside box
   Box* s3 = new Box(0.0f, Vector3f(0.2f, 6.f, 6.f), true);
   s3->m_pos = Vector3f(-3.1f, 0.0f, 0.0f);
@@ -131,12 +131,8 @@ int main(int argc, char *argv[])
   s8->m_id = 8;
 	demo.getCore()->m_objects.push_back(s8);
 
-  Box* s10 = new Box(0.0f, Vector3f(.5f,.5f,.5f), false);
-  s10->m_pos = Vector3f(.2f,.2f,1.0f);
-  s10->m_id = 10;
-	//demo.getCore()->m_objects.push_back(s10);
 
-  Box* s9 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  Box* s9 = new Box(1.0f, Vector3f(1.f, 1.f, 1.f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
   s9->m_rot = quatFromPYRAngles(45, 45, 0);
 	qDebug() << s9->m_rot;
@@ -144,21 +140,21 @@ int main(int argc, char *argv[])
 	s9->m_v = Vector3f(-1.f, 0.4f, 0.0f);
 	demo.getCore()->m_objects.push_back(s9);
 
-  Box* s20 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  Box* s20 = new Box(1.0f, Vector3f(0.5f, 0.5f, 0.5f), false);
   s20->m_pos = Vector3f(0.0f, 0.0f, -1.0f);
   s20->m_rot = quatFromPYRAngles(45, 45, 0);
   s20->m_id = 20;
 	s20->m_v = Vector3f(-1.f, 0.4f, 0.2f);
 	demo.getCore()->m_objects.push_back(s20);
 
-  Box* s21 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  Box* s21 = new Box(1.0f, Vector3f(0.4f, 0.8f, 1.2f), false);
   s21->m_pos = Vector3f(0.0f, 1.0f, 0.0f);
   s21->m_rot = quatFromPYRAngles(45, 45, 0);
   s21->m_id = 21;
 	s21->m_v = Vector3f(1.f, 0.4f, 0.2f);
 	demo.getCore()->m_objects.push_back(s21);
 
-  Box* s22 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  Box* s22 = new Box(1.0f, Vector3f(0.4f, 0.4f, 0.4f), false);
   s22->m_pos = Vector3f(0.0f, -1.0f, 0.0f);
   s22->m_rot = quatFromPYRAngles(45, 45, 0);
   s22->m_id = 22;
