@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 
-#define DEBUG_STEP 1
+#define DEBUG_STEP 0
 
 const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 

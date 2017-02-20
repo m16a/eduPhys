@@ -137,12 +137,12 @@ void RenderingWidget::drawScene()
   glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
-	updateCore();
   m_core.get()->Draw();
 	m_objMover.Update();	
 	DebugManager()->Draw(m_isSolverStopped);	
 	
 	glDisable(GL_LIGHTING);
+	updateCore();
   update();
 
 }
@@ -189,6 +189,7 @@ void RenderingWidget::updateCore()
 
 	m_lastTime = currTime;  
 
+	//drawDebugInfo(dt, std::max(physSimTime, reqStep));
 	drawDebugInfo(dt, physSimTime);
 }
 

@@ -1,20 +1,23 @@
-Box-box collision detection
+Draw better cubes
 
-Compare result with another phys engine
-	* impulse applying was compared with ODE
-	* rotation quaternion integration was fixed and compared with ODE
+Contact solver
 
 Add external torque
 Unit tests would be fine
 Textures
-Contact solver
 
 Make smooth key scene rotation
-
 Review old camera code
 Clear timeline
 Clear animation
 
+
 Profile low FPS on collision
 	* gprof analys was made
-	* provide AABB for boxes
+	* AABB for boxes was supported
+
+Box-box collision detection was made
+
+Compare result with another phys engine
+	* impulse applying was compared with ODE
+	* rotation quaternion integration was fixed and compared with ODE
