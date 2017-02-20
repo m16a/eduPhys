@@ -110,6 +110,9 @@ float Core::FindCollisions(bool applyImpulses)
 				if (cntct_cnt > 0)
 				{
 					float min_depth = 10000.f;
+#if DEBUG_STEP
+					Debug() << "Total contacts: "<< cntct_cnt;
+#endif
 					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
 					{
 						bool isSeparatingContact = true;
@@ -125,6 +128,11 @@ float Core::FindCollisions(bool applyImpulses)
 							Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
 							isSeparatingContact = v_contact.dot(cntct.n) > 0;
 						}
+						if (c[cnt_indx].depth == 1000.f)
+						{
+							assert(!"Possible missed depth in contact calculation");
+						}
+
 						if (c[cnt_indx].depth < min_depth)
 							if (!isSeparatingContact)
 								min_depth = c[cnt_indx].depth;
@@ -132,6 +140,7 @@ float Core::FindCollisions(bool applyImpulses)
 								qDebug() << "separating contact was skipped";
 
 					}
+
 					if (min_depth < res)
 						res = min_depth; 
 
@@ -287,7 +296,6 @@ void Core::Step(float reqStep)
 		Dump();
 #endif
 	};
-	//DumpAll();
 }
 
 void Core::Draw()

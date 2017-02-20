@@ -611,7 +611,7 @@ void intersectSegmentSegment(const Vector3f& a1, const Vector3f& a2, const Vecto
 			out_cnt = 1;
 			Vector3f p1 = (a1 + s*d1);
 			Vector3f p2 = (b1 + t*d2);
-			out_normal = p2 - p1;
+			out_normal = p1 - p2;
 			out_normal.normalize(); 
 			out_vrts[0] = (p1 + p2) / 2.0f;
 		}
@@ -661,7 +661,7 @@ void intersectFaceSegment(const Vector3f face[4], const Vector3f segment[2], Vec
 	//Projecct segment onto face
 	Vector3f s1 = projectVectorOntoPlane(segment[0], faceNormal, face[0]);
 	Vector3f s2 = projectVectorOntoPlane(segment[1], faceNormal, face[0]);
-	qDebug() << "projected:" << s1 << s2;
+	//qDebug() << "projected:" << s1 << s2;
 	//Clamp segment by 4 face edges
 	clampedSegment[0] = s1; clampedSegment[1] = s2;
 
@@ -753,9 +753,10 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 				int cnt = 0;	
 				Vector3f n;
 				intersectSegmentSegment(prjFace1[i], prjFace1[(i+1)%4], prjFace2[j], prjFace2[(j+1)%4], out_vrts, cnt, n);
-				qDebug() << "Seg-seg intersection:";
-				Debug() << "" << prjFace1[i] << prjFace1[(i+1)%4];
-				Debug() << "" << prjFace2[j] << prjFace2[(j+1)%4];;
+				//qDebug() << "Seg-seg intersection:";
+				//DumpAll();
+				//Debug() << "" << prjFace1[i] << prjFace1[(i+1)%4];
+				//Debug() << "" << prjFace2[j] << prjFace2[(j+1)%4];;
 				assert(cnt > 0);
 				
 				for (int k=0; k<cnt; ++k)
@@ -801,7 +802,6 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			DebugManager()->DrawSphere(vs2[i], 0.02, Color(0,1,0,1));	 
 		*/
 
-		c[0].depth = penDepth;
 		if (cnt1 == 1)
 		{
 			out_size = 1;
@@ -825,6 +825,8 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			c[0].pt = tmp[0];	
 			if (cnt == 2)
 				c[1].pt = tmp[1];	
+			
+			Debug() << "edge-edge" << vs1[0] << vs1[1] << vs2[0] << vs2[1] << c[0].pt << norm;
 		}
 		else if (cnt2 == 2 && cnt1 == 4 || cnt1 == 2 && cnt2 == 4)//edge-face
 		{
@@ -833,19 +835,20 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			if (cnt1 == 4)
 			{
 				intersectFaceSegment(vs1, vs2, tmp, norm);
-				qDebug() << "interest points:" << vs2[0] << vs2[1];
-				qDebug() << "interest points2:" << vs1[0] << vs1[1]<< vs1[2] << vs1[3];
+				//Debug() << "interest points:" << vs2[0] << vs2[1];
+				//Debug() << "interest points2:" << vs1[0] << vs1[1]<< vs1[2] << vs1[3];
 			}
 			else
 			{
 				intersectFaceSegment(vs2, vs1, tmp, norm);
 			}
-			qDebug() << "normNeg:" << a->m_pos << b->m_pos << tmp[0];
+
+			//Debug() << "normNeg:" << a->m_pos << b->m_pos << tmp[0];
 			//adjust normal a->b
 			if (norm.dot(b->m_pos-tmp[0]) < 0)
 			{
 				norm *= -1.0f;
-				qDebug() << "normal negation";
+				//qDebug() << "normal negation";
 			}
 
 			out_size = 2;
@@ -871,7 +874,12 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			qCritical() << "Wrong intersection verticies count:" << cnt1 << cnt2;
 			assert(0);
 		}
-
+		
+		for (int i=0; i<out_size; ++i)
+		{
+			//most naive case when all contacts have same depth
+			c[i].depth = penDepth;
+		}
 	}
 	else
 	{
