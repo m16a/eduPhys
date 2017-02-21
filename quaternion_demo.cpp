@@ -118,23 +118,23 @@ void RenderingWidget::drawScene()
   // draw the fractal object
   float sqrt3 = /*internal::*/sqrt(3.);
   glLightfv(GL_LIGHT0, GL_AMBIENT, Vector4f(1.,1,1,1).data());
- // glLightfv(GL_LIGHT0, GL_DIFFUSE, Vector4f(0.5,1,0.5,1).data());
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, Vector4f(0.5,1,0.5,1).data());
   glLightfv(GL_LIGHT0, GL_SPECULAR, Vector4f(1,1,1,1).data());
-  //glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(-sqrt3,-sqrt3,sqrt3,0).data());
-  glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(0,0,100,0).data());
+  glLightfv(GL_LIGHT0, GL_POSITION, Vector4f(0,0,2.8,0.5).data());
 
   glLightfv(GL_LIGHT1, GL_AMBIENT, Vector4f(0.5,0.5,0.5,1).data());
   glLightfv(GL_LIGHT1, GL_DIFFUSE, Vector4f(0.6,0.6,0.6,0.6).data());
-  glLightfv(GL_LIGHT1, GL_SPECULAR, Vector4f(1,1,1,1).data());
-  glLightfv(GL_LIGHT1, GL_POSITION, Vector4f(-sqrt3,sqrt3,-sqrt3,0).data());
+  glLightfv(GL_LIGHT1, GL_SPECULAR, Vector4f(1,0,0,0.5).data());
+  glLightfv(GL_LIGHT1, GL_POSITION, Vector4f(2.8,0,0,0).data());
 
-//  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Vector4f(0.7, 0.7, 0.7, 1).data());
-//  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector4f(0.8, 0.75, 0.6, 1).data());
-//  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Vector4f(1, 1, 1, 1).data());
-//  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 64);
-
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+	/*
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Vector4f(0.7, 0.7, 0.7, 1).data());
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector4f(0.8, 0.75, 0.6, 1).data());
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Vector4f(1, 1, 1, 1).data());
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 64);
+	*/
+  //glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
   m_core.get()->Draw();

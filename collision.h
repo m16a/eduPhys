@@ -781,8 +781,8 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		qDebug() << "box-box. penDepth:" << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
-		DebugManager()->DrawPlane(p.n, p.d);	 
-		Debug() << "spPlane " << p.n << p.d;
+		//DebugManager()->DrawPlane(p.n, p.d);	 
+		//Debug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, -penDepth*1.1, vs1, cnt1);

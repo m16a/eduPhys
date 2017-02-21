@@ -1,5 +1,3 @@
-Draw better cubes
-
 Contact solver
 
 Add external torque
