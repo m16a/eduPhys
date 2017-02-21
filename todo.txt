@@ -1,21 +1,16 @@
-Contact solver
+1.Fix debug info: camera direction and angles
+1.Make smooth key scene rotation
+1.Remove ball spawn on space
+1.Create qute description and invite picture
+1.Code refactoring:
+		Review old camera code
+		Clear timeline
+		Clear animation
+		Rename quaternion demo, geometry.h
 
-Add external torque
-Unit tests would be fine
-Textures
 
-Make smooth key scene rotation
-Review old camera code
-Clear timeline
-Clear animation
+2.Contact solver
 
-
-Profile low FPS on collision
-	* gprof analys was made
-	* AABB for boxes was supported
-
-Box-box collision detection was made
-
-Compare result with another phys engine
-	* impulse applying was compared with ODE
-	* rotation quaternion integration was fixed and compared with ODE
+3.Add external torque
+3.Unit tests would be fine
+3.Textures
