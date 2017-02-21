@@ -1,5 +1,5 @@
-#ifndef _GEOMETRY_H_
-#define _GEOMETRY_H_
+#ifndef _PHYSENT_H_
+#define _PHYSENT_H_
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -46,4 +46,4 @@ struct  IPhysEnt
 };
 
 
-#endif//_GEOMETRY_H_
+#endif//_PHYSENT_H_

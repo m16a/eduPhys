@@ -1,7 +1,7 @@
 #ifndef _DEBUG_DRAW_H_
 #define _DEBUG_DRAW_H_
 
-#include "geometry.h"
+#include "phys_ent.h"
 #include <list>
 #include "icosphere.h"
 #include "gpuhelper.h"

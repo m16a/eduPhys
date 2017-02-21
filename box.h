@@ -1,7 +1,7 @@
 #ifndef _BOX_H_
 #define _BOX_H_
 
-#include "geometry.h"
+#include "phys_ent.h"
 #include "icosphere.h"
 
 

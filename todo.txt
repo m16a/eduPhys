@@ -6,7 +6,7 @@
 		Review old camera code
 		Clear timeline
 		Clear animation
-		Rename quaternion demo, geometry.h
+		Rename quaternion demo
 
 
 2.Contact solver

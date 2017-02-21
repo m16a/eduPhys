@@ -1,4 +1,4 @@
-#include "geometry.h" 
+#include "phys_ent.h" 
 const Vector3f g_Gravity(0.0f, 0.0f, -98.8f); 
 
 IPhysEnt::IPhysEnt(bool isStatic) 

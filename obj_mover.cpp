@@ -2,7 +2,7 @@
 #include <cmath>
 #include <QtDebug>
 #include "gpuhelper.h"
-#include "geometry.h"
+#include "phys_ent.h"
 #include "my_utils.h"
 #include "poly34.h"
 #include "rwi.h"
