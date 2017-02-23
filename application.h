@@ -88,11 +88,11 @@ class RenderingWidget : public QGLWidget
     void setupCamera();
 };
 
-class QuaternionDemo : public QMainWindow
+class CApplication : public QMainWindow
 {
   Q_OBJECT
   public:
-    QuaternionDemo();
+    CApplication ();
 		Core* getCore() {return mRenderingWidget->getCore();};
   protected:
     RenderingWidget* mRenderingWidget;

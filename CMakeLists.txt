@@ -15,13 +15,13 @@ if(QT4_FOUND AND OPENGL_FOUND)
 	
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(quaternion_demo_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp quaternion_demo.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
+  set(application_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp application.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
 
 	add_subdirectory("${PROJECT_SOURCE_DIR}/serialization")
 
-  qt4_automoc(${quaternion_demo_SRCS})
+  qt4_automoc(${application_SRCS})
 
-  add_executable(eduPhys ${quaternion_demo_SRCS})
+  add_executable(eduPhys ${application_SRCS})
 
 # for anti stack-smash
 #	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")

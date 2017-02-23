@@ -2,7 +2,7 @@
 1.Make smooth key scene rotation
 1.Create cute description and invite picture
 1.Code refactoring:
-		Rename quaternion demo
+	Review all classes
 
 
 2.Contact solver

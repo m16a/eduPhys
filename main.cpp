@@ -1,7 +1,7 @@
-#include "quaternion_demo.h"
 #include <iostream>
 #include <QtDebug>
 
+#include "application.h"
 #include "my_utils.h"
 using namespace Eigen;
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
 	srand(time(NULL));
   QApplication app(argc, argv);
-  QuaternionDemo demo;
+  CApplication demo;
   demo.resize(800, 600);
 	demo.move(700, 100);
 	std::vector<IPhysEnt*> objcts = demo.getCore()->m_objects;

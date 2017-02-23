@@ -7,7 +7,7 @@
 // Public License v. 2.0. If a copy of the MPL was not distributed
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "quaternion_demo.h"
+#include "application.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -465,12 +465,12 @@ void myMessageOutput(QtMsgType type, const char *msg)
 	 }
 }
 
-QuaternionDemo::QuaternionDemo()
+CApplication::CApplication()
 {
   mRenderingWidget = new RenderingWidget();
 	qInstallMsgHandler(myMessageOutput);	
   setCentralWidget(mRenderingWidget);
 }
 
-#include "quaternion_demo.moc"
+#include "application.moc"
 
