@@ -8,13 +8,16 @@
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "quaternion_demo.h"
-#include "icosphere.h"
+
+#include <stdlib.h>
+#include <time.h>
+#include <iostream>
+#include <unistd.h>
 
 #include <Eigen/Geometry>
 #include <Eigen/QR>
 #include <Eigen/LU>
 
-#include <iostream>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QInputDialog>
@@ -24,18 +27,14 @@
 #include <QDockWidget>
 #include <QPushButton>
 #include <QGroupBox>
-
-
 #include <QtDebug>
-#include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
 
-#include "my_eulerAngles.h"
+#include "rwi.h"
 #include "phys_ent.h"
 #include "my_utils.h"
-#include "rwi.h"
+#include "icosphere.h"
 #include "debug_draw.h"
+#include "my_eulerAngles.h"
 
 using namespace Eigen;
 
@@ -49,15 +48,6 @@ template<typename T> T lerp(float t, const T& a, const T& b)
 template<> Quaternionf lerp(float t, const Quaternionf& a, const Quaternionf& b)
 { return a.slerp(t,b); }
 
-// linear interpolation of a frame using the type OrientationType
-// to perform the interpolation of the orientations
-template<typename OrientationType>
-inline static Frame lerpFrame(float alpha, const Frame& a, const Frame& b)
-{
-  return Frame(lerp(alpha,a.position,b.position),
-               Quaternionf(lerp(alpha,OrientationType(a.orientation),OrientationType(b.orientation))));
-}
-
 // Euler angles slerp
 template<> EulerAngles<float> lerp(float t, const EulerAngles<float>& a, const EulerAngles<float>& b)
 {
@@ -68,13 +58,6 @@ template<> EulerAngles<float> lerp(float t, const EulerAngles<float>& a, const E
 
 RenderingWidget::RenderingWidget()
 {
-  mAnimate = false;
-  mCurrentTrackingMode = TM_NO_TRACK;
-  mNavMode = NavTurnAround;
-  mLerpMode = LerpQuaternion;
-  m_SolverStepMode = SolverContinuous;
-  mRotationMode = RotationStable;
-  mTrackball.setCamera(&mCamera);
   m_core.reset(new Core);
 
   m_performPauseStep == false;
@@ -90,33 +73,13 @@ RenderingWidget::RenderingWidget()
 	m_frameNumber = 0;
 }
 
-void RenderingWidget::grabFrame(void)
-{
-    // ask user for a time
-    bool ok = false;
-    double t = 0;
-    if (!m_timeline.empty())
-      t = (--m_timeline.end())->first + 1.;
-    t = QInputDialog::getDouble(this, "Eigen's RenderingWidget", "time value: ",
-      t, 0, 1e3, 1, &ok);
-    if (ok)
-    {
-      Frame aux;
-      aux.orientation = mCamera.viewMatrix().linear();
-      aux.position = mCamera.viewMatrix().translation();
-      m_timeline[t] = aux;
-    }
-}
-
 void RenderingWidget::drawScene()
 {
-  float length = 0.2;
+  const float length = 0.2;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitY(), Color(0,1,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitZ(), Color(0,0,1,1));
 
-  // draw the fractal object
-  float sqrt3 = /*internal::*/sqrt(3.);
   glLightfv(GL_LIGHT0, GL_AMBIENT, Vector4f(1.,1,1,1).data());
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, Vector4f(0.5,1,0.5,1).data());
   glLightfv(GL_LIGHT0, GL_SPECULAR, Vector4f(1,1,1,1).data());
@@ -201,8 +164,10 @@ void RenderingWidget::drawDebugInfo(float dt, float physSimTime)
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
 	Quaternionf dir = mCamera.orientation();
+	dir.normalize();
 	Vector3f d(1,0,0);
 	d = dir * d;
+	Debug() << "" << dir << d;
 	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
 	
 	Vector3f ypr = PYRAnglesFromQuat(dir); 
@@ -270,14 +235,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
 				mCamera.setOrientation(delta*o);	
         break;
 			}
-      // add a frame
-      case Qt::Key_G:
-        grabFrame();
-        break;
-      // move the camera to initial pos
-      case Qt::Key_R:
-        resetCamera();
-        break;
       //  arrows to flight with camera
       case Qt::Key_W:
 			{
@@ -334,14 +291,15 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
 				}
 			case Qt::Key_Space:
 			{
+				/*
 				static int sIndex = 100;
 				IPhysEnt* s2 = new Sphere();
 				s2->m_pos = Vector3f(rand()%10 - 5, rand()%10 -5, 1.3f);
 				s2->m_id = sIndex++;
 				s2->m_minv = 1;
-				//s2->m_v = Vector3f(2.f, 0.f, 0.f);
 				m_core.get()->m_objects.push_back(s2);
 				s2->m_forces.push_back(g_Gravity);
+				*/
         break;
 			}
       default:
@@ -355,72 +313,37 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 {
 	m_lastMousePos = Vector2i(e->pos().x(), e->pos().y());
 	m_lastMousePosTime = getCurrTime();	
-	if (e->modifiers() & Qt::ControlModifier)
+
+	//do RWI test, to find pointed object
+	SRay r;
+	r.m_org = mCamera.position();
+	r.m_dist = 1000.0f;
+	r.m_dir = mCamera.directionFromScreen(m_lastMousePos);
+	SRayHit res;
+	
+	//qDebug() << "direction:" << r.m_dir;
+	bool isHelperHit = m_objMover.RWI(r);
+	if (!isHelperHit)
 	{
-		assert(0);//TODO:review this block
-		bool fly = (mNavMode==NavFly) || (e->modifiers()&Qt::ControlModifier);
-		switch(e->button())
+		if (m_core->RWI(r, res))
 		{
-			case Qt::LeftButton:
-				if(fly)
-				{
-					mCurrentTrackingMode = TM_LOCAL_ROTATE;
-					mTrackball.start(Trackball::Local);
-				}
-				else
-				{
-					mCurrentTrackingMode = TM_ROTATE_AROUND;
-					mTrackball.start(Trackball::Around);
-				}
-				mTrackball.track(m_lastMousePos);
-				break;
-			case Qt::MidButton:
-				if(fly)
-					mCurrentTrackingMode = TM_FLY_Z;
-				else
-					mCurrentTrackingMode = TM_ZOOM;
-				break;
-			case Qt::RightButton:
-					mCurrentTrackingMode = TM_FLY_PAN;
-				break;
-			default:
-				break;
+			m_pSelectedEnt = res.m_pEnt;	
+//			m_pSelectedEnt->m_v= Vector3f(0,0,0);
+			m_pSelectedEnt->m_active = true; 
+			m_pSelectedEnt->m_forces.clear();
+			qDebug() << "Picked object:" << res.m_pEnt->m_id;
+			m_objMover.OnSelect(m_pSelectedEnt);
 		}
-	}
-	else
-	{
-		//do RWI test, to find pointed object
-		SRay r;
-		r.m_org = mCamera.position();
-		r.m_dist = 1000.0f;
-		r.m_dir = mCamera.directionFromScreen(m_lastMousePos);
-		SRayHit res;
-		
-		//qDebug() << "direction:" << r.m_dir;
-		bool isHelperHit = m_objMover.RWI(r);
-		if (!isHelperHit)
+		else	
 		{
-			if (m_core->RWI(r, res))
-			{
-				m_pSelectedEnt = res.m_pEnt;	
-	//			m_pSelectedEnt->m_v= Vector3f(0,0,0);
-				m_pSelectedEnt->m_active = true; 
-				m_pSelectedEnt->m_forces.clear();
-				qDebug() << "Picked object:" << res.m_pEnt->m_id;
-				m_objMover.OnSelect(m_pSelectedEnt);
-			}
-			else	
-			{
-				m_objMover.OnDeselect(0);
-				m_pSelectedEnt = 0; 
-			}
+			m_objMover.OnDeselect(0);
+			m_pSelectedEnt = 0; 
 		}
 	}
 }
 
 void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 {
-    mCurrentTrackingMode = TM_NO_TRACK;
     updateGL();
 		m_lastMousePosTime = 0.0f;
 		if (m_pSelectedEnt)
@@ -432,109 +355,54 @@ void RenderingWidget::mouseReleaseEvent(QMouseEvent*)
 
 void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 {
-    // tracking
-    if(mCurrentTrackingMode != TM_NO_TRACK)
-    {
-				assert(0);//TODO:review this block
+	float dx =   float(e->x() - m_lastMousePos.x()); 
+	float dy = - float(e->y() - m_lastMousePos.y());
 
-        float dx =   float(e->x() - m_lastMousePos.x()) / float(mCamera.vpWidth());
-        float dy = - float(e->y() - m_lastMousePos.y()) / float(mCamera.vpHeight());
+	SRay r;
+	r.m_org = mCamera.position();
+	r.m_dist = 1000.0f;
+	r.m_dir = mCamera.directionFromScreen(Vector2i(e->pos().x(), e->pos().y()));
 
-        // speedup the transformations
-        if(e->modifiers() & Qt::ShiftModifier)
-        {
-          dx *= 10.;
-          dy *= 10.;
-        }
+	bool wasRotation = m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0), r);
+	if (!wasRotation && m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
+	{
+		Vector4f pickedWrld(m_pSelectedEnt->m_pos[0],m_pSelectedEnt->m_pos[1],m_pSelectedEnt->m_pos[2],1);
+		
+		GLfloat tmp[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, tmp);
+		Eigen::Map<Eigen::Matrix4f> mv_m(tmp);	
+		//std::cout << "Model view" << std::endl << mv_m << std::endl;
 
-        switch(mCurrentTrackingMode)
-        {
-          case TM_ROTATE_AROUND:
-          case TM_LOCAL_ROTATE:
-            if (mRotationMode==RotationStable)
-            {
-              // use the stable trackball implementation mapping
-              // the 2D coordinates to 3D points on a sphere.
-              mTrackball.track(Vector2i(e->pos().x(), e->pos().y()));
-            }
-            else
-            {
-              // standard approach mapping the x and y displacements as rotations
-              // around the camera's X and Y axes.
-              Quaternionf q = AngleAxisf( dx*M_PI, Vector3f::UnitY())
-                            * AngleAxisf(-dy*M_PI, Vector3f::UnitX());
-              if (mCurrentTrackingMode==TM_LOCAL_ROTATE)
-                mCamera.localRotate(q);
-              else
-                mCamera.rotateAroundTarget(q);
-            }
-            break;
-          case TM_ZOOM :
-            mCamera.zoom(dy*100);
-            break;
-          case TM_FLY_Z :
-            mCamera.localTranslate(Vector3f(0, 0, -dy*200));
-            break;
-          case TM_FLY_PAN :
-            mCamera.localTranslate(Vector3f(dx*200, dy*200, 0));
-            break;
-          default:
-            break;
-        }
+		GLfloat tmp2[16];
+		glGetFloatv(GL_PROJECTION_MATRIX, tmp2);
+		Eigen::Map<Eigen::Matrix4f> proj_m(tmp2);	
+		//std::cout << "Projection" << std::endl << proj_m << std::endl;
 
-        updateGL();
-    }
-		else
+		Vector4f pickedClip = proj_m * mv_m * pickedWrld;
+		float pickedNormDepth = pickedClip[2] / pickedClip[3];	
+
+		Vector4f newMouseNorm(e->x()*2/float(mCamera.vpWidth()) - 1.f, -1.f* (e->y()*2/float(mCamera.vpHeight()) - 1.f), pickedNormDepth, 1);
+		
+		Vector4f newMouseWrld = (proj_m * mv_m).inverse() * newMouseNorm;
 		{
-        float dx =   float(e->x() - m_lastMousePos.x()); 
-        float dy = - float(e->y() - m_lastMousePos.y());
-				
-				SRay r;
-				r.m_org = mCamera.position();
-				r.m_dist = 1000.0f;
-				r.m_dir = mCamera.directionFromScreen(Vector2i(e->pos().x(), e->pos().y()));
-				
-				bool wasRotation = m_objMover.OnMouseMove(Vector3f(e->x(),e->y(), 0), r);
-				if (!wasRotation && m_pSelectedEnt && m_pSelectedEnt->m_minv > 0)	
-				{
-					Vector4f pickedWrld(m_pSelectedEnt->m_pos[0],m_pSelectedEnt->m_pos[1],m_pSelectedEnt->m_pos[2],1);
-					
-					GLfloat tmp[16];
-					glGetFloatv(GL_MODELVIEW_MATRIX, tmp);
-					Eigen::Map<Eigen::Matrix4f> mv_m(tmp);	
-					//std::cout << "Model view" << std::endl << mv_m << std::endl;
+			Vector3f offsetWrld(newMouseWrld[0] / newMouseWrld[3]  - pickedWrld[0],newMouseWrld[1] / newMouseWrld[3]  - pickedWrld[1],newMouseWrld[2] / newMouseWrld[3]  - pickedWrld[2]);
 
-					GLfloat tmp2[16];
-					glGetFloatv(GL_PROJECTION_MATRIX, tmp2);
-					Eigen::Map<Eigen::Matrix4f> proj_m(tmp2);	
-					//std::cout << "Projection" << std::endl << proj_m << std::endl;
-				
-					Vector4f pickedClip = proj_m * mv_m * pickedWrld;
-					float pickedNormDepth = pickedClip[2] / pickedClip[3];	
+			float time = getCurrTime() - m_lastMousePosTime;
+			if (time < 0.01)
+				time = 0.01;
+			assert(time > 0);
 
-					Vector4f newMouseNorm(e->x()*2/float(mCamera.vpWidth()) - 1.f, -1.f* (e->y()*2/float(mCamera.vpHeight()) - 1.f), pickedNormDepth, 1);
-					
-					Vector4f newMouseWrld = (proj_m * mv_m).inverse() * newMouseNorm;
-					{
-						Vector3f offsetWrld(newMouseWrld[0] / newMouseWrld[3]  - pickedWrld[0],newMouseWrld[1] / newMouseWrld[3]  - pickedWrld[1],newMouseWrld[2] / newMouseWrld[3]  - pickedWrld[2]);
-
-						float time = getCurrTime() - m_lastMousePosTime;
-						if (time < 0.01)
-							time = 0.01;
-						assert(time > 0);
-
-						Vector3f speed = offsetWrld / time;	
-						m_pSelectedEnt->m_v = speed;
-						/*qDebug() << "move:" << pickedWrld << "->" << newMouseWrld << "dist: " << offsetWrld
-						<< "t: " << time 
-						<< "spd: " << speed;
-						*/
-					}
-				}
+			Vector3f speed = offsetWrld / time;	
+			m_pSelectedEnt->m_v = speed;
+			/*qDebug() << "move:" << pickedWrld << "->" << newMouseWrld << "dist: " << offsetWrld
+			<< "t: " << time 
+			<< "spd: " << speed;
+			*/
 		}
+	}
 
-    m_lastMousePos = Vector2i(e->pos().x(), e->pos().y());
-		m_lastMousePosTime = getCurrTime();	
+	m_lastMousePos = Vector2i(e->pos().x(), e->pos().y());
+	m_lastMousePosTime = getCurrTime();	
 }
 
 void RenderingWidget::wheelEvent(QWheelEvent * event)
@@ -563,14 +431,7 @@ void RenderingWidget::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   mCamera.activateGL();
-
-
   drawScene();
-
-	//Vector3f a = PYRFromQuat(dir);
-	//EulerAngles<float> ea(dir);
-	//qDebug() << dir << " ==  " << quatFromPYR(a.x(), a.y(), a.z());
-	//qDebug() << dir << " ==  " << (Quaternionf)ea;
 }
 
 void RenderingWidget::initializeGL()
@@ -578,9 +439,6 @@ void RenderingWidget::initializeGL()
 	glClearColor(0.2, 0.2, 0.2, 0.);
 	mCamera.setPosition(Vector3f(0.0f, -2.0f, 1.0f));
 	mCamera.setOrientation(quatFromPYRAngles(90.0f, 0.0f, 0.0f));
-
-	mInitFrame.orientation = mCamera.orientation().inverse();
-	mInitFrame.position = mCamera.viewMatrix().translation();
 }
 
 void RenderingWidget::resizeGL(int width, int height)
@@ -588,158 +446,10 @@ void RenderingWidget::resizeGL(int width, int height)
     mCamera.setViewport(width,height);
 }
 
-void RenderingWidget::setNavMode(int m)
-{
-	mNavMode = NavMode(m);
-}
-
-void RenderingWidget::setLerpMode(int m)
-{
-  mLerpMode = LerpMode(m);
-}
-
-void RenderingWidget::setStepMode(int m)
-{
-  m_SolverStepMode = SolverStepMode(m);
-}
-
-void RenderingWidget::setRotationMode(int m)
-{
-  mRotationMode = RotationMode(m);
-}
-
-void RenderingWidget::resetCamera()
-{
-  m_timeline.clear();
-  Frame aux0 = mCamera.frame();
-  aux0.orientation = aux0.orientation.inverse();
-  aux0.position = mCamera.viewMatrix().translation();
-  m_timeline[0] = aux0;
-
-  Vector3f currentTarget = mCamera.target();
-  mCamera.setTarget(Vector3f::Zero());
-
-  // compute the rotation duration to move the camera to the target
-  Frame aux1 = mCamera.frame();
-  aux1.orientation = aux1.orientation.inverse();
-  aux1.position = mCamera.viewMatrix().translation();
-  float duration = aux0.orientation.angularDistance(aux1.orientation) * 0.9;
-  if (duration<0.1) duration = 0.1;
-
-  // put the camera at that time step:
-  aux1 = aux0.lerp(duration/2,mInitFrame);
-  // and make it look at the target again
-  aux1.orientation = aux1.orientation.inverse();
-  aux1.position = - (aux1.orientation * aux1.position);
-  mCamera.setFrame(aux1);
-  mCamera.setTarget(Vector3f::Zero());
-
-  // add this camera keyframe
-  aux1.orientation = aux1.orientation.inverse();
-  aux1.position = mCamera.viewMatrix().translation();
-  m_timeline[duration] = aux1;
-
-  m_timeline[2] = mInitFrame;
-  m_alpha = 0;
-}
-
-QWidget* RenderingWidget::createNavigationControlWidget()
-{
-  QWidget* panel = new QWidget();
-  QVBoxLayout* layout = new QVBoxLayout();
-
-  {
-    QPushButton* but = new QPushButton("reset");
-    but->setToolTip("move the camera to initial position (with animation)");
-    layout->addWidget(but);
-    connect(but, SIGNAL(clicked()), this, SLOT(resetCamera()));
-  }
-  {
-    // navigation mode
-    QGroupBox* box = new QGroupBox("navigation mode");
-    QVBoxLayout* boxLayout = new QVBoxLayout;
-    QButtonGroup* group = new QButtonGroup(panel);
-    QRadioButton* but;
-    but = new QRadioButton("turn around");
-    but->setToolTip("look around an object");
-    group->addButton(but, NavTurnAround);
-    boxLayout->addWidget(but);
-    but = new QRadioButton("fly");
-    but->setToolTip("free navigation like a spaceship\n(this mode can also be enabled pressing the \"shift\" key)");
-    group->addButton(but, NavFly);
-    boxLayout->addWidget(but);
-    group->button(mNavMode)->setChecked(true);
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setNavMode(int)));
-    box->setLayout(boxLayout);
-    layout->addWidget(box);
-  }
-  {
-    // track ball, rotation mode
-    QGroupBox* box = new QGroupBox("rotation mode");
-    QVBoxLayout* boxLayout = new QVBoxLayout;
-    QButtonGroup* group = new QButtonGroup(panel);
-    QRadioButton* but;
-    but = new QRadioButton("stable trackball");
-    group->addButton(but, RotationStable);
-    boxLayout->addWidget(but);
-    but->setToolTip("use the stable trackball implementation mapping\nthe 2D coordinates to 3D points on a sphere");
-    but = new QRadioButton("standard rotation");
-    group->addButton(but, RotationStandard);
-    boxLayout->addWidget(but);
-    group->button(mRotationMode)->setChecked(true);
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setRotationMode(int)));
-    box->setLayout(boxLayout);
-    layout->addWidget(box);
-  }
-  {
-    // interpolation mode
-    QGroupBox* box = new QGroupBox("spherical interpolation");
-    QVBoxLayout* boxLayout = new QVBoxLayout;
-    QButtonGroup* group = new QButtonGroup(panel);
-    QRadioButton* but;
-    but = new QRadioButton("quaternion slerp");
-    group->addButton(but, LerpQuaternion);
-    boxLayout->addWidget(but);
-    but->setToolTip("use quaternion spherical interpolation\nto interpolate orientations");
-    but = new QRadioButton("euler angles");
-    group->addButton(but, LerpEulerAngles);
-    boxLayout->addWidget(but);
-    but->setToolTip("use Euler angles to interpolate orientations");
-    group->button(mNavMode)->setChecked(true);
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setLerpMode(int)));
-    box->setLayout(boxLayout);
-    layout->addWidget(box);
-  }
-  {
-    // step mode
-    QGroupBox* box = new QGroupBox("solver step mode");
-    QVBoxLayout* boxLayout = new QVBoxLayout;
-    QButtonGroup* group = new QButtonGroup(panel);
-    QRadioButton* but;
-    but = new QRadioButton("continuous");
-    group->addButton(but, SolverContinuous);
-    boxLayout->addWidget(but);
-    but->setToolTip("continous simulation in time");
-    but = new QRadioButton("discrete");
-    group->addButton(but, SolverStepDiscrete);
-    boxLayout->addWidget(but);
-    but->setToolTip("press 'B' and 'N' buttons to choose simulation direction");
-    group->button(mNavMode)->setChecked(true);
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(setStepMode(int)));
-    box->setLayout(boxLayout);
-    layout->addWidget(box);
-  }
-
-
-  layout->addItem(new QSpacerItem(0,0,QSizePolicy::Minimum,QSizePolicy::Expanding));
-  panel->setLayout(layout);
-  return panel;
-}
-
 void myMessageOutput(QtMsgType type, const char *msg)
 {
-	 //in this function, you can write the message to any stream!
-	 switch (type) {
+	 switch (type) 
+	 {
 	 case QtDebugMsg:
 			 fprintf(stdout, "[Debug]: %s\n", msg);
 			 break;
@@ -760,13 +470,6 @@ QuaternionDemo::QuaternionDemo()
   mRenderingWidget = new RenderingWidget();
 	qInstallMsgHandler(myMessageOutput);	
   setCentralWidget(mRenderingWidget);
-
-/*
-  QDockWidget* panel = new QDockWidget("navigation", this);
-  panel->setAllowedAreas((QFlags<Qt::DockWidgetArea>)(Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea));
-  addDockWidget(Qt::RightDockWidgetArea, panel);
-  panel->setWidget(mRenderingWidget->createNavigationControlWidget());
-*/
 }
 
 #include "quaternion_demo.moc"

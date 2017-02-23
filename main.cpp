@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s4);
 
   Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
-  s9->m_pos = Vector3f(0.5f, 0.0f, 1.0f);
+  s9->m_pos = Vector3f(0.5f, 0.05f, 1.05f);
   //s9->m_rot = quatFromPYRAngles(45, 45, 0);
 	qDebug() << s9->m_rot;
   s9->m_id = 9;

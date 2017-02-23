@@ -15,7 +15,7 @@ if(QT4_FOUND AND OPENGL_FOUND)
 	
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(quaternion_demo_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp trackball.cpp quaternion_demo.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
+  set(quaternion_demo_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp quaternion_demo.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
 
 	add_subdirectory("${PROJECT_SOURCE_DIR}/serialization")
 

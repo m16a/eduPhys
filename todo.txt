@@ -1,16 +1,13 @@
 1.Fix debug info: camera direction and angles
 1.Make smooth key scene rotation
-1.Remove ball spawn on space
-1.Create qute description and invite picture
+1.Create cute description and invite picture
 1.Code refactoring:
-		Review old camera code
-		Clear timeline
-		Clear animation
 		Rename quaternion demo
 
 
 2.Contact solver
+2.Investigate performance on collisions
 
 3.Add external torque
 3.Unit tests would be fine
-3.Textures
+3.Textures for ball at least
