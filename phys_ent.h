@@ -21,12 +21,12 @@ struct  IPhysEnt
 	IPhysEnt(bool isStatic = false);
 	virtual void Draw() = 0;
 	virtual void Step(float t) = 0;
-	virtual void AddImpulse(Vector3f value, Vector3f pt = Vector3f(0.f,0.f,0.f)) = 0;
-	virtual void AddAngularImpulse(Vector3f value) = 0;
-	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
-	virtual float CalcKineticEnergy() = 0;
+	virtual void AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f)) = 0;
+	virtual void AddAngularImpulse(const Vector3f& value) = 0;
 	virtual void FullDump(){};
 	virtual void UpdateBBox() = 0;
+	virtual float CalcKineticEnergy() = 0;
+	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 
 	virtual void Serialize(ser::SerPhys* sp);
 	virtual void Deserialize(const ser::SerPhys* sp);

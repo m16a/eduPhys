@@ -70,7 +70,7 @@ void Sphere::Step(float t)
 //	qDebug() << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();
 }
 
-void Sphere::AddImpulse(Vector3f value, Vector3f pt)
+void Sphere::AddImpulse(const Vector3f& value, const Vector3f& pt)
 {
 	if (value.norm() < 0.0001)
 	{
@@ -99,7 +99,7 @@ void Sphere::AddImpulse(Vector3f value, Vector3f pt)
 	}
 }
 
-void Sphere::AddAngularImpulse(Vector3f value)
+void Sphere::AddAngularImpulse(const Vector3f& value)
 {
 	if (value.norm() < 0.0001)
 	{

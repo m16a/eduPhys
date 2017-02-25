@@ -100,7 +100,7 @@ float Box::CalcKineticEnergy()
 	return 0.5f * (m_v.dot(m_v) / m_minv + (J1 * m_w).dot(m_w));
 }
 
-void Box::AddImpulse(Vector3f value, Vector3f pt)
+void Box::AddImpulse(const Vector3f& value, const Vector3f& pt)
 {
 
 	qDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;
@@ -131,7 +131,7 @@ void Box::AddImpulse(Vector3f value, Vector3f pt)
 	}
 }
 
-void Box::AddAngularImpulse(Vector3f value)
+void Box::AddAngularImpulse(const Vector3f& value)
 {
 //	qDebug() << "angular impulse " << value.norm();
 	if (value.norm() < 0.0001)
@@ -361,14 +361,14 @@ void Box::Draw()
 	glDisable(GL_NORMALIZE);
 }
 
-void getBoxVerticies(const Box* b, Vector3f out_arr[8])
+void getBoxVerticies(const Box& b, Vector3f out_arr[8])
 {
 	int indx = 0;
 	for (int i=-1; i<2; i+=2)
 	for (int j=-1; j<2; j+=2)
 	for (int k=-1; k<2; k+=2)
 	{	
-		Vector3f v_wrld = b->m_pos + b->m_rot * (Vector3f(i*b->m_size[0]/2.0f, j*b->m_size[1]/2.0f, k*b->m_size[2]/2.0f));
+		Vector3f v_wrld = b.m_pos + b.m_rot * (Vector3f(i*b.m_size[0]/2.0f, j*b.m_size[1]/2.0f, k*b.m_size[2]/2.0f));
 		out_arr[indx++] = v_wrld;
 	}
 }
@@ -376,7 +376,7 @@ void getBoxVerticies(const Box* b, Vector3f out_arr[8])
 void Box::FullDump()
 {
 	Vector3f vtcs[8];
-	getBoxVerticies(this, vtcs);
+	getBoxVerticies(*this, vtcs);
 	for (int i=0; i<8; ++i)
 	{
 		Vector3f v = m_v + m_w.cross(vtcs[i]-m_pos);
@@ -388,7 +388,7 @@ void Box::FullDump()
 void Box::UpdateBBox()
 {
 	Vector3f vrtcs[8];	
-	getBoxVerticies(this, vrtcs);
+	getBoxVerticies(*this, vrtcs);
 
 	m_bbox[0] = m_bbox[1] = vrtcs[0];
 	for (int i=1; i<8; ++i)
@@ -424,4 +424,9 @@ void Box::Deserialize(const ser::SerPhys* sp)
 	m_size[1] = size.y();
 	m_size[2] = size.z();
 	IPhysEnt::Deserialize(sp);
+}
+
+Vector3f Box::Size() const
+{
+	return m_size; 
 }
