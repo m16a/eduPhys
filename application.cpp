@@ -160,17 +160,14 @@ void RenderingWidget::drawDebugInfo(float dt, float physSimTime)
 {
 	glColor4f(1.0, 1.0, 1.0, 0.9);
 	//Print camera info
-	Vector3f camPos = mCamera.position();
+	const Vector3f camPos(mCamera.position());
 	renderText(10,12, QString("cam pos: %1, %2, %3").arg(QString::number(camPos.x(),'f',2),QString::number(camPos.y(),'f',2),QString::number(camPos.z(),'f',2)));
 
-	Quaternionf dir = mCamera.orientation();
-	dir.normalize();
-	Vector3f d(1,0,0);
-	d = dir * d;
-	Debug() << "" << dir << d;
+	const Vector3f d(mCamera.direction());
 	renderText(10,32, QString("cam dir: %1, %2, %3").arg(QString::number(d[0],'f',2), QString::number(d[1],'f',2), QString::number(d[2],'f',2)));
 	
-	Vector3f ypr = PYRAnglesFromQuat(dir); 
+	Quaternionf quat = mCamera.orientation();
+	Vector3f ypr = PYRAnglesFromQuat(quat); 
 	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
 	if (m_realTime > 0.01 && dt > 0.0001)

@@ -95,15 +95,11 @@ Quaternion<float> quatFromPYRAngles(float pitch, float yaw, float roll)
 
 Vector3f PYRFromQuat(Quaternionf& q)
 {
-	float roll  =	atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*q.y()*q.y() - 2*q.z()*q.z());
-	float pitch =	atan2(2*q.x()*q.w() - 2*q.y()*q.z(), 1 - 2*q.x()*q.x() - 2*q.z()*q.z());
-	float	yaw   =	asin(2*q.x()*q.y() + 2*q.z()*q.w());
+	const float roll  =	atan2(2*q.y()*q.w() - 2*q.x()*q.z(), 1 - 2*q.y()*q.y() - 2*q.z()*q.z());
+	const float pitch =	atan2(2*q.x()*q.w() - 2*q.y()*q.z(), 1 - 2*q.x()*q.x() - 2*q.z()*q.z());
+	const float	yaw   =	asin(2*q.x()*q.y() + 2*q.z()*q.w());
 
-	return Vector3f(pitch, yaw, roll);
-
-  Matrix3f m = q.toRotationMatrix();
-	Vector3f ea = m.eulerAngles(0,1,2);
-	return ea /* 180.0f / M_PI*/;
+	return Vector3f(yaw, pitch, roll);
 }
 
 Vector3f PYRAnglesFromQuat(Quaternionf& q)
