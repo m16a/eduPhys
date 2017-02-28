@@ -74,7 +74,7 @@ class RenderingWidget : public QGLWidget
 
 	private:
 		void drawDebugInfo(float dt, float physSimTime);
-		void updateCore();
+		void updateCore(float dt);
 
 	private:
     Camera mCamera;

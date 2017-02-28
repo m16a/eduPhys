@@ -60,7 +60,7 @@ RenderingWidget::RenderingWidget()
 {
   m_core.reset(new Core);
 
-  m_performPauseStep == false;
+  m_performPauseStep = false;
   m_isSolverStopped = true;
   m_solverTimeFlow = SolverForwardTime;
 	m_lastTime  = clock() / float(CLOCKS_PER_SEC);
@@ -75,6 +75,10 @@ RenderingWidget::RenderingWidget()
 
 void RenderingWidget::drawScene()
 {
+	const float currTime = clock() / float(CLOCKS_PER_SEC);
+  const float dt = (currTime - m_lastTime);
+	m_lastTime = currTime;  
+
   const float length = 0.2;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitY(), Color(0,1,0,1));
@@ -105,43 +109,40 @@ void RenderingWidget::drawScene()
 	DebugManager()->Draw(m_isSolverStopped);	
 	
 	glDisable(GL_LIGHTING);
-	updateCore();
+	updateCore(dt);
   update();
 
 }
 
-void RenderingWidget::updateCore()
+void RenderingWidget::updateCore(float dt)
 {
 	const bool fixedStep = true;
 	const float reqStep = 0.010f;
-	const float currTime = clock() / float(CLOCKS_PER_SEC);
-  const float dt = (currTime - m_lastTime);
 
 	static float physSimTime = 0.0f; 
 	static float unperformedStep = 0.0f; 
 
+	//Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime << " rT:" << m_realTime << " dt:" << dt << " unperf" << unperformedStep; 
 	if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
 	{
-		if (dt < reqStep && unperformedStep < reqStep)
-		{
-			unperformedStep += dt;
-		}
-		else
+		if (unperformedStep > reqStep)
 		{
 			const float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
 			const float t = (fixedStep ? reqStep : dt);
+
+			const float stepStartTime = clock() / float(CLOCKS_PER_SEC);
 			m_core.get()->Step(dir * t);
-			m_performPauseStep = false;
 			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
-			physSimTime = stepFinishTime - currTime;
-//			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime; 
-//			m_core.get()->Dump(9);
+
+			m_performPauseStep = false;
+			physSimTime = stepFinishTime - stepStartTime ;
 			if (fixedStep && physSimTime > reqStep)
 				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
 			m_physTime += fixedStep ? reqStep : dt;
 			m_frameNumber++;
 			unperformedStep -= reqStep;
 		}
+		unperformedStep += dt;
 		m_realTime += dt;
 	}
 	else
@@ -149,8 +150,6 @@ void RenderingWidget::updateCore()
 		//don't waste CPU on pause
 		usleep(10000);
 	}
-
-	m_lastTime = currTime;  
 
 	//drawDebugInfo(dt, std::max(physSimTime, reqStep));
 	drawDebugInfo(dt, physSimTime);
@@ -170,7 +169,7 @@ void RenderingWidget::drawDebugInfo(float dt, float physSimTime)
 	Vector3f ypr = PYRAnglesFromQuat(quat); 
 	renderText(10,52, QString("YPR: %1, %2, %3").arg(QString::number(ypr.x(),'f',2),QString::number(ypr.y(),'f',2),QString::number(ypr.z(),'f',2)));
 
-	if (m_realTime > 0.01 && dt > 0.0001)
+	//if (m_realTime > 0.01 && dt > 0.0001)
 		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/physSimTime,'f',1)));
 
 	renderText(10,92, QString("E_kin:%1").arg(QString::number(m_core.get()->CalcKineticEnergy(),'f',2)));
