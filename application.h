@@ -32,11 +32,24 @@ class RenderingWidget : public QGLWidget
 {
   Q_OBJECT
 
-    enum SolverFlow{
+		enum eCameraMoveMode
+		{
+			eCMM_Up = 1 << 0,
+			eCMM_Down = 1 << 1,
+			eCMM_Left = 1 << 2,
+			eCMM_Right = 1 << 3,
+			eCMM_YawRight = 1 << 4,
+			eCMM_YawLeft = 1 << 5,
+			eCMM_PitchUp = 1 << 6,
+			eCMM_PitchDown = 1 << 7
+		};
+
+    enum SolverFlow
+		{
       SolverForwardTime,
       SolverBackwardTime
     };
-
+	
   public: 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     
@@ -69,12 +82,15 @@ class RenderingWidget : public QGLWidget
     virtual void mouseReleaseEvent(QMouseEvent * e);
     virtual void mouseMoveEvent(QMouseEvent * e);
     virtual void keyPressEvent(QKeyEvent * e);
+    virtual void keyReleaseEvent(QKeyEvent * e);
 		virtual void wheelEvent(QWheelEvent * event);
     //--------------------------------------------------------------------------------
 
 	private:
 		void drawDebugInfo(float dt, float physSimTime);
 		void updateCore(float dt);
+    void setupCamera();
+		void updateCameraPosDir();
 
 	private:
     Camera mCamera;
@@ -85,7 +101,8 @@ class RenderingWidget : public QGLWidget
 
     QTimer m_timer;
     bool m_isSolverStopped;
-    void setupCamera();
+
+		int m_cameraMoveFlags;
 };
 
 class CApplication : public QMainWindow

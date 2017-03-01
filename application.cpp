@@ -71,6 +71,7 @@ RenderingWidget::RenderingWidget()
   // required to capture key press events
   setFocusPolicy(Qt::StrongFocus);
 	m_frameNumber = 0;
+	m_cameraMoveFlags = 0;
 }
 
 void RenderingWidget::drawScene()
@@ -104,14 +105,39 @@ void RenderingWidget::drawScene()
   //glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
+	updateCameraPosDir();
+
   m_core.get()->Draw();
 	m_objMover.Update();	
 	DebugManager()->Draw(m_isSolverStopped);	
-	
+
 	glDisable(GL_LIGHTING);
 	updateCore(dt);
   update();
+}
 
+void RenderingWidget::updateCameraPosDir()
+{
+	const float camSpeed = 0.25f;
+	const float camAngleSpeed = 3.0f * M_PI / 180.0f;
+
+	Quaternionf delta(Quaternionf::Identity());
+
+	//rotate camera
+	float tmp = 0.0f; 
+	if (m_cameraMoveFlags & eCMM_PitchUp)
+		tmp += camAngleSpeed;
+
+	if (m_cameraMoveFlags & eCMM_PitchDown)
+		tmp -= camAngleSpeed;
+
+	if (tmp != 0.0f)
+	{
+		delta = AngleAxisf(tmp, mCamera.right());
+		Quaternionf o = mCamera.orientation();
+		mCamera.setOrientation(delta*o);	
+	}
+	qDebug() << m_cameraMoveFlags << tmp;
 }
 
 void RenderingWidget::updateCore(float dt)
@@ -192,7 +218,7 @@ float getCurrTime()
 	return clock() / float(CLOCKS_PER_SEC);
 }
 
-void RenderingWidget::keyPressEvent(QKeyEvent * e)
+void RenderingWidget::keyPressEvent(QKeyEvent* e)
 {
 		const float camSpeed = 0.25f;
 		const float camAngleSpeed = 10.0f * M_PI / 180.0f;
@@ -201,18 +227,12 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
 			//rotate camera
       case Qt::Key_Up:
 			{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(camAngleSpeed, mCamera.right());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags |= eCMM_PitchUp; 
         break;
 			}
       case Qt::Key_Down:
   		{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(-camAngleSpeed, mCamera.right());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags |= eCMM_PitchDown; 
         break;
 			}
       case Qt::Key_Left:
@@ -303,6 +323,112 @@ void RenderingWidget::keyPressEvent(QKeyEvent * e)
     }
 
     updateGL();
+}
+
+void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
+{
+		const float camSpeed = 0.25f;
+		const float camAngleSpeed = 10.0f * M_PI / 180.0f;
+    switch(e->key())
+    {
+			//rotate camera
+      case Qt::Key_Up:
+			{
+				m_cameraMoveFlags &= ~eCMM_PitchUp; 
+        break;
+			}
+      case Qt::Key_Down:
+  		{
+				m_cameraMoveFlags &= ~eCMM_PitchDown; 
+        break;
+			}
+      case Qt::Key_Left:
+  		{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(camAngleSpeed, Vector3f::UnitZ());
+				mCamera.setOrientation(delta*o);	
+        break;
+			}
+      case Qt::Key_Right:
+   		{
+				Quaternionf o = mCamera.orientation();
+				Quaternionf delta;
+				delta = AngleAxisf(-camAngleSpeed,  Vector3f::UnitZ());
+				mCamera.setOrientation(delta*o);	
+        break;
+			}
+      //  arrows to flight with camera
+      case Qt::Key_W:
+			{
+				Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos += camSpeed * camDir;
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_S:
+			{
+  			Vector3f camPos = mCamera.position();
+				Vector3f camDir = mCamera.direction();
+				camDir.normalize();
+				camPos -= camSpeed * camDir;
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_A:
+			{
+				Vector3f camPos = mCamera.position(); 
+				camPos -= camSpeed * mCamera.right();
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_D:
+ 			{
+				Vector3f camPos = mCamera.position(); 
+				camPos += camSpeed * mCamera.right();
+				mCamera.setPosition(camPos);
+        break;
+			}
+      case Qt::Key_P:
+        m_isSolverStopped = !m_isSolverStopped; 
+        break;
+      case Qt::Key_N:
+        m_solverTimeFlow = SolverForwardTime;
+        m_performPauseStep = true;
+        break;
+      case Qt::Key_B:
+        m_solverTimeFlow = SolverBackwardTime;
+        m_performPauseStep = true;
+        break;
+			case Qt::Key_C:
+				{
+					m_core.get()->SerializeToFile("dump");
+					break;
+				}
+			case Qt::Key_V:
+				{
+					m_core.get()->DeserializeFromFile("dump");
+					break;
+				}
+			case Qt::Key_Space:
+			{
+				/*
+				static int sIndex = 100;
+				IPhysEnt* s2 = new Sphere();
+				s2->m_pos = Vector3f(rand()%10 - 5, rand()%10 -5, 1.3f);
+				s2->m_id = sIndex++;
+				s2->m_minv = 1;
+				m_core.get()->m_objects.push_back(s2);
+				s2->m_forces.push_back(g_Gravity);
+				*/
+        break;
+			}
+      default:
+        break;
+    }
+
 }
 
 void RenderingWidget::mousePressEvent(QMouseEvent* e)
