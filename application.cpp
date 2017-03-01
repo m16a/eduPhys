@@ -235,6 +235,7 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 				m_cameraMoveFlags |= eCMM_PitchDown; 
         break;
 			}
+			/*
       case Qt::Key_Left:
   		{
 				Quaternionf o = mCamera.orientation();
@@ -307,17 +308,9 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 				}
 			case Qt::Key_Space:
 			{
-				/*
-				static int sIndex = 100;
-				IPhysEnt* s2 = new Sphere();
-				s2->m_pos = Vector3f(rand()%10 - 5, rand()%10 -5, 1.3f);
-				s2->m_id = sIndex++;
-				s2->m_minv = 1;
-				m_core.get()->m_objects.push_back(s2);
-				s2->m_forces.push_back(g_Gravity);
-				*/
         break;
 			}
+			*/
       default:
         break;
     }
