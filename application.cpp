@@ -121,23 +121,86 @@ void RenderingWidget::updateCameraPosDir()
 	const float camSpeed = 0.25f;
 	const float camAngleSpeed = 3.0f * M_PI / 180.0f;
 
-	Quaternionf delta(Quaternionf::Identity());
-
 	//rotate camera
-	float tmp = 0.0f; 
-	if (m_cameraMoveFlags & eCMM_PitchUp)
-		tmp += camAngleSpeed;
 
-	if (m_cameraMoveFlags & eCMM_PitchDown)
-		tmp -= camAngleSpeed;
-
-	if (tmp != 0.0f)
 	{
-		delta = AngleAxisf(tmp, mCamera.right());
-		Quaternionf o = mCamera.orientation();
-		mCamera.setOrientation(delta*o);	
+		Quaternionf delta(Quaternionf::Identity());
+		float tmp = 0.0f; 
+		if (m_cameraMoveFlags & eCMM_PitchUp)
+			tmp += camAngleSpeed;
+
+		if (m_cameraMoveFlags & eCMM_PitchDown)
+			tmp -= camAngleSpeed;
+
+		if (tmp != 0.0f)
+		{
+			delta = AngleAxisf(tmp, mCamera.right());
+			Quaternionf o = mCamera.orientation();
+			mCamera.setOrientation(delta*o);	
+		}
 	}
-	qDebug() << m_cameraMoveFlags << tmp;
+
+	{
+		Quaternionf delta(Quaternionf::Identity());
+		float tmp = 0.0f; 
+		if (m_cameraMoveFlags & eCMM_YawLeft)
+			tmp += camAngleSpeed;
+
+		if (m_cameraMoveFlags & eCMM_YawRight)
+			tmp -= camAngleSpeed;
+
+		if (tmp != 0.0f)
+		{
+			delta = AngleAxisf(tmp, Vector3f::UnitZ());
+			Quaternionf o = mCamera.orientation();
+			mCamera.setOrientation(delta*o);	
+		}
+	}
+
+	{
+		Quaternionf delta(Quaternionf::Identity());
+		float tmp = 0.0f; 
+		if (m_cameraMoveFlags & eCMM_YawLeft)
+			tmp += camAngleSpeed;
+
+		if (m_cameraMoveFlags & eCMM_YawRight)
+			tmp -= camAngleSpeed;
+
+		if (tmp != 0.0f)
+		{
+			delta = AngleAxisf(tmp, Vector3f::UnitZ());
+			Quaternionf o = mCamera.orientation();
+			mCamera.setOrientation(delta*o);	
+		}
+	}
+
+	{
+		float tmp = 0.0f;
+		if (m_cameraMoveFlags & eCMM_Up)
+			tmp += camAngleSpeed;
+
+		if (m_cameraMoveFlags & eCMM_Down)
+			tmp -= camAngleSpeed;
+
+		Vector3f camPos = mCamera.position();
+		Vector3f camDir = mCamera.direction();
+		camDir.normalize();
+		camPos += tmp * camDir;
+		mCamera.setPosition(camPos);
+	}
+
+	{
+		float tmp = 0.0f;
+		if (m_cameraMoveFlags & eCMM_Left)
+			tmp += camAngleSpeed;
+
+		if (m_cameraMoveFlags & eCMM_Right)
+			tmp -= camAngleSpeed;
+
+		Vector3f camPos = mCamera.position(); 
+		camPos -= tmp * mCamera.right();
+		mCamera.setPosition(camPos);
+	}
 }
 
 void RenderingWidget::updateCore(float dt)
@@ -203,14 +266,13 @@ void RenderingWidget::drawDebugInfo(float dt, float physSimTime)
 	if (m_pSelectedEnt)
 	{
 		renderText(500,12, QString("Slctd objct: %1").arg(m_pSelectedEnt->m_id));
-		renderText(500,32, QString("v: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_v)))); 
-		renderText(500,52, QString("w: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_w)))); 
+		renderText(500,32, QString("v: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_v))));
+		renderText(500,52, QString("w: %1").arg(QString::fromStdString(VecToStr(m_pSelectedEnt->m_w))));
 		
 		//draw axis of rotation
 		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, m_pSelectedEnt->m_w, 0.5);
 		DebugManager()->DrawVector(m_pSelectedEnt->m_pos, -m_pSelectedEnt->m_w, 0.2);
 	}
-
 }
 
 float getCurrTime()
@@ -235,54 +297,35 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 				m_cameraMoveFlags |= eCMM_PitchDown; 
         break;
 			}
-			/*
       case Qt::Key_Left:
   		{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(camAngleSpeed, Vector3f::UnitZ());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags |= eCMM_YawLeft; 
         break;
 			}
       case Qt::Key_Right:
    		{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(-camAngleSpeed,  Vector3f::UnitZ());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags |= eCMM_YawRight; 
         break;
 			}
       //  arrows to flight with camera
       case Qt::Key_W:
 			{
-				Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos += camSpeed * camDir;
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags |= eCMM_Up; 
         break;
 			}
       case Qt::Key_S:
 			{
-  			Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos -= camSpeed * camDir;
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags |= eCMM_Down; 
         break;
 			}
       case Qt::Key_A:
 			{
-				Vector3f camPos = mCamera.position(); 
-				camPos -= camSpeed * mCamera.right();
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags |= eCMM_Left; 
         break;
 			}
       case Qt::Key_D:
  			{
-				Vector3f camPos = mCamera.position(); 
-				camPos += camSpeed * mCamera.right();
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags |= eCMM_Right; 
         break;
 			}
       case Qt::Key_P:
@@ -293,8 +336,8 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
         m_performPauseStep = true;
         break;
       case Qt::Key_B:
-        m_solverTimeFlow = SolverBackwardTime;
-        m_performPauseStep = true;
+        //m_solverTimeFlow = SolverBackwardTime;
+        //m_performPauseStep = true;
         break;
 			case Qt::Key_C:
 				{
@@ -310,7 +353,6 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 			{
         break;
 			}
-			*/
       default:
         break;
     }
@@ -337,72 +379,47 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 			}
       case Qt::Key_Left:
   		{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(camAngleSpeed, Vector3f::UnitZ());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags &= ~eCMM_YawLeft; 
         break;
 			}
       case Qt::Key_Right:
    		{
-				Quaternionf o = mCamera.orientation();
-				Quaternionf delta;
-				delta = AngleAxisf(-camAngleSpeed,  Vector3f::UnitZ());
-				mCamera.setOrientation(delta*o);	
+				m_cameraMoveFlags &= ~eCMM_YawRight; 
         break;
 			}
       //  arrows to flight with camera
       case Qt::Key_W:
 			{
-				Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos += camSpeed * camDir;
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags &= ~eCMM_Up; 
         break;
 			}
       case Qt::Key_S:
 			{
-  			Vector3f camPos = mCamera.position();
-				Vector3f camDir = mCamera.direction();
-				camDir.normalize();
-				camPos -= camSpeed * camDir;
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags &= ~eCMM_Down; 
         break;
 			}
       case Qt::Key_A:
 			{
-				Vector3f camPos = mCamera.position(); 
-				camPos -= camSpeed * mCamera.right();
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags &= ~eCMM_Left; 
         break;
 			}
       case Qt::Key_D:
  			{
-				Vector3f camPos = mCamera.position(); 
-				camPos += camSpeed * mCamera.right();
-				mCamera.setPosition(camPos);
+				m_cameraMoveFlags &= ~eCMM_Right; 
         break;
 			}
       case Qt::Key_P:
-        m_isSolverStopped = !m_isSolverStopped; 
         break;
       case Qt::Key_N:
-        m_solverTimeFlow = SolverForwardTime;
-        m_performPauseStep = true;
         break;
       case Qt::Key_B:
-        m_solverTimeFlow = SolverBackwardTime;
-        m_performPauseStep = true;
         break;
 			case Qt::Key_C:
 				{
-					m_core.get()->SerializeToFile("dump");
 					break;
 				}
 			case Qt::Key_V:
 				{
-					m_core.get()->DeserializeFromFile("dump");
 					break;
 				}
 			case Qt::Key_Space:
