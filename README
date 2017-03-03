@@ -1,16 +1,13 @@
+eduPhys v1.0
+
+Controls:
+P						pause/unpause simulation
+N						perfrom single step in paused mode
+C						save current scene to file
+V						load scene from file
+LMB					select entity
 
 Navigation:
- left button:           rotate around the target
- middle button:         zoom
- left button + ctrl     quake rotate (rotate around camera position)
- middle button + ctrl   walk (progress along camera's z direction)
- left button:           pan (translate in the XY camera's plane)
-
-W/A/S/D			: move the camera
-Up/Down			: camera pitch
-Left/Right	: camera yaw
-R						: move the camera to initial position
-A						: start/stop animation
-C						: clear the animation
-G						: add a key frame
-
+W/A/S/D			move the camera
+Up/Down			camera pitch
+Left/Right	camera yaw

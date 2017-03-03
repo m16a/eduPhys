@@ -158,23 +158,6 @@ void RenderingWidget::updateCameraPosDir()
 	}
 
 	{
-		Quaternionf delta(Quaternionf::Identity());
-		float tmp = 0.0f; 
-		if (m_cameraMoveFlags & eCMM_YawLeft)
-			tmp += camAngleSpeed;
-
-		if (m_cameraMoveFlags & eCMM_YawRight)
-			tmp -= camAngleSpeed;
-
-		if (tmp != 0.0f)
-		{
-			delta = AngleAxisf(tmp, Vector3f::UnitZ());
-			Quaternionf o = mCamera.orientation();
-			mCamera.setOrientation(delta*o);	
-		}
-	}
-
-	{
 		float tmp = 0.0f;
 		if (m_cameraMoveFlags & eCMM_Up)
 			tmp += camAngleSpeed;

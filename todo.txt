@@ -1,7 +1,5 @@
-1.Create cute description and invite picture
 1.Code refactoring:
 	Review all classes
-
 
 2.Contact solver
 2.Investigate performance on collisions
@@ -9,3 +7,4 @@
 3.Add external torque
 3.Unit tests would be fine
 3.Textures for ball at least
+3.Invite picture

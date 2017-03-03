@@ -7,18 +7,20 @@ using namespace Eigen;
 
 int main(int argc, char *argv[])
 {
-  std::cout << "	Navigation:\n";
-  std::cout << "  left button:           rotate around the target\n";
-  std::cout << "  middle button:         zoom\n";
-  std::cout << "  left button + ctrl     quake rotate (rotate around camera position)\n";
-  std::cout << "  middle button + ctrl   walk (progress along camera's z direction)\n";
-  std::cout << "  left button:           pan (translate in the XY camera's plane)\n\n";
-  std::cout << "W/A/S/D			: move the camera\n";
-  std::cout << "Up/Down			: camera pitch\n";
-  std::cout << "Left/Right	: camera yaw\n";
-  std::cout << "R						: move the camera to initial position\n";
-  std::cout << "C						: clear the animation\n";
-  std::cout << "G						: add a key frame\n";
+  std::cout << "---------------------------------------------------------------------------\n";
+	std::cout << "eduPhys v1.0\n\n";
+	std::cout << "\tControls:\n";
+  std::cout << "\tP\t\tpause/unpause simulation\n";
+  std::cout << "\tN\t\tperfrom single step in paused mode\n";
+  std::cout << "\tC\t\tsave current scene to file \n";
+  std::cout << "\tV\t\tload scene from file\n";
+	std::cout << "\tLMB\t\tselect entity\n";
+	std::cout << "\n";
+  std::cout << "\tNavigation:\n";
+  std::cout << "\tW/A/S/D\t\tmove the camera\n";
+  std::cout << "\tUp/Down\t\tcamera pitch\n";
+  std::cout << "\tLeft/Right\tcamera yaw\n";
+
   std::cout << "---------------------------------------------------------------------------\n";
 
 	srand(time(NULL));
@@ -136,7 +138,6 @@ int main(int argc, char *argv[])
   Box* s9 = new Box(1.0f, Vector3f(1.f, 1.f, 1.f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
   s9->m_rot = quatFromPYRAngles(45, 45, 0);
-	qDebug() << s9->m_rot;
   s9->m_id = 9;
 	s9->m_v = Vector3f(-1.f, 0.4f, 0.0f);
 	demo.getCore()->m_objects.push_back(s9);
