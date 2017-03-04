@@ -1,3 +1,5 @@
+1.Bug with camera contorl after unpause
+1.Remove debug collision code under define
 1.Code refactoring:
 	Review all classes
 
