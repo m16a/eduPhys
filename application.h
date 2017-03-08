@@ -20,6 +20,7 @@
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QMainWindow>
 #include <memory>
+#include <time.h>
 
 #include "gpuhelper.h"
 #include "camera.h"
@@ -62,7 +63,7 @@ class RenderingWidget : public QGLWidget
 		ObjMover m_objMover;	
 		IPhysEnt* m_pSelectedEnt;
 		
-    float m_lastTime; //seconds
+		timespec m_lastTime; 
 		float m_realTime;
 		float m_physTime;
 		int m_frameNumber;
@@ -90,7 +91,7 @@ class RenderingWidget : public QGLWidget
 		void drawDebugInfo(float dt, float physSimTime);
 		void updateCore(float dt);
     void setupCamera();
-		void updateCameraPosDir();
+		void updateCameraPosDir(float dt);
 
 	private:
     Camera mCamera;

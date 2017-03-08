@@ -10,7 +10,6 @@
 #include "application.h"
 
 #include <stdlib.h>
-#include <time.h>
 #include <iostream>
 #include <unistd.h>
 
@@ -63,7 +62,7 @@ RenderingWidget::RenderingWidget()
   m_performPauseStep = false;
   m_isSolverStopped = true;
   m_solverTimeFlow = SolverForwardTime;
-	m_lastTime  = clock() / float(CLOCKS_PER_SEC);
+	clock_gettime(CLOCK_REALTIME, &m_lastTime);
 	m_realTime = 0.0f;
 	m_physTime = 0.0f;
 	
@@ -74,11 +73,33 @@ RenderingWidget::RenderingWidget()
 	m_cameraMoveFlags = 0;
 }
 
+timespec diff(timespec start, timespec end)
+{
+	timespec temp;
+	if ((end.tv_nsec-start.tv_nsec)<0) {
+		temp.tv_sec = end.tv_sec-start.tv_sec-1;
+		temp.tv_nsec = 1000000000+end.tv_nsec-start.tv_nsec;
+	} else {
+		temp.tv_sec = end.tv_sec-start.tv_sec;
+		temp.tv_nsec = end.tv_nsec-start.tv_nsec;
+	}
+	return temp;
+}
+
+float timespecToFloat(const timespec& ts)
+{
+	return ts.tv_sec + ts.tv_nsec / 1000000000.0f;
+}
+
 void RenderingWidget::drawScene()
 {
-	const float currTime = clock() / float(CLOCKS_PER_SEC);
-  const float dt = (currTime - m_lastTime);
-	m_lastTime = currTime;  
+	timespec currTime;
+	clock_gettime(CLOCK_REALTIME, &currTime);
+  const float dt = timespecToFloat(diff(m_lastTime, currTime));
+	m_lastTime = currTime;
+	//qDebug() << "rT " << time1.tv_sec << ":" << time1.tv_nsec;
+	//qDebug() << "dt " << time1.tv_sec << ":" << time1.tv_nsec;
+	//m_lastTime = currTime;  
 
   const float length = 0.2;
   gpu.drawVector(Vector3f::Zero(), length*Vector3f::UnitX(), Color(1,0,0,1));
@@ -105,7 +126,7 @@ void RenderingWidget::drawScene()
   //glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
-	updateCameraPosDir();
+	updateCameraPosDir(dt);
 
   m_core.get()->Draw();
 	m_objMover.Update();	
@@ -116,13 +137,21 @@ void RenderingWidget::drawScene()
   update();
 }
 
-void RenderingWidget::updateCameraPosDir()
+void RenderingWidget::updateCameraPosDir(float dt)
 {
+	static float lastUpdate = 0.0;
+	if (lastUpdate < 0.03)
+	{
+		lastUpdate += dt;
+		return;
+	}
+	else 
+		lastUpdate = dt;
+
 	const float camSpeed = 0.25f;
 	const float camAngleSpeed = 3.0f * M_PI / 180.0f;
 
 	//rotate camera
-
 	{
 		Quaternionf delta(Quaternionf::Identity());
 		float tmp = 0.0f; 
@@ -186,6 +215,7 @@ void RenderingWidget::updateCameraPosDir()
 	}
 }
 
+
 void RenderingWidget::updateCore(float dt)
 {
 	const bool fixedStep = true;
@@ -220,7 +250,7 @@ void RenderingWidget::updateCore(float dt)
 	else
 	{
 		//don't waste CPU on pause
-		usleep(10000);
+		usleep(30000);//30ms
 	}
 
 	//drawDebugInfo(dt, std::max(physSimTime, reqStep));
