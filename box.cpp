@@ -103,10 +103,10 @@ float Box::CalcKineticEnergy()
 void Box::AddImpulse(const Vector3f& value, const Vector3f& pt)
 {
 
-	qDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;
+	//qDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;
 	if (value.norm() < 0.0001)
 	{
-		qDebug() << "Small norm impulse";
+		//qDebug() << "Small norm impulse";
 		return;
 	}
 	
@@ -136,7 +136,7 @@ void Box::AddAngularImpulse(const Vector3f& value)
 //	qDebug() << "angular impulse " << value.norm();
 	if (value.norm() < 0.0001)
 	{
-		qDebug() << "Small angular impulse";
+		//qDebug() << "Small angular impulse";
 		return;
 	}
 

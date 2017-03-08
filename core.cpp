@@ -11,6 +11,7 @@
 #include <fstream>
 
 #define DEBUG_STEP 0
+#define DEBUG_COLLISIONS 0
 
 const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 
@@ -148,7 +149,7 @@ float Core::FindCollisions(bool applyImpulses)
 					if (!applyImpulses)
 						continue;
 					
-					//TODO: remove after LCP implementing
+					//TODO: remove after LCP solver implementing
 					if (0 && cntct_cnt > 1)
 					{
 
@@ -181,11 +182,15 @@ float Core::FindCollisions(bool applyImpulses)
 						}
 						*/
 
-						qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
+#if DEBUG_COLLISIONS
+					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
 						qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
+#endif
 						if (v_contact.dot(cntct.n) > 0)
 						{					
-							qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
+#if DEBUG_COLLISIONS
+			qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
+#endif
 							continue;
 						}
 						center += cntct.pt;
@@ -225,7 +230,8 @@ float Core::FindCollisions(bool applyImpulses)
 																	 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
 						);
 					float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
-					qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
+
+					//qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
 					
 					a->AddImpulse(-p * normal, center);
 					b->AddImpulse(p * normal, center);

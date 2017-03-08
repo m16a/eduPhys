@@ -778,7 +778,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	{
 		penDepth = std::min(penDepth, -Core::COLLISION_DEPTH_TOLERANCE); 
 
-		qDebug() << "box-box. penDepth:" << penDepth;
+		//qDebug() << "box-box. penDepth:" << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		//DebugManager()->DrawPlane(p.n, p.d);	 
@@ -793,7 +793,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		getVerticiesOnSupportPlane(b, p, -penDepth*1.1, vs2, cnt2);
 		assert(cnt2 > 0 && cnt2 <=	4);
 
-		qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
+		//qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
 /*	
 		for (int i=0; i<cnt1; ++i)
 			DebugManager()->DrawSphere(vs1[i], 0.02, Color(0,0,1,1));	 
@@ -825,11 +825,11 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 			if (cnt == 2)
 				c[1].pt = tmp[1];	
 			
-			Debug() << "edge-edge" << vs1[0] << vs1[1] << vs2[0] << vs2[1] << c[0].pt << norm;
+			//Debug() << "edge-edge" << vs1[0] << vs1[1] << vs2[0] << vs2[1] << c[0].pt << norm;
 		}
 		else if (cnt2 == 2 && cnt1 == 4 || cnt1 == 2 && cnt2 == 4)//edge-face
 		{
-			qDebug() << "Edge-face intersection";
+			//qDebug() << "Edge-face intersection";
 			Vector3f tmp[2], norm;
 			if (cnt1 == 4)
 			{
