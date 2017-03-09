@@ -1,8 +1,7 @@
-1.Code refactoring:
-	Review all classes
-
 2.Contact solver
 2.Investigate performance on collisions
+2.Code refactoring:
+	Review all classes
 
 3.Add external torque
 3.Unit tests would be fine

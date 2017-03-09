@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
-#if 0
+#if 1
 	//ODE comparision test for 1 box rotation and collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
@@ -64,18 +64,18 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s4);
 
   Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
-  s9->m_pos = Vector3f(0.0f, 0.0f, 1.0f);
+  s9->m_pos = Vector3f(0.0f, 0.0f, 0.0f);
   s9->m_rot = quatFromPYRAngles(45, 45, 0);
 	qDebug() << s9->m_rot;
   s9->m_id = 9;
-	s9->m_v = Vector3f(-0.3f, 0.0f, 0.0f);
-	s9->m_w = Vector3f(0.f, 0.0f, 3.0f);
+	s9->m_v = Vector3f(-0.3f, 0.0f, 0.3f);
+	s9->m_w = Vector3f(0.f, 0.0f, 2.0f);
 
 	//s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
 	demo.getCore()->m_objects.push_back(s9);
 #endif
 
-#if 1
+#if 0
 	//2 box collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
