@@ -85,7 +85,7 @@ void Box::Step(float t)
 		m_pos += m_v * t;
 		m_v += f_sum * m_minv * t;
 	}
-	UpdateBBox();
+	UpdatedPosRot();
 }
 
 float Box::CalcKineticEnergy()
@@ -361,22 +361,27 @@ void Box::Draw()
 	glDisable(GL_NORMALIZE);
 }
 
-void getBoxVerticies(const Box& b, Vector3f out_arr[8])
+void getBoxVerticies(const Box& b, const Vector3f** out_arr)
+{
+	*out_arr = b.m_cachedVertcs;
+}
+
+void Box::UpdateCachedVerticies()
 {
 	int indx = 0;
 	for (int i=-1; i<2; i+=2)
 	for (int j=-1; j<2; j+=2)
 	for (int k=-1; k<2; k+=2)
 	{	
-		Vector3f v_wrld = b.m_pos + b.m_rot * (Vector3f(i*b.m_size[0]/2.0f, j*b.m_size[1]/2.0f, k*b.m_size[2]/2.0f));
-		out_arr[indx++] = v_wrld;
+		Vector3f v_wrld = m_pos + m_rot * (Vector3f(i*m_size[0]/2.0f, j*m_size[1]/2.0f, k*m_size[2]/2.0f));
+		m_cachedVertcs[indx++] = v_wrld;
 	}
 }
 
 void Box::FullDump()
 {
-	Vector3f vtcs[8];
-	getBoxVerticies(*this, vtcs);
+	const Vector3f* vtcs;
+	getBoxVerticies(*this, &vtcs);
 	for (int i=0; i<8; ++i)
 	{
 		Vector3f v = m_v + m_w.cross(vtcs[i]-m_pos);
@@ -385,22 +390,20 @@ void Box::FullDump()
 	}
 }
 
-void Box::UpdateBBox()
+void Box::UpdatedPosRot()
 {
-	Vector3f vrtcs[8];	
-	getBoxVerticies(*this, vrtcs);
-
-	m_bbox[0] = m_bbox[1] = vrtcs[0];
+	UpdateCachedVerticies();
+	m_bbox[0] = m_bbox[1] = m_cachedVertcs[0];
 	for (int i=1; i<8; ++i)
 	{
-		m_bbox[0][0] = std::min(m_bbox[0][0], vrtcs[i][0]);
-		m_bbox[0][1] = std::min(m_bbox[0][1], vrtcs[i][1]);
-		m_bbox[0][2] = std::min(m_bbox[0][2], vrtcs[i][2]);
+		m_bbox[0][0] = std::min(m_bbox[0][0], m_cachedVertcs[i][0]);
+		m_bbox[0][1] = std::min(m_bbox[0][1], m_cachedVertcs[i][1]);
+		m_bbox[0][2] = std::min(m_bbox[0][2], m_cachedVertcs[i][2]);
 
 		
-		m_bbox[1][0] = std::max(m_bbox[1][0], vrtcs[i][0]);
-		m_bbox[1][1] = std::max(m_bbox[1][1], vrtcs[i][1]);
-		m_bbox[1][2] = std::max(m_bbox[1][2], vrtcs[i][2]);
+		m_bbox[1][0] = std::max(m_bbox[1][0], m_cachedVertcs[i][0]);
+		m_bbox[1][1] = std::max(m_bbox[1][1], m_cachedVertcs[i][1]);
+		m_bbox[1][2] = std::max(m_bbox[1][2], m_cachedVertcs[i][2]);
 	}
 
 }

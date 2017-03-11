@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   //s2->AddAngularImpulse(Vector3f(10.f, 10.f, 0.f) * 1000.f);
   //s2->AddImpulse(Vector3f(1.f, 0.f, 0.f) * 200.f );
 	*/
-#if 1
+#if 0
 	//ODE comparision test for 1 box rotation and collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
   s3->m_pos = Vector3f(-1.0f, 0.0f, 1.0f);
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s20);
 #endif
 
-#if 0
+#if 1
 	//big scene. cubes inside box
   Box* s3 = new Box(0.0f, Vector3f(0.2f, 6.f, 6.f), true);
   s3->m_pos = Vector3f(-3.1f, 0.0f, 0.0f);
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
 */
 
 	for (int i=0; i<objcts.size(); ++i)
-		objcts[i]->UpdateBBox();
+		objcts[i]->UpdatedPosRot();
 	
 	demo.show();
 	return app.exec();

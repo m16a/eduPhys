@@ -24,7 +24,7 @@ struct  IPhysEnt
 	virtual void AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f)) = 0;
 	virtual void AddAngularImpulse(const Vector3f& value) = 0;
 	virtual void FullDump(){};
-	virtual void UpdateBBox() = 0;
+	virtual void UpdatedPosRot() = 0;
 	virtual float CalcKineticEnergy() = 0;
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit) = 0;
 

@@ -295,8 +295,8 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 	Vector3f bWrld = a->m_rot * Vector3f(0,a->m_size[1]/2,0); 
 	Vector3f cWrld = a->m_rot * Vector3f(0,0,a->m_size[2]/2); 
 
-	Vector3f bVs[8];	
-	getBoxVerticies(*a, bVs);
+	const Vector3f* bVs;	
+	getBoxVerticies(*a, &bVs);
 	int i,j;
 	for (i=j=0; i<8; ++i)
 	{	
@@ -317,8 +317,8 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
 {
 	float res = FLT_MAX;
-	Vector3f bVerts[8];	
-	getBoxVerticies(*a, bVerts);
+	const Vector3f* bVerts;	
+	getBoxVerticies(*a, &bVerts);
 	
 	for (int i=0; i<8; ++i)
 	{	
@@ -506,8 +506,8 @@ void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
 void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, Vector3f out_arr[4], size_t& out_size)
 {
 	out_size = 0;		
-	Vector3f bVs[8];	
-	getBoxVerticies(*b, bVs);
+	const Vector3f* bVs;	
+	getBoxVerticies(*b, &bVs);
 	
 	size_t indx = 0;	
 	for (int i=0; i<8; ++i)

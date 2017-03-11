@@ -22,7 +22,7 @@ public:
 	virtual void Step(float t);
 	virtual void AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f));
 	virtual void AddAngularImpulse(const Vector3f& value);
-	virtual void UpdateBBox();
+	virtual void UpdatedPosRot();
 	virtual int IntersectRay(const SRay& r, SRayHit& out_hit);
 	virtual float CalcKineticEnergy() {assert(0); return 0;};
 

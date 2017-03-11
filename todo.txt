@@ -1,5 +1,4 @@
 2.Contact solver
-2.Investigate performance on collisions
 2.Code refactoring:
 	Review all classes
 

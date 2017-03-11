@@ -139,7 +139,11 @@ float Core::FindCollisions(bool applyImpulses)
 							if (!isSeparatingContact)
 								min_depth = c[cnt_indx].depth;
 							else
+							{
+#if DEBUG_STEP
 								qDebug() << "separating contact was skipped";
+#endif
+							}
 
 					}
 
