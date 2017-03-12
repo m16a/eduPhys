@@ -70,15 +70,17 @@ void Sphere::Step(float t)
 //	qDebug() << m_pos.x() << " " << m_pos.y() << " " << m_pos.z();
 }
 
-void Sphere::AddImpulse(const Vector3f& value, const Vector3f& pt)
+bool Sphere::AddImpulse(const Vector3f& value, const Vector3f& pt)
 {
+	if (!IPhysEnt::AddImpulse(value, pt))
+		return false;
+
 	if (value.norm() < 0.0001)
 	{
 		qDebug() << "Small impulse";
-		return;
+		return false;
 	}
 	
-
 	if (pt.norm() > 0.0001)
 	{
 		Vector3f n = (m_pos - pt);
@@ -97,6 +99,7 @@ void Sphere::AddImpulse(const Vector3f& value, const Vector3f& pt)
 		Vector3f dv = value * m_minv;
 		m_v += dv;
 	}
+	return true;
 }
 
 void Sphere::AddAngularImpulse(const Vector3f& value)

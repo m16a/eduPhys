@@ -17,7 +17,6 @@ const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 
 Core::Core()
 {
-
 }
 
 void Core::Dump(int entId)
@@ -26,7 +25,7 @@ void Core::Dump(int entId)
 	for (; it != m_objects.end(); ++it)
 	{
 		if (entId == -1 || entId == (*it)->m_id)
-		Debug()<< "\tObjID:" << (*it)->m_id << " pos" <<  (*it)->m_pos << " vel" << (*it)->m_v << " rot" << (*it)->m_rot << " w_rot" << (*it)->m_w;
+		Debug()<< "\tObjID:" << (*it)->m_id << " active:" << ((*it)->m_active ? 1 : 0 ) << " pos" <<  (*it)->m_pos << " vel" << (*it)->m_v << " rot" << (*it)->m_rot << " w_rot" << (*it)->m_w;
 	}
 }
 
@@ -66,17 +65,19 @@ float Core::FindCollisions(bool applyImpulses)
 		{
 			if (m_objects[i]->m_id < m_objects[j]->m_id)
 			{
-				if (m_objects[i]->m_minv == 0.0f && m_objects[j]->m_minv == 0.0f)
-					continue;
 
 				IPhysEnt* a = m_objects[i];
 				IPhysEnt* b = m_objects[j];
 
+				if ((!a->m_active || a->m_isStatic) &&
+						(!b->m_active || b->m_isStatic))
+					continue;
+				
 				//aka broad phase					
 				if (!overlapTestAABB(a->m_bbox, b->m_bbox))
 					continue;
 
-				//aka narraw phase					
+				//aka narrow phase					
 				Contact c[8];
 				int cntct_cnt = 0;
 
@@ -218,9 +219,6 @@ float Core::FindCollisions(bool applyImpulses)
 
 					Matrix3f rAPcross = getCrossMatrix(rAP);
 					Matrix3f rBPcross = getCrossMatrix(rBP);
-
-					a->m_active = true;
-					b->m_active = true;	
 
 					Matrix3f rotM1 = a->m_rot.toRotationMatrix();
 					Matrix3f rotM2 = b->m_rot.toRotationMatrix();

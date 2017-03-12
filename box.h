@@ -17,7 +17,7 @@ public:
 
 	virtual void Draw();
 	virtual void Step(float t);
-	virtual void AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f));
+	virtual bool AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f));
 	virtual void AddAngularImpulse(const Vector3f& value);
 	virtual void FullDump();
 	virtual void UpdatedPosRot();

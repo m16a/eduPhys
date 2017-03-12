@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   CApplication demo;
   demo.resize(800, 600);
 	demo.move(700, 100);
-	std::vector<IPhysEnt*> objcts = demo.getCore()->m_objects;
+	std::vector<IPhysEnt*>& objcts = demo.getCore()->m_objects;
   //set phys initial world
 	/*
   IPhysEnt* s1 = new Sphere();
@@ -75,6 +75,25 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s9);
 #endif
 
+#if 1
+	// box falls on ground
+  Box* s3 = new Box(0.0f, Vector3f(1.0f, 1.f, 0.1f), true);
+  s3->m_pos = Vector3f(0.0f, 0.0f, 0.0f);
+  s3->m_id = 3;
+	objcts.push_back(s3);
+
+  Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
+  s9->m_pos = Vector3f(0.0f, 0.0f, 0.5f);
+  s9->m_rot = quatFromPYRAngles(45, 45, 0);
+	qDebug() << s9->m_rot;
+  s9->m_id = 9;
+	//s9->m_v = Vector3f(-0.3f, 0.0f, 0.0f);
+	//s9->AddImpulse(Vector3f(1,0,0), Vector3f(-0.05, 0.05, 1));
+	
+	s9->m_forces.push_back(g_Gravity);
+	objcts.push_back(s9);
+
+#endif
 #if 0
 	//2 box collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
@@ -104,7 +123,7 @@ int main(int argc, char *argv[])
 	demo.getCore()->m_objects.push_back(s20);
 #endif
 
-#if 1
+#if 0
 	//big scene. cubes inside box
   Box* s3 = new Box(0.0f, Vector3f(0.2f, 6.f, 6.f), true);
   s3->m_pos = Vector3f(-3.1f, 0.0f, 0.0f);

@@ -1,5 +1,6 @@
 #include "phys_ent.h" 
-const Vector3f g_Gravity(0.0f, 0.0f, -98.8f); 
+#include "my_utils.h"
+const Vector3f g_Gravity(0.0f, 0.0f, -9.8f); 
 
 IPhysEnt::IPhysEnt(bool isStatic) 
 { 
@@ -8,10 +9,11 @@ IPhysEnt::IPhysEnt(bool isStatic)
 
 	m_v = Vector3f(0.f, 0.f, 0.f);
 	m_w = Vector3f(0.f, 0.f, 0.f);
-	m_active = true;
 	m_id = 0;
 	
-	if (isStatic)
+	m_active = !isStatic;
+
+	if (m_isStatic = isStatic)
 	{
 		//infinite inertia tensor
 		m_Jinv <<	0, 0, 0,
@@ -23,6 +25,15 @@ IPhysEnt::IPhysEnt(bool isStatic)
 	{
 		m_minv = 0.01;//100kg
 	}
+}
+
+bool IPhysEnt::AddImpulse(const Vector3f& value, const Vector3f& pt)
+{
+	if (m_isStatic)
+		return false;
+
+	m_active = true;
+	return true;
 }
 
 //TODO::move to more generic place

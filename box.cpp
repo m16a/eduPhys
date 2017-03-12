@@ -100,14 +100,16 @@ float Box::CalcKineticEnergy()
 	return 0.5f * (m_v.dot(m_v) / m_minv + (J1 * m_w).dot(m_w));
 }
 
-void Box::AddImpulse(const Vector3f& value, const Vector3f& pt)
+bool Box::AddImpulse(const Vector3f& value, const Vector3f& pt)
 {
+	if (!IPhysEnt::AddImpulse(value, pt))
+		return false;	
 
 	//qDebug() << "Impulse box:" << m_id << "pt:" << pt << "impulse:" << value;
 	if (value.norm() < 0.0001)
 	{
 		//qDebug() << "Small norm impulse";
-		return;
+		return false;
 	}
 	
 
@@ -129,6 +131,8 @@ void Box::AddImpulse(const Vector3f& value, const Vector3f& pt)
 		Vector3f dv = value * m_minv;
 		m_v += dv;
 	}
+
+	return true;
 }
 
 void Box::AddAngularImpulse(const Vector3f& value)

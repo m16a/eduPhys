@@ -21,7 +21,7 @@ struct  IPhysEnt
 	IPhysEnt(bool isStatic = false);
 	virtual void Draw() = 0;
 	virtual void Step(float t) = 0;
-	virtual void AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f)) = 0;
+	virtual bool AddImpulse(const Vector3f& value, const Vector3f& pt = Vector3f(0.f,0.f,0.f));
 	virtual void AddAngularImpulse(const Vector3f& value) = 0;
 	virtual void FullDump(){};
 	virtual void UpdatedPosRot() = 0;
@@ -43,6 +43,7 @@ struct  IPhysEnt
 	std::vector<Vector3f> m_forces;
 	Vector3f m_bbox[2];
 	int m_id;
+	bool m_isStatic;
 };
 
 
