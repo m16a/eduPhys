@@ -226,8 +226,10 @@ float Core::FindCollisions(bool applyImpulses)
 					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
 					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 				
-					float e = 1;//0.8f;//restitution coef
-					float p = -(1 + e)*v_contact.dot(normal) / 
+					const float ERP = 0.3; 
+					const float extraVelBias = ERP / 0.01 * min_depth;  //TODO:pass time step here
+					const float e = 0.6f;//restitution coef
+					const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
 						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
 																	 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
 						);
