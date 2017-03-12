@@ -176,16 +176,6 @@ float Core::FindCollisions(bool applyImpulses)
 
 						Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
 							
-						/*
-						if (0 && v_contact.dot(c[0].n) < RESTING_CONTACT_SPEED)
-						{
-							qDebug() << "vCon" << v_contact << c[0].n;	
-							a->m_active = false;
-							b->m_active = false;
-							a->m_v = b->m_v = Vector3f(0,0,0);	
-							continue;
-						}
-						*/
 
 #if DEBUG_COLLISIONS
 					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
@@ -237,6 +227,19 @@ float Core::FindCollisions(bool applyImpulses)
 
 					//qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
 					
+					if (v_contact.dot(normal) < RESTING_CONTACT_SPEED)
+					{
+						//qDebug() << "vCon" << v_contact << c[0].n;	
+						//a->m_v = b->m_v = Vector3f(0,0,0);	
+						
+						if (a->CalcKineticEnergy() < 0.001 && b->CalcKineticEnergy() < 0.001)
+						{
+							a->m_active = false;
+							b->m_active = false;
+							return res;
+						}
+					}
+
 					a->AddImpulse(-p * normal, center);
 					b->AddImpulse(p * normal, center);
 						
