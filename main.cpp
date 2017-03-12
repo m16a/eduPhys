@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
 #if 1
 	// box falls on ground
-  Box* s3 = new Box(0.0f, Vector3f(1.0f, 1.f, 0.1f), true);
+  Box* s3 = new Box(0.0f, Vector3f(2.0f, 2.f, 0.1f), true);
   s3->m_pos = Vector3f(0.0f, 0.0f, 0.0f);
   s3->m_id = 3;
 	objcts.push_back(s3);

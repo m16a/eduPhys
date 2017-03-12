@@ -440,15 +440,13 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 				}
 			case Qt::Key_Space:
 			{
-				/*
 				static int sIndex = 100;
-				IPhysEnt* s2 = new Sphere();
-				s2->m_pos = Vector3f(rand()%10 - 5, rand()%10 -5, 1.3f);
+				Box* s2 = new Box(1.0f, Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1), false);
+				s2->m_pos = Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f);
 				s2->m_id = sIndex++;
-				s2->m_minv = 1;
 				m_core.get()->m_objects.push_back(s2);
 				s2->m_forces.push_back(g_Gravity);
-				*/
+
         break;
 			}
       default:
