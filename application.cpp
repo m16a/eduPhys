@@ -236,8 +236,8 @@ void RenderingWidget::updateCore(float dt)
 			m_core.get()->Step(dir * t);
 			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
 
-			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime;
-			m_core.get()->Dump(9);
+//			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime;
+//			m_core.get()->Dump(9);
 
 			m_performPauseStep = false;
 			physSimTime = stepFinishTime - stepStartTime ;
@@ -441,12 +441,14 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 			case Qt::Key_Space:
 			{
 				static int sIndex = 100;
-				Box* s2 = new Box(1.0f, Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1), false);
-				s2->m_pos = Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f);
+				Vector3f pos(0.600,-1.000,1.300);//Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f);
+				Vector3f size(0.200,0.200,0.100);//Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1)
+				Box* s2 = new Box(1.0f, size, false);
+				s2->m_pos = pos;
 				s2->m_id = sIndex++;
 				m_core.get()->m_objects.push_back(s2);
 				s2->m_forces.push_back(g_Gravity);
-
+				Debug() << "box. pos:" << s2->m_pos << " size:" << s2->m_size;
         break;
 			}
       default:
