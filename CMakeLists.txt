@@ -15,7 +15,7 @@ if(QT4_FOUND AND OPENGL_FOUND)
 	
   include_directories( ${QT_INCLUDE_DIR} )
 
-  set(application_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp application.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp) 
+  set(application_SRCS  main.cpp gpuhelper.cpp icosphere.cpp camera.cpp application.cpp box.cpp phys_ent.cpp my_utils.cpp  sphere.cpp core.cpp obj_mover.cpp debug_draw.cpp poly34.cpp collision.cpp) 
 
 	add_subdirectory("${PROJECT_SOURCE_DIR}/serialization")
 

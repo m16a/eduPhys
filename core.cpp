@@ -110,6 +110,35 @@ float Core::FindCollisions(bool applyImpulses)
 
 				}
 
+				
+				for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
+				{
+					Contact& cntct = c[cnt_indx];	
+					assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+					Vector3f rAP = cntct.pt - a->m_pos;
+					Vector3f rBP = cntct.pt - b->m_pos;
+
+					Matrix3f rAPcross = getCrossMatrix(rAP);
+					Matrix3f rBPcross = getCrossMatrix(rBP);
+					
+					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+					const bool isSeparatingContact = v_contact.dot(cntct.n) > 0;
+
+					if (c[cnt_indx].depth == 1000.f)
+					{
+						assert(!"Possible missed depth in contact calculation");
+					}
+
+					if (isSeparatingContact)
+					{
+#if DEBUG_STEP
+						qDebug() << "separating contact was skipped";
+#endif
+						continue;
+					}
+					m_contacts.push_back(cntct);
+				}
+
 				if (cntct_cnt > 0)
 				{
 					float min_depth = 10000.f;

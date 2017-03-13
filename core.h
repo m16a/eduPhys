@@ -2,6 +2,8 @@
 #define _CORE_H_
 
 #include <vector>
+#include <list>
+#include "collision.h"
 
 class Sphere;
 class IPhysEnt;
@@ -32,6 +34,7 @@ private:
 	//finds collisions and returns deepest penetration  
 	//also contact impulses can be provided
 	float FindCollisions(bool applyImpulses);
+	std::list<Contact> m_contacts;
 };
 
 #endif
