@@ -69,7 +69,6 @@ RenderingWidget::RenderingWidget()
 	m_pSelectedEnt = 0;
   // required to capture key press events
   setFocusPolicy(Qt::StrongFocus);
-	m_frameNumber = 0;
 	m_cameraMoveFlags = 0;
 }
 
@@ -224,6 +223,7 @@ void RenderingWidget::updateCore(float dt)
 	static float physSimTime = 0.0f; 
 	static float unperformedStep = 0.0f; 
 
+	int frameID = m_core->m_frameID;
 	//Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime << " rT:" << m_realTime << " dt:" << dt << " unperf" << unperformedStep; 
 	if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
 	{
@@ -244,7 +244,6 @@ void RenderingWidget::updateCore(float dt)
 			if (fixedStep && physSimTime > reqStep)
 				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
 			m_physTime += fixedStep ? reqStep : dt;
-			m_frameNumber++;
 			unperformedStep -= reqStep;
 		}
 		unperformedStep += dt;
@@ -278,6 +277,7 @@ void RenderingWidget::drawDebugInfo(float dt, float physSimTime)
 		renderText(10,72, QString("rT:%1, pT:%2, ratio:%3, fps:%4").arg(QString::number(m_realTime,'f',2), QString::number(m_physTime,'f',2), QString::number(m_physTime / m_realTime,'f',2), QString::number(1/physSimTime,'f',1)));
 
 	renderText(10,92, QString("E_kin:%1").arg(QString::number(m_core.get()->CalcKineticEnergy(),'f',2)));
+	renderText(10,112, QString("Contacts count:%1").arg(QString::number(m_core.get()->m_contacts.size())));
 
 	if (m_pSelectedEnt)
 	{
@@ -441,8 +441,8 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 			case Qt::Key_Space:
 			{
 				static int sIndex = 100;
-				Vector3f pos(0.600,-1.000,1.300);//Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f);
-				Vector3f size(0.200,0.200,0.100);//Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1)
+				Vector3f pos(Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f));
+				Vector3f size(Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1));
 				Box* s2 = new Box(1.0f, size, false);
 				s2->m_pos = pos;
 				s2->m_id = sIndex++;

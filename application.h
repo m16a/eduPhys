@@ -66,8 +66,6 @@ class RenderingWidget : public QGLWidget
 		timespec m_lastTime; 
 		float m_realTime;
 		float m_physTime;
-		int m_frameNumber;
-
 
   protected slots:
 

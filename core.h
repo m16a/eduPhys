@@ -14,6 +14,7 @@ class Core
 {
 public:
 	static const int MAX_COLLISIONS_ITERATIONS = 10;
+	static const int	SI_ITERATIONS = 3;
 	static const float COLLISION_DEPTH_TOLERANCE;
 	static const float RESTING_CONTACT_SPEED = 1e-2;	
 
@@ -28,13 +29,17 @@ public:
 	void DeserializeFromFile(const char* name);
 
 	std::vector<IPhysEnt*> m_objects;
-
+	int m_frameID;
+	std::list<Contact> m_contacts;
 private:
 	void StepAll(float dt);
 	//finds collisions and returns deepest penetration  
-	//also contact impulses can be provided
-	float FindCollisions(bool applyImpulses);
-	std::list<Contact> m_contacts;
+	float FindCollisions(bool updateContacts);
+	
+	void SolveContacts();
+	void AddContact(const Contact& c);
+	void ValidateOldContacts();
+	void RemoveContacts();
 };
 
 #endif

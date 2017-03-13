@@ -16,8 +16,47 @@ struct Contact
 	Vector3f pt;
 	Vector3f n;
 	float depth;
+	int lifeFrameID;
+	
+	IPhysEnt* a;
+	IPhysEnt* b;
 
-	Contact():pt(Vector3f(0,0,0)), n(Vector3f(0,0,0)),depth(1000.0f){};
+	float accP;
+
+	Contact():pt(Vector3f(0,0,0)), n(Vector3f(0,0,0)),depth(1000.0f)
+	{
+		a = b = 0;	
+		lifeFrameID = -1;
+		accP = 0;
+	};
+
+	Contact(const Contact& other)
+	{
+		pt = other.pt;
+		n = other.n;
+		depth = other.depth;
+		lifeFrameID = other.lifeFrameID;
+		a = other.a;
+		b = other.b;
+		accP = other.accP;
+	}
+
+	bool IsEqual(const Contact& other)
+	{
+		if (a != other.a || b != other.b)
+			return false;
+
+		if (fabs(depth - other.depth) > 0.01)
+			return false;
+
+		if (!isVectorsEqual(pt, other.pt))
+			return false;
+
+		if (!isVectorsEqual(n, other.n))
+			return false;
+		
+		return true;
+	}
 };
 
 struct SPlane

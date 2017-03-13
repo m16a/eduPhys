@@ -17,6 +17,7 @@ const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 
 Core::Core()
 {
+	m_frameID = 0;
 }
 
 void Core::Dump(int entId)
@@ -56,230 +57,146 @@ static bool overlapTestAABB(Vector3f a[2], Vector3f b[2])
          (a[0][2] <= b[1][2] && a[1][2] >= b[0][2]);
 }
 
-float Core::FindCollisions(bool applyImpulses)
+float Core::FindCollisions(bool updateContacts)
 {
 	float res = 10000.0f;
 	int size = m_objects.size();
 	for (int i = 0; i < size; ++i)
 		for (int j = 0; j < size; ++j)
 		{
-			if (m_objects[i]->m_id < m_objects[j]->m_id)
+			IPhysEnt* a = m_objects[i];
+			IPhysEnt* b = m_objects[j];
+
+			if (a->m_id >= b->m_id)
+				continue;
+
+			if ((!a->m_active || a->m_isStatic) &&
+					(!b->m_active || b->m_isStatic))
+				continue;
+			
+			//aka broad phase					
+			if (!overlapTestAABB(a->m_bbox, b->m_bbox))
+				continue;
+
+			//aka narrow phase					
+			Contact c[8];
+			int cntct_cnt = 0;
+
+			//TODO: ugly, refactor on adding new collision geom
+			if (Box* a1 = dynamic_cast<Box*>(a))
 			{
-
-				IPhysEnt* a = m_objects[i];
-				IPhysEnt* b = m_objects[j];
-
-				if ((!a->m_active || a->m_isStatic) &&
-						(!b->m_active || b->m_isStatic))
-					continue;
-				
-				//aka broad phase					
-				if (!overlapTestAABB(a->m_bbox, b->m_bbox))
-					continue;
-
-				//aka narrow phase					
-				Contact c[8];
-				int cntct_cnt = 0;
-
-				//TODO: ugly, refactor on adding new collision geom
-				if (Box* a1 = dynamic_cast<Box*>(a))
+				if (Sphere* b1 = dynamic_cast<Sphere*>(b))
 				{
-					if (Sphere* b1 = dynamic_cast<Sphere*>(b))
-					{
-						collide(b1, a1, c, cntct_cnt);
-						a = b1; b = a1;
-					}
-					else if (Box* b1 = dynamic_cast<Box*>(b))
-					{
-						collide(a1, b1, c, cntct_cnt);
-						a = a1; b = b1;
-					}
-				}else if (Sphere* a1 = dynamic_cast<Sphere*>(a))
+					collide(b1, a1, c, cntct_cnt);
+					a = b1; b = a1;
+				}
+				else if (Box* b1 = dynamic_cast<Box*>(b))
 				{
-					if (Box* b1 = dynamic_cast<Box*>(b))
-					{
-						collide(a1, b1, c, cntct_cnt);
-						a = a1; b = b1;
-
-					}
-					else if (Sphere* b1 = dynamic_cast<Sphere*>(b))
- 					{	
- 						collide(a1, b1, c, cntct_cnt);
-						a = a1; b = b1;
-					}
+					collide(a1, b1, c, cntct_cnt);
+					a = a1; b = b1;
+				}
+			}else if (Sphere* a1 = dynamic_cast<Sphere*>(a))
+			{
+				if (Box* b1 = dynamic_cast<Box*>(b))
+				{
+					collide(a1, b1, c, cntct_cnt);
+					a = a1; b = b1;
 
 				}
-
-				
-				for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
-				{
-					Contact& cntct = c[cnt_indx];	
-					assert(fabs(cntct.n.norm()-1.0f) < 0.001);
-					Vector3f rAP = cntct.pt - a->m_pos;
-					Vector3f rBP = cntct.pt - b->m_pos;
-
-					Matrix3f rAPcross = getCrossMatrix(rAP);
-					Matrix3f rBPcross = getCrossMatrix(rBP);
-					
-					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-					const bool isSeparatingContact = v_contact.dot(cntct.n) > 0;
-
-					if (c[cnt_indx].depth == 1000.f)
-					{
-						assert(!"Possible missed depth in contact calculation");
-					}
-
-					if (isSeparatingContact)
-					{
-#if DEBUG_STEP
-						qDebug() << "separating contact was skipped";
-#endif
-						continue;
-					}
-					m_contacts.push_back(cntct);
+				else if (Sphere* b1 = dynamic_cast<Sphere*>(b))
+				{	
+					collide(a1, b1, c, cntct_cnt);
+					a = a1; b = b1;
 				}
 
-				if (cntct_cnt > 0)
-				{
-					float min_depth = 10000.f;
-#if DEBUG_STEP
-					Debug() << "Total contacts: "<< cntct_cnt;
-#endif
-					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
-					{
-						bool isSeparatingContact = true;
-						{
-							Contact cntct = c[cnt_indx];	
-							assert(fabs(cntct.n.norm()-1.0f) < 0.001);
-							Vector3f rAP = cntct.pt - a->m_pos;
-							Vector3f rBP = cntct.pt - b->m_pos;
+			}
 
-							Matrix3f rAPcross = getCrossMatrix(rAP);
-							Matrix3f rBPcross = getCrossMatrix(rBP);
-							
-							Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-							isSeparatingContact = v_contact.dot(cntct.n) > 0;
-						}
-						if (c[cnt_indx].depth == 1000.f)
-						{
-							assert(!"Possible missed depth in contact calculation");
-						}
+			float min_depth = 10000.f;
+			for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
+			{
+				Contact& cntct = c[cnt_indx];	
+				cntct.a = a;
+				cntct.b = b;
+				cntct.lifeFrameID = m_frameID;
 
-						if (c[cnt_indx].depth < min_depth)
-							if (!isSeparatingContact)
-								min_depth = c[cnt_indx].depth;
-							else
-							{
-#if DEBUG_STEP
-								qDebug() << "separating contact was skipped";
-#endif
-							}
+				assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+				Vector3f rAP = cntct.pt - a->m_pos;
+				Vector3f rBP = cntct.pt - b->m_pos;
 
-					}
-
-					if (min_depth < res)
-						res = min_depth; 
-
-					if (!applyImpulses)
-						continue;
-					
-					//TODO: remove after LCP solver implementing
-					if (0 && cntct_cnt > 1)
-					{
-
-						Vector3f tmp(0,0,0);
-						for (int cnt_i=0; cnt_i<cntct_cnt; ++cnt_i)
-							tmp += c[cnt_i].pt;
-
-						c[0].pt = tmp / cntct_cnt;
-					}
-					Vector3f center(0,0,0);
-					int separatingContactsCount = 0;
-					Vector3f normal;
-					for (int cnt_indx=0; cnt_indx<cntct_cnt; ++cnt_indx)
-					{
-						Contact cntct = c[cnt_indx];	
-						assert(fabs(cntct.n.norm()-1.0f) < 0.001);
-						Vector3f rAP = cntct.pt - a->m_pos;
-						Vector3f rBP = cntct.pt - b->m_pos;
-
-						Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-							
-
-#if DEBUG_COLLISIONS
-					qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
-						qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
-#endif
-						if (v_contact.dot(cntct.n) > 0)
-						{					
-#if DEBUG_COLLISIONS
-			qDebug() << "Positive contact speed:" << v_contact.dot(cntct.n);
-#endif
-							continue;
-						}
-						center += cntct.pt;
-						separatingContactsCount++; 
-						normal = cntct.n;
-					}
-
-					if (!separatingContactsCount)
-						return res;
-
-					assert(separatingContactsCount);
-					
-					assert(fabs(normal.norm()-1.0f) < 0.001);
-					
-					center /= separatingContactsCount;
-
-					Vector3f rAP = center - a->m_pos;
-					Vector3f rBP = center - b->m_pos;
-
-					Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
-
-					Matrix3f rAPcross = getCrossMatrix(rAP);
-					Matrix3f rBPcross = getCrossMatrix(rBP);
-
-					Matrix3f rotM1 = a->m_rot.toRotationMatrix();
-					Matrix3f rotM2 = b->m_rot.toRotationMatrix();
-
-					Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
-					Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
+				Matrix3f rAPcross = getCrossMatrix(rAP);
+				Matrix3f rBPcross = getCrossMatrix(rBP);
 				
-					const float ERP = 0.7; 
-					const float extraVelBias = ERP / 0.01 * min_depth;  //TODO:pass time step here
-					const float e = 0.6f;//restitution coef
-					const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
-						(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
-																	 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
-						);
-					float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
+				Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+				const bool isSeparatingContact = v_contact.dot(cntct.n) > 0;
 
-					//qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
-					
-					if (v_contact.dot(normal) < RESTING_CONTACT_SPEED)
-					{
-						//qDebug() << "vCon" << v_contact << c[0].n;	
-						//a->m_v = b->m_v = Vector3f(0,0,0);	
-						
-						if (a->CalcKineticEnergy() < 0.001 && b->CalcKineticEnergy() < 0.001)
-						{
-							a->m_active = false;
-							b->m_active = false;
-							return res;
-						}
-					}
+				if (c[cnt_indx].depth == 1000.f)
+				{
+					assert(!"Possible missed depth in contact calculation");
+				}
 
-					a->AddImpulse(-p * normal, center);
-					b->AddImpulse(p * normal, center);
-						
-					DebugManager()->DrawVector(center, normal, p*3);	 
-					DebugManager()->DrawVector(center, normal, p*3);	 
-					DebugManager()->DrawSphere(center, 0.02, Color(0,1,0,1));	 
-				}			
+				if (c[cnt_indx].depth < min_depth)
+					if (!isSeparatingContact)
+						min_depth = c[cnt_indx].depth;
+				if (isSeparatingContact)
+				{
+#if DEBUG_STEP
+					qDebug() << "separating contact was skipped";
+#endif
+					continue;
+				}
+
+				if (min_depth < res)
+					res = min_depth; 
+
+				if (updateContacts)
+				{
+					AddContact(cntct);
+				}
 			}
 		}
 
 	return res;
+}
+
+void Core::AddContact(const Contact& c)
+{
+	//check if we have thsi contact already stored	
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		if (it->IsEqual(c))
+		{
+			(*it).lifeFrameID = m_frameID;
+			return;	
+		}
+	}
+
+	m_contacts.push_back(c);
+}
+
+void Core::ValidateOldContacts()
+{
+	//keep old sleeping contacts
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		Contact& c = (*it);
+		if (!c.a->m_active && !c.b->m_active)
+			c.lifeFrameID = m_frameID;
+	}
+}
+
+void Core::RemoveContacts()
+{
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end();)
+	{
+		Contact& c = (*it);
+		if (c.lifeFrameID != m_frameID)
+			m_contacts.erase(it++);
+		else
+			++it;
+	}
 }
 
 void Core::Step(float reqStep)
@@ -350,6 +267,10 @@ void Core::Step(float reqStep)
 		StepAll(mid);
 		FindCollisions(true);
 
+		ValidateOldContacts();
+		RemoveContacts();
+		SolveContacts();
+
 		reqStep-= mid;
 
 #if DEBUG_STEP
@@ -358,6 +279,106 @@ void Core::Step(float reqStep)
 		Dump();
 #endif
 	};
+	m_frameID++;
+}
+
+void Core::SolveContacts()
+{
+	if (m_contacts.empty())
+		return;
+
+#if DEBUG_STEP
+	Debug() << "Total contacts: "<< m_contacts.Size();
+#endif
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		Contact cntct = *it;	
+
+		assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+
+		float accP = cntct.accP;
+		if (accP > 0.0)
+		{
+			IPhysEnt* a = cntct.a;
+			IPhysEnt* b = cntct.b;
+			const Vector3f& normal(cntct.n);
+			a->AddImpulse(-accP * normal, cntct.pt);
+			b->AddImpulse(accP * normal, cntct.pt);
+			Debug() << "initial";
+		}
+	}
+
+	it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		Contact& cntct = *it;	
+
+		assert(fabs(cntct.n.norm()-1.0f) < 0.001);
+		IPhysEnt* a = cntct.a;
+		IPhysEnt* b = cntct.b;
+		const Vector3f& normal(cntct.n);
+
+		
+		for (int i=0; i<SI_ITERATIONS; ++i) 
+		{
+			float accP = cntct.accP;
+			Vector3f rAP = cntct.pt - a->m_pos;
+			Vector3f rBP = cntct.pt - b->m_pos;
+
+			Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
+				
+#if DEBUG_COLLISIONS
+		qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
+			qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
+#endif
+
+			assert(fabs(normal.norm()-1.0f) < 0.001);
+
+			Matrix3f rAPcross = getCrossMatrix(rAP);
+			Matrix3f rBPcross = getCrossMatrix(rBP);
+
+			Matrix3f rotM1 = a->m_rot.toRotationMatrix();
+			Matrix3f rotM2 = b->m_rot.toRotationMatrix();
+
+			Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
+			Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
+
+			const float ERP = 0.7; 
+			const float extraVelBias = ERP / 0.01 * cntct.depth;  //TODO:pass time step here
+			const float e = 0.8f;//restitution coef
+			const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
+				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
+															 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
+				);
+			float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
+
+			//qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
+			
+			if (0 && v_contact.dot(normal) < RESTING_CONTACT_SPEED)
+			{
+				//qDebug() << "vCon" << v_contact << c[0].n;	
+				//a->m_v = b->m_v = Vector3f(0,0,0);	
+				
+				if (a->CalcKineticEnergy() < 0.001 && b->CalcKineticEnergy() < 0.001)
+				{
+					a->m_active = false;
+					b->m_active = false;
+				}
+			}
+			const float oldP = accP;
+			accP += p;
+			accP = std::max(0.0f, accP);
+			const float p_to_apply = accP - oldP;
+			a->AddImpulse(-p_to_apply * normal, cntct.pt);
+			b->AddImpulse(p_to_apply * normal, cntct.pt);
+				
+			Debug() << "SI:" << i << " p:" << p_to_apply;
+			DebugManager()->DrawVector(cntct.pt, normal, p_to_apply*3);	 
+			DebugManager()->DrawSphere(cntct.pt, 0.02, Color(0,1,0,1));	 
+			cntct.accP = accP;
+		}			
+	}
 }
 
 void Core::Draw()
