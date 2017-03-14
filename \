@@ -165,7 +165,7 @@ void Core::AddContact(const Contact& c)
 	std::list<Contact>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
 	{
-		if (it->IsEqual(c) && it->IsSleeping())
+		if (it->IsEqual(c))
 		{
 			(*it).lifeFrameID = m_frameID;
 			return;	
@@ -288,19 +288,15 @@ void Core::Step(float reqStep)
 	TownIsSleeping();
 
 		Dump();
-	DrawContacts();
+	DrawContacts()
 	m_frameID++;
 }
 
 void Core::DrawContacts()
 {
-
 	std::list<Contact>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
-	{
 			DebugManager()->DrawSphere(it->pt, 0.02, it->IsSleeping() ? Color(0,0,1,1) : Color(0,1,0,1));	 
-			it->Dump();
-	}
 }
 
 void Core::TownIsSleeping()
@@ -422,7 +418,7 @@ void Core::SolveContacts()
 			Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 
 			const float extraVelBias = ERP / 0.01 * cntct.depth;  //TODO:pass time step here
-			const float e = 0.6f;//restitution coef
+			const float e = 0.8f;//restitution coef
 			const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
 				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
 															 - (rBPcross*invJ2*rBPcross * normal).dot(normal)

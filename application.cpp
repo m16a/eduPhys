@@ -236,7 +236,7 @@ void RenderingWidget::updateCore(float dt)
 			m_core.get()->Step(dir * t);
 			const float stepFinishTime = clock() / float(CLOCKS_PER_SEC);
 
-//			Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime;
+			Debug() << "fN:" << frameID << " sT:" << m_physTime;
 //			m_core.get()->Dump(9);
 
 			m_performPauseStep = false;

@@ -49,13 +49,23 @@ struct Contact
 		if (fabs(depth - other.depth) > 0.01)//TODO: use COLLISION_DEPTH_TOLERANCE 
 			return false;
 
-		if (!isVectorsEqual(pt, other.pt))
+		if (!isVectorsEqual(pt, other.pt, 0.03))
 			return false;
 
-		if (!isVectorsEqual(n, other.n))
+		if (!isVectorsEqual(n, other.n, 0.03))
 			return false;
 		
 		return true;
+	}
+	
+	bool IsSleeping()
+	{
+		return a->m_active == b->m_active && a->m_active == false;
+	}
+
+	void Dump()
+	{
+		Debug() << "c["<<a->m_id << "-" << b->m_id << " pt:" << pt << " n:" << n << " depth:" << depth << " fID:" << lifeFrameID << " accP:" << accP;
 	}
 };
 

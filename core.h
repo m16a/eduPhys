@@ -17,7 +17,7 @@ public:
 	static const int	SI_ITERATIONS = 3;
 	static const float COLLISION_DEPTH_TOLERANCE;
 	static const float RESTING_CONTACT_SPEED = 0.05f;	
-	static const float ERP = 0.2f;	
+	static const float ERP = 0.5f;	
 
 	Core();
 	void Draw();
@@ -42,6 +42,7 @@ private:
 	void ValidateOldContacts();
 	void RemoveContacts();
 	void TownIsSleeping();//deactivate resting bodies
+	void DrawContacts();
 };
 
 #endif

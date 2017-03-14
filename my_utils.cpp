@@ -107,11 +107,11 @@ Vector3f PYRAnglesFromQuat(Quaternionf& q)
 	return PYRFromQuat(q) * 180.0f / M_PI;
 }
 
-bool isVectorsEqual(const Vector3f a, const Vector3f b)
+bool isVectorsEqual(const Vector3f a, const Vector3f b, float eps /*=0.001*/)
 {
 	for (int i=0; i<3; ++i)
 	{
-		if (fabs(a[i] - b[i]) > 0.001)
+		if (fabs(a[i] - b[i]) > eps)
 			return false;
 	}
 	return true;

@@ -23,7 +23,7 @@ extern Quaternion<float> quatFromPYRAngles(float pitch, float yaw, float roll);
 extern Vector3f PYRFromQuat(Quaternionf& q);
 extern Vector3f PYRAnglesFromQuat(Quaternionf& q);
 
-bool isVectorsEqual(const Vector3f a, const Vector3f b);
+bool isVectorsEqual(const Vector3f a, const Vector3f b, float eps = 0.001f);
 
 std::string VecToStr(const Vector3f& v);
 
