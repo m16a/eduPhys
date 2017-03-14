@@ -74,6 +74,7 @@ float Core::FindCollisions(bool updateContacts)
 					(!b->m_active || b->m_isStatic))
 				continue;
 			
+			Debug() << "BROAD";
 			//aka broad phase					
 			if (!overlapTestAABB(a->m_bbox, b->m_bbox))
 				continue;
@@ -270,6 +271,8 @@ void Core::Step(float reqStep)
 		ValidateOldContacts();
 		RemoveContacts();
 		SolveContacts();
+		
+			
 
 		reqStep-= mid;
 
@@ -279,7 +282,63 @@ void Core::Step(float reqStep)
 		Dump();
 #endif
 	};
+
+		Dump();
+	//deactivate resting bodies
+	TownIsSleeping();
+
+		Dump();
 	m_frameID++;
+}
+
+void Core::TownIsSleeping()
+{
+	//sleep all bodies
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+		it->a->m_active = it->b->m_active = false; 
+	
+	qDebug() << "wake cntcts";
+
+	//wake active
+	it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		const Contact& c = (*it);
+
+		if (c.a->m_active == c.b->m_active && c.a->m_active == true)
+			continue;
+
+		assert(fabs(c.n.norm()-1.0f) < 0.001);
+		Vector3f rAP = c.pt - c.a->m_pos;
+		Vector3f rBP = c.pt - c.b->m_pos;
+
+		Matrix3f rAPcross = getCrossMatrix(rAP);
+		Matrix3f rBPcross = getCrossMatrix(rBP);
+		
+		Vector3f v_contact = ((c.b->m_v + (c.b->m_w).cross(rBP)) - (c.a->m_v + (c.a->m_w).cross(rAP))); 
+		const float vn = v_contact.dot(c.n);
+		const bool isRestingContact = fabs(vn) < RESTING_CONTACT_SPEED;
+		Debug() << "cntct vN:" << vn;
+
+		if (!isRestingContact)
+		{
+			if (!c.a->m_isStatic)
+				if (c.a->CalcKineticEnergy() > 0.001)
+				{
+					c.a->m_active = true;
+					Debug() << "wake";
+				}
+
+			if (!c.b->m_isStatic)
+				if (c.b->CalcKineticEnergy() > 0.001)
+				{
+					c.b->m_active = true;
+					Debug() << "wake";
+				}
+		}
+	}
+
 }
 
 void Core::SolveContacts()
@@ -344,7 +403,6 @@ void Core::SolveContacts()
 			Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
 			Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 
-			const float ERP = 0.7; 
 			const float extraVelBias = ERP / 0.01 * cntct.depth;  //TODO:pass time step here
 			const float e = 0.8f;//restitution coef
 			const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 

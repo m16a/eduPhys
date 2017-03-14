@@ -46,7 +46,7 @@ struct Contact
 		if (a != other.a || b != other.b)
 			return false;
 
-		if (fabs(depth - other.depth) > 0.01)
+		if (fabs(depth - other.depth) > 0.01)//TODO: use COLLISION_DEPTH_TOLERANCE 
 			return false;
 
 		if (!isVectorsEqual(pt, other.pt))
