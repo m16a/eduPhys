@@ -1,7 +1,13 @@
-2.Contact solver
-2.Code refactoring:
-	Review all classes
+1.Don't keep debug info from previous steps in pause mode
+1.Rework forces storing and it's serialization
+1.Investigate crashes on collision detection
+1.Investigate substep count exceeding
+1.Add friction
 
+2.Joints
+
+3.Code refactoring:
+	Review all classes
 3.Add external torque
 3.Unit tests would be fine
 3.Textures for ball at least
