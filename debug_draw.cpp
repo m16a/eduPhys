@@ -133,7 +133,7 @@ SDebugMngr* DebugManager()
 	return sDbgMngr;
 }
 
-void SDebugMngr::Draw(bool isPause)
+void SDebugMngr::Draw()
 {
 	std::list<IDebugItem*>::iterator it = m_list.begin();
 	while (it != m_list.end())
@@ -141,13 +141,13 @@ void SDebugMngr::Draw(bool isPause)
 		(*it)->Draw();
 		++it;
 	}
+}
 
-	if(!isPause)
+void SDebugMngr::Clear()
+{
+	for (std::list<IDebugItem*>::iterator it = m_list.begin() ; it != m_list.end(); ++it)
 	{
-		for (std::list<IDebugItem*>::iterator it = m_list.begin() ; it != m_list.end(); ++it)
-		{
-		 delete (*it);
-		} 
-		m_list.clear();
-	}
+	 delete (*it);
+	} 
+	m_list.clear();
 }

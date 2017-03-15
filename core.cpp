@@ -281,6 +281,7 @@ void Core::Step(float reqStep)
 		qDebug() << gRed << "[" << gReset << "impulsePath] performed time:" << mid << "left:" << reqStep << "full:" << fullStep;
 		Dump();
 #endif
+
 	};
 
 		Dump();

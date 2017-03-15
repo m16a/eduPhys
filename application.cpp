@@ -129,10 +129,9 @@ void RenderingWidget::drawScene()
 
   m_core.get()->Draw();
 	m_objMover.Update();	
-	DebugManager()->Draw(m_isSolverStopped);	
 
-	glDisable(GL_LIGHTING);
 	updateCore(dt);
+	glDisable(GL_LIGHTING);
   update();
 }
 
@@ -229,6 +228,8 @@ void RenderingWidget::updateCore(float dt)
 	{
 		if (unperformedStep > reqStep)
 		{
+			DebugManager()->Clear();
+
 			const float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
 			const float t = (fixedStep ? reqStep : dt);
 
@@ -256,6 +257,8 @@ void RenderingWidget::updateCore(float dt)
 	}
 
 	//drawDebugInfo(dt, std::max(physSimTime, reqStep));
+
+	DebugManager()->Draw();	
 	drawDebugInfo(dt, physSimTime);
 }
 

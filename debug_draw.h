@@ -56,8 +56,10 @@ struct SDebugMngr
 	void DrawPlane(const Vector3f& n, float d);
 	void DrawSphere(const Vector3f& pos, float r, const Color& col);
 	void DrawVector(const Vector3f& pos, const Vector3f& dir, float len);
+	void Draw();
+	void Clear();
+
 	std::list<IDebugItem*> m_list;
-	void Draw(bool isPause = false);
 };
 
 SDebugMngr* DebugManager();
