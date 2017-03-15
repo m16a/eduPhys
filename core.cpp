@@ -531,5 +531,6 @@ void Core::DeserializeFromFile(const char* name)
 		assert(e);	
 		e->Deserialize(&sp);
 		m_objects.push_back(e);
+		e->UpdatedPosRot();
 	}
 }

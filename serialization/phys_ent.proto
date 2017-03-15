@@ -44,6 +44,10 @@ message SerPhys
 	required Matrix3f Jinv = 7;	
 
 	required int32 id = 8;
+	required bool is_active = 9;
+	required bool is_gravity= 10;
+	required bool is_static= 11;
+	required Vector3f ext_force = 12;
 }
 
 message Sphere 

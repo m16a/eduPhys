@@ -1,5 +1,6 @@
 #include "phys_ent.h" 
 #include "my_utils.h"
+
 const Vector3f g_Gravity(0.0f, 0.0f, -9.8f); 
 
 IPhysEnt::IPhysEnt(bool isStatic) 
@@ -25,6 +26,8 @@ IPhysEnt::IPhysEnt(bool isStatic)
 	{
 		m_minv = 0.01;//100kg
 	}
+	m_isGravity = false;
+	m_extForce = Vector3f(0.f, 0.f, 0.f);
 }
 
 bool IPhysEnt::AddImpulse(const Vector3f& value, const Vector3f& pt)
@@ -35,7 +38,12 @@ bool IPhysEnt::AddImpulse(const Vector3f& value, const Vector3f& pt)
 	m_active = true;
 	return true;
 }
-
+void SerializeVector3f(const Vector3f& v, ser::Vector3f* out)
+{
+	out->set_x(v[0]);
+	out->set_y(v[1]);
+	out->set_z(v[2]);
+}
 //TODO::move to more generic place
 void DeserializeVector3f(const ser::Vector3f s, Vector3f& out)
 {
@@ -78,6 +86,12 @@ void IPhysEnt::Serialize(ser::SerPhys* sp)
 	
 	sp->set_minv(m_minv);
 	sp->set_id(m_id);
+	
+	sp->set_is_active(m_active);
+	sp->set_is_gravity(m_isGravity);
+	sp->set_is_static(m_isStatic);
+
+	SerializeVector3f(m_extForce, sp->mutable_ext_force());
 
 	ser::Matrix3f* Jinv = sp->mutable_jinv();
 	ser::Vector3f* row1 = Jinv->mutable_row1();
@@ -102,6 +116,12 @@ void IPhysEnt::Deserialize(const ser::SerPhys* sp)
 	DeserializeVector3f(sp->w(), m_w);	
 	m_minv = sp->minv();
 	m_id = sp->id();	
+	m_active = sp->is_active();
+	m_isGravity = sp->is_gravity();
+	m_isStatic = sp->is_static();
+
+	DeserializeVector3f(sp->ext_force(), m_extForce);	
+
 	
 	ser::Matrix3f m = sp->jinv();
 	Vector3f r1, r2, r3;

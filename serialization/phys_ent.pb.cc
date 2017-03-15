@@ -104,7 +104,7 @@ void protobuf_AssignDesc_phys_5fent_2eproto() {
       sizeof(Matrix3f),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Matrix3f, _internal_metadata_));
   SerPhys_descriptor_ = file->message_type(3);
-  static const int SerPhys_offsets_[8] = {
+  static const int SerPhys_offsets_[12] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, pos_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, rot_),
@@ -113,6 +113,10 @@ void protobuf_AssignDesc_phys_5fent_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, minv_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, jinv_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, is_active_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, is_gravity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, is_static_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SerPhys, ext_force_),
   };
   SerPhys_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -257,18 +261,20 @@ void protobuf_AddDesc_phys_5fent_2eproto_impl() {
     "f\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\022\t\n\001w\030"
     "\004 \002(\002\"a\n\010Matrix3f\022\033\n\004row1\030\001 \002(\0132\r.ser.Ve"
     "ctor3f\022\033\n\004row2\030\002 \002(\0132\r.ser.Vector3f\022\033\n\004r"
-    "ow3\030\003 \002(\0132\r.ser.Vector3f\"\367\001\n\007SerPhys\022\037\n\004"
+    "ow3\030\003 \002(\0132\r.ser.Vector3f\"\323\002\n\007SerPhys\022\037\n\004"
     "type\030\001 \002(\0162\021.ser.SerPhys.Type\022\032\n\003pos\030\002 \002"
     "(\0132\r.ser.Vector3f\022\035\n\003rot\030\003 \002(\0132\020.ser.Qua"
     "ternionf\022\030\n\001v\030\004 \002(\0132\r.ser.Vector3f\022\030\n\001w\030"
     "\005 \002(\0132\r.ser.Vector3f\022\014\n\004minv\030\006 \002(\002\022\033\n\004Ji"
-    "nv\030\007 \002(\0132\r.ser.Matrix3f\022\n\n\002id\030\010 \002(\005\"\033\n\004T"
-    "ype\022\n\n\006Sphere\020\001\022\007\n\003Box\020\002*\010\010d\020\200\200\200\200\002\">\n\006Sp"
-    "here\022\t\n\001r\030\001 \002(\0022)\n\006sphere\022\014.ser.SerPhys\030"
-    "d \001(\0132\013.ser.Sphere\"G\n\003Box\022\033\n\004size\030\001 \002(\0132"
-    "\r.ser.Vector3f2#\n\003box\022\014.ser.SerPhys\030e \001("
-    "\0132\010.ser.Box\"#\n\004Core\022\033\n\005objct\030\001 \003(\0132\014.ser"
-    ".SerPhys", 648);
+    "nv\030\007 \002(\0132\r.ser.Matrix3f\022\n\n\002id\030\010 \002(\005\022\021\n\ti"
+    "s_active\030\t \002(\010\022\022\n\nis_gravity\030\n \002(\010\022\021\n\tis"
+    "_static\030\013 \002(\010\022 \n\text_force\030\014 \002(\0132\r.ser.V"
+    "ector3f\"\033\n\004Type\022\n\n\006Sphere\020\001\022\007\n\003Box\020\002*\010\010d"
+    "\020\200\200\200\200\002\">\n\006Sphere\022\t\n\001r\030\001 \002(\0022)\n\006sphere\022\014."
+    "ser.SerPhys\030d \001(\0132\013.ser.Sphere\"G\n\003Box\022\033\n"
+    "\004size\030\001 \002(\0132\r.ser.Vector3f2#\n\003box\022\014.ser."
+    "SerPhys\030e \001(\0132\010.ser.Box\"#\n\004Core\022\033\n\005objct"
+    "\030\001 \003(\0132\014.ser.SerPhys", 740);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "phys_ent.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_phys_5fent_2eproto);
@@ -1787,6 +1793,10 @@ const int SerPhys::kWFieldNumber;
 const int SerPhys::kMinvFieldNumber;
 const int SerPhys::kJinvFieldNumber;
 const int SerPhys::kIdFieldNumber;
+const int SerPhys::kIsActiveFieldNumber;
+const int SerPhys::kIsGravityFieldNumber;
+const int SerPhys::kIsStaticFieldNumber;
+const int SerPhys::kExtForceFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SerPhys::SerPhys()
@@ -1807,6 +1817,8 @@ void SerPhys::InitAsDefaultInstance() {
       ::ser::Vector3f::internal_default_instance());
   jinv_ = const_cast< ::ser::Matrix3f*>(
       ::ser::Matrix3f::internal_default_instance());
+  ext_force_ = const_cast< ::ser::Vector3f*>(
+      ::ser::Vector3f::internal_default_instance());
 }
 
 SerPhys::SerPhys(const SerPhys& from)
@@ -1824,8 +1836,9 @@ void SerPhys::SharedCtor() {
   v_ = NULL;
   w_ = NULL;
   jinv_ = NULL;
-  ::memset(&minv_, 0, reinterpret_cast<char*>(&id_) -
-    reinterpret_cast<char*>(&minv_) + sizeof(id_));
+  ext_force_ = NULL;
+  ::memset(&minv_, 0, reinterpret_cast<char*>(&is_static_) -
+    reinterpret_cast<char*>(&minv_) + sizeof(is_static_));
   type_ = 1;
 }
 
@@ -1841,6 +1854,7 @@ void SerPhys::SharedDtor() {
     delete v_;
     delete w_;
     delete jinv_;
+    delete ext_force_;
   }
 }
 
@@ -1905,6 +1919,12 @@ void SerPhys::Clear() {
     }
     if (has_jinv()) {
       if (jinv_ != NULL) jinv_->::ser::Matrix3f::Clear();
+    }
+  }
+  if (_has_bits_[8 / 32] & 3840u) {
+    ZR_(is_active_, is_static_);
+    if (has_ext_force()) {
+      if (ext_force_ != NULL) ext_force_->::ser::Vector3f::Clear();
     }
   }
 
@@ -2037,6 +2057,64 @@ bool SerPhys::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(72)) goto parse_is_active;
+        break;
+      }
+
+      // required bool is_active = 9;
+      case 9: {
+        if (tag == 72) {
+         parse_is_active:
+          set_has_is_active();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &is_active_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(80)) goto parse_is_gravity;
+        break;
+      }
+
+      // required bool is_gravity = 10;
+      case 10: {
+        if (tag == 80) {
+         parse_is_gravity:
+          set_has_is_gravity();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &is_gravity_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(88)) goto parse_is_static;
+        break;
+      }
+
+      // required bool is_static = 11;
+      case 11: {
+        if (tag == 88) {
+         parse_is_static:
+          set_has_is_static();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &is_static_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(98)) goto parse_ext_force;
+        break;
+      }
+
+      // required .ser.Vector3f ext_force = 12;
+      case 12: {
+        if (tag == 98) {
+         parse_ext_force:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_ext_force()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -2117,6 +2195,27 @@ void SerPhys::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->id(), output);
   }
 
+  // required bool is_active = 9;
+  if (has_is_active()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->is_active(), output);
+  }
+
+  // required bool is_gravity = 10;
+  if (has_is_gravity()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->is_gravity(), output);
+  }
+
+  // required bool is_static = 11;
+  if (has_is_static()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->is_static(), output);
+  }
+
+  // required .ser.Vector3f ext_force = 12;
+  if (has_ext_force()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      12, *this->ext_force_, output);
+  }
+
   // Extension range [100, 536870912)
   _extensions_.SerializeWithCachedSizes(
       100, 536870912, output);
@@ -2181,6 +2280,28 @@ void SerPhys::SerializeWithCachedSizes(
   // required int32 id = 8;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->id(), target);
+  }
+
+  // required bool is_active = 9;
+  if (has_is_active()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->is_active(), target);
+  }
+
+  // required bool is_gravity = 10;
+  if (has_is_gravity()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->is_gravity(), target);
+  }
+
+  // required bool is_static = 11;
+  if (has_is_static()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->is_static(), target);
+  }
+
+  // required .ser.Vector3f ext_force = 12;
+  if (has_ext_force()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        12, *this->ext_force_, false, target);
   }
 
   // Extension range [100, 536870912)
@@ -2252,13 +2373,35 @@ size_t SerPhys::RequiredFieldsByteSizeFallback() const {
         this->id());
   }
 
+  if (has_is_active()) {
+    // required bool is_active = 9;
+    total_size += 1 + 1;
+  }
+
+  if (has_is_gravity()) {
+    // required bool is_gravity = 10;
+    total_size += 1 + 1;
+  }
+
+  if (has_is_static()) {
+    // required bool is_static = 11;
+    total_size += 1 + 1;
+  }
+
+  if (has_ext_force()) {
+    // required .ser.Vector3f ext_force = 12;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->ext_force_);
+  }
+
   return total_size;
 }
 size_t SerPhys::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ser.SerPhys)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x000000ff) ^ 0x000000ff) == 0) {  // All required fields are present.
+  if (((_has_bits_[0] & 0x00000fff) ^ 0x00000fff) == 0) {  // All required fields are present.
     // required .ser.SerPhys.Type type = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -2295,6 +2438,20 @@ size_t SerPhys::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->id());
+
+    // required bool is_active = 9;
+    total_size += 1 + 1;
+
+    // required bool is_gravity = 10;
+    total_size += 1 + 1;
+
+    // required bool is_static = 11;
+    total_size += 1 + 1;
+
+    // required .ser.Vector3f ext_force = 12;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->ext_force_);
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -2365,6 +2522,20 @@ void SerPhys::UnsafeMergeFrom(const SerPhys& from) {
       set_id(from.id());
     }
   }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_is_active()) {
+      set_is_active(from.is_active());
+    }
+    if (from.has_is_gravity()) {
+      set_is_gravity(from.is_gravity());
+    }
+    if (from.has_is_static()) {
+      set_is_static(from.is_static());
+    }
+    if (from.has_ext_force()) {
+      mutable_ext_force()->::ser::Vector3f::MergeFrom(from.ext_force());
+    }
+  }
   _extensions_.MergeFrom(from._extensions_);
   if (from._internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::UnknownFieldSet::MergeToInternalMetdata(
@@ -2387,7 +2558,7 @@ void SerPhys::CopyFrom(const SerPhys& from) {
 }
 
 bool SerPhys::IsInitialized() const {
-  if ((_has_bits_[0] & 0x000000ff) != 0x000000ff) return false;
+  if ((_has_bits_[0] & 0x00000fff) != 0x00000fff) return false;
 
   if (has_pos()) {
     if (!this->pos_->IsInitialized()) return false;
@@ -2403,6 +2574,9 @@ bool SerPhys::IsInitialized() const {
   }
   if (has_jinv()) {
     if (!this->jinv_->IsInitialized()) return false;
+  }
+  if (has_ext_force()) {
+    if (!this->ext_force_->IsInitialized()) return false;
   }
 
   if (!_extensions_.IsInitialized()) {
@@ -2424,6 +2598,10 @@ void SerPhys::InternalSwap(SerPhys* other) {
   std::swap(minv_, other->minv_);
   std::swap(jinv_, other->jinv_);
   std::swap(id_, other->id_);
+  std::swap(is_active_, other->is_active_);
+  std::swap(is_gravity_, other->is_gravity_);
+  std::swap(is_static_, other->is_static_);
+  std::swap(ext_force_, other->ext_force_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -2737,6 +2915,123 @@ void SerPhys::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
   // @@protoc_insertion_point(field_set:ser.SerPhys.id)
+}
+
+// required bool is_active = 9;
+bool SerPhys::has_is_active() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+void SerPhys::set_has_is_active() {
+  _has_bits_[0] |= 0x00000100u;
+}
+void SerPhys::clear_has_is_active() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+void SerPhys::clear_is_active() {
+  is_active_ = false;
+  clear_has_is_active();
+}
+bool SerPhys::is_active() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_active)
+  return is_active_;
+}
+void SerPhys::set_is_active(bool value) {
+  set_has_is_active();
+  is_active_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_active)
+}
+
+// required bool is_gravity = 10;
+bool SerPhys::has_is_gravity() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+void SerPhys::set_has_is_gravity() {
+  _has_bits_[0] |= 0x00000200u;
+}
+void SerPhys::clear_has_is_gravity() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+void SerPhys::clear_is_gravity() {
+  is_gravity_ = false;
+  clear_has_is_gravity();
+}
+bool SerPhys::is_gravity() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_gravity)
+  return is_gravity_;
+}
+void SerPhys::set_is_gravity(bool value) {
+  set_has_is_gravity();
+  is_gravity_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_gravity)
+}
+
+// required bool is_static = 11;
+bool SerPhys::has_is_static() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+void SerPhys::set_has_is_static() {
+  _has_bits_[0] |= 0x00000400u;
+}
+void SerPhys::clear_has_is_static() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+void SerPhys::clear_is_static() {
+  is_static_ = false;
+  clear_has_is_static();
+}
+bool SerPhys::is_static() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_static)
+  return is_static_;
+}
+void SerPhys::set_is_static(bool value) {
+  set_has_is_static();
+  is_static_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_static)
+}
+
+// required .ser.Vector3f ext_force = 12;
+bool SerPhys::has_ext_force() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+void SerPhys::set_has_ext_force() {
+  _has_bits_[0] |= 0x00000800u;
+}
+void SerPhys::clear_has_ext_force() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+void SerPhys::clear_ext_force() {
+  if (ext_force_ != NULL) ext_force_->::ser::Vector3f::Clear();
+  clear_has_ext_force();
+}
+const ::ser::Vector3f& SerPhys::ext_force() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.ext_force)
+  return ext_force_ != NULL ? *ext_force_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+::ser::Vector3f* SerPhys::mutable_ext_force() {
+  set_has_ext_force();
+  if (ext_force_ == NULL) {
+    ext_force_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.ext_force)
+  return ext_force_;
+}
+::ser::Vector3f* SerPhys::release_ext_force() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.ext_force)
+  clear_has_ext_force();
+  ::ser::Vector3f* temp = ext_force_;
+  ext_force_ = NULL;
+  return temp;
+}
+void SerPhys::set_allocated_ext_force(::ser::Vector3f* ext_force) {
+  delete ext_force_;
+  ext_force_ = ext_force;
+  if (ext_force) {
+    set_has_ext_force();
+  } else {
+    clear_has_ext_force();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.ext_force)
 }
 
 inline const SerPhys* SerPhys::internal_default_instance() {

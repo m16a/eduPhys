@@ -450,7 +450,7 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 				s2->m_pos = pos;
 				s2->m_id = sIndex++;
 				m_core.get()->m_objects.push_back(s2);
-				s2->m_forces.push_back(g_Gravity);
+				s2->m_isGravity = true;
 				Debug() << "box. pos:" << s2->m_pos << " size:" << s2->m_size;
         break;
 			}
@@ -481,7 +481,10 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 			m_pSelectedEnt = res.m_pEnt;	
 //			m_pSelectedEnt->m_v= Vector3f(0,0,0);
 			m_pSelectedEnt->m_active = true; 
-			m_pSelectedEnt->m_forces.clear();
+
+			m_pSelectedEnt->m_extForce = Vector3f(0.f, 0.f, 0.f); 
+			m_pSelectedEnt->m_isGravity = false;
+
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
 			m_objMover.OnSelect(m_pSelectedEnt);
 		}

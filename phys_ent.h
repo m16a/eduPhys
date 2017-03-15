@@ -39,11 +39,12 @@ struct  IPhysEnt
 
 	float m_minv;
 	Matrix3f m_Jinv;
-	bool m_active;
-	std::vector<Vector3f> m_forces;
+	Vector3f m_extForce;
 	Vector3f m_bbox[2];
 	int m_id;
+	bool m_active;
 	bool m_isStatic;
+	bool m_isGravity;
 };
 
 

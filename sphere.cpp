@@ -32,9 +32,9 @@ void Sphere::Step(float t)
 	if (!m_active)
 		return;
 	//Symplectic Euler integration
-	Vector3f f_sum(0,0,0);
-	for (int i=0; i<m_forces.size(); ++i)
-		f_sum += m_forces[i];
+	Vector3f f_sum = m_extForce;
+	if (m_isGravity)
+		f_sum += g_Gravity;
 
 	if (t >= 0)
 	{

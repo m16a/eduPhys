@@ -609,6 +609,36 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 id() const;
   void set_id(::google::protobuf::int32 value);
 
+  // required bool is_active = 9;
+  bool has_is_active() const;
+  void clear_is_active();
+  static const int kIsActiveFieldNumber = 9;
+  bool is_active() const;
+  void set_is_active(bool value);
+
+  // required bool is_gravity = 10;
+  bool has_is_gravity() const;
+  void clear_is_gravity();
+  static const int kIsGravityFieldNumber = 10;
+  bool is_gravity() const;
+  void set_is_gravity(bool value);
+
+  // required bool is_static = 11;
+  bool has_is_static() const;
+  void clear_is_static();
+  static const int kIsStaticFieldNumber = 11;
+  bool is_static() const;
+  void set_is_static(bool value);
+
+  // required .ser.Vector3f ext_force = 12;
+  bool has_ext_force() const;
+  void clear_ext_force();
+  static const int kExtForceFieldNumber = 12;
+  const ::ser::Vector3f& ext_force() const;
+  ::ser::Vector3f* mutable_ext_force();
+  ::ser::Vector3f* release_ext_force();
+  void set_allocated_ext_force(::ser::Vector3f* ext_force);
+
   GOOGLE_PROTOBUF_EXTENSION_ACCESSORS(SerPhys)
   // @@protoc_insertion_point(class_scope:ser.SerPhys)
  private:
@@ -628,6 +658,14 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   inline void clear_has_jinv();
   inline void set_has_id();
   inline void clear_has_id();
+  inline void set_has_is_active();
+  inline void clear_has_is_active();
+  inline void set_has_is_gravity();
+  inline void clear_has_is_gravity();
+  inline void set_has_is_static();
+  inline void clear_has_is_static();
+  inline void set_has_ext_force();
+  inline void clear_has_ext_force();
 
   // helper for ByteSizeLong()
   size_t RequiredFieldsByteSizeFallback() const;
@@ -642,8 +680,12 @@ class SerPhys : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::ser::Vector3f* v_;
   ::ser::Vector3f* w_;
   ::ser::Matrix3f* jinv_;
+  ::ser::Vector3f* ext_force_;
   float minv_;
   ::google::protobuf::int32 id_;
+  bool is_active_;
+  bool is_gravity_;
+  bool is_static_;
   int type_;
   friend void  protobuf_InitDefaults_phys_5fent_2eproto_impl();
   friend void  protobuf_AddDesc_phys_5fent_2eproto_impl();
@@ -1589,6 +1631,123 @@ inline void SerPhys::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
   // @@protoc_insertion_point(field_set:ser.SerPhys.id)
+}
+
+// required bool is_active = 9;
+inline bool SerPhys::has_is_active() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void SerPhys::set_has_is_active() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void SerPhys::clear_has_is_active() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void SerPhys::clear_is_active() {
+  is_active_ = false;
+  clear_has_is_active();
+}
+inline bool SerPhys::is_active() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_active)
+  return is_active_;
+}
+inline void SerPhys::set_is_active(bool value) {
+  set_has_is_active();
+  is_active_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_active)
+}
+
+// required bool is_gravity = 10;
+inline bool SerPhys::has_is_gravity() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void SerPhys::set_has_is_gravity() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void SerPhys::clear_has_is_gravity() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void SerPhys::clear_is_gravity() {
+  is_gravity_ = false;
+  clear_has_is_gravity();
+}
+inline bool SerPhys::is_gravity() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_gravity)
+  return is_gravity_;
+}
+inline void SerPhys::set_is_gravity(bool value) {
+  set_has_is_gravity();
+  is_gravity_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_gravity)
+}
+
+// required bool is_static = 11;
+inline bool SerPhys::has_is_static() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void SerPhys::set_has_is_static() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void SerPhys::clear_has_is_static() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void SerPhys::clear_is_static() {
+  is_static_ = false;
+  clear_has_is_static();
+}
+inline bool SerPhys::is_static() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.is_static)
+  return is_static_;
+}
+inline void SerPhys::set_is_static(bool value) {
+  set_has_is_static();
+  is_static_ = value;
+  // @@protoc_insertion_point(field_set:ser.SerPhys.is_static)
+}
+
+// required .ser.Vector3f ext_force = 12;
+inline bool SerPhys::has_ext_force() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void SerPhys::set_has_ext_force() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void SerPhys::clear_has_ext_force() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void SerPhys::clear_ext_force() {
+  if (ext_force_ != NULL) ext_force_->::ser::Vector3f::Clear();
+  clear_has_ext_force();
+}
+inline const ::ser::Vector3f& SerPhys::ext_force() const {
+  // @@protoc_insertion_point(field_get:ser.SerPhys.ext_force)
+  return ext_force_ != NULL ? *ext_force_
+                         : *::ser::Vector3f::internal_default_instance();
+}
+inline ::ser::Vector3f* SerPhys::mutable_ext_force() {
+  set_has_ext_force();
+  if (ext_force_ == NULL) {
+    ext_force_ = new ::ser::Vector3f;
+  }
+  // @@protoc_insertion_point(field_mutable:ser.SerPhys.ext_force)
+  return ext_force_;
+}
+inline ::ser::Vector3f* SerPhys::release_ext_force() {
+  // @@protoc_insertion_point(field_release:ser.SerPhys.ext_force)
+  clear_has_ext_force();
+  ::ser::Vector3f* temp = ext_force_;
+  ext_force_ = NULL;
+  return temp;
+}
+inline void SerPhys::set_allocated_ext_force(::ser::Vector3f* ext_force) {
+  delete ext_force_;
+  ext_force_ = ext_force;
+  if (ext_force) {
+    set_has_ext_force();
+  } else {
+    clear_has_ext_force();
+  }
+  // @@protoc_insertion_point(field_set_allocated:ser.SerPhys.ext_force)
 }
 
 inline const SerPhys* SerPhys::internal_default_instance() {
