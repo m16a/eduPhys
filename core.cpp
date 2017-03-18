@@ -10,14 +10,15 @@
 #include <iostream>
 #include <fstream>
 
-#define DEBUG_STEP 0
-#define DEBUG_COLLISIONS 0
+#define DEBUG_STEP 1
+#define DEBUG_COLLISIONS 1
 
 const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
 
 Core::Core()
 {
 	m_frameID = 0;
+	m_substepID = 0;
 }
 
 void Core::Dump(int entId)
@@ -74,7 +75,6 @@ float Core::FindCollisions(bool updateContacts)
 					(!b->m_active || b->m_isStatic))
 				continue;
 			
-			Debug() << "BROAD";
 			//aka broad phase					
 			if (!overlapTestAABB(a->m_bbox, b->m_bbox))
 				continue;
@@ -119,6 +119,7 @@ float Core::FindCollisions(bool updateContacts)
 				cntct.a = a;
 				cntct.b = b;
 				cntct.lifeFrameID = m_frameID;
+				cntct.substepID = m_substepID;
 
 				assert(fabs(cntct.n.norm()-1.0f) < 0.001);
 				Vector3f rAP = cntct.pt - a->m_pos;
@@ -138,6 +139,7 @@ float Core::FindCollisions(bool updateContacts)
 				if (c[cnt_indx].depth < min_depth)
 					if (!isSeparatingContact)
 						min_depth = c[cnt_indx].depth;
+
 				if (isSeparatingContact)
 				{
 #if DEBUG_STEP
@@ -150,9 +152,7 @@ float Core::FindCollisions(bool updateContacts)
 					res = min_depth; 
 
 				if (updateContacts)
-				{
 					AddContact(cntct);
-				}
 			}
 		}
 
@@ -161,13 +161,14 @@ float Core::FindCollisions(bool updateContacts)
 
 void Core::AddContact(const Contact& c)
 {
-	//check if we have thsi contact already stored	
+	//check if we have this contact already stored	
 	std::list<Contact>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
 	{
 		if (it->IsEqual(c) && it->IsSleeping())
 		{
 			(*it).lifeFrameID = m_frameID;
+			(*it).substepID = m_substepID;
 			return;	
 		}
 	}
@@ -182,8 +183,11 @@ void Core::ValidateOldContacts()
 	for (; it != m_contacts.end(); ++it)
 	{
 		Contact& c = (*it);
-		if (!c.a->m_active && !c.b->m_active)
+		if (c.IsSleeping())
+		{
 			c.lifeFrameID = m_frameID;
+			c.substepID = m_substepID;
+		}
 	}
 }
 
@@ -193,7 +197,7 @@ void Core::RemoveContacts()
 	for (; it != m_contacts.end();)
 	{
 		Contact& c = (*it);
-		if (c.lifeFrameID != m_frameID)
+		if (c.lifeFrameID != m_frameID || c.substepID != m_substepID)
 			m_contacts.erase(it++);
 		else
 			++it;
@@ -202,11 +206,11 @@ void Core::RemoveContacts()
 
 void Core::Step(float reqStep)
 {
-	int subStep = 0;
+	m_substepID = 0;
 	const float fullStep = reqStep;
 	while (reqStep > 0)
 	{
-		if (subStep > 5)
+		if (m_substepID > 5)
 		{
 			qCritical() << "Over 5 substeps";
 			assert(0);
@@ -218,9 +222,9 @@ void Core::Step(float reqStep)
 		float mid = reqStep;
 
 #if DEBUG_STEP
-		qDebug() << gRed << "subStep[collPath]:" << gReset << subStep;
+		qDebug() << gRed << "subStep[collPath]:" << gReset << m_substepID;
 #endif
-		subStep++;
+		m_substepID++;
 
 		StepAll(reqStep);
 		const float startDepth = FindCollisions(false);
@@ -270,9 +274,9 @@ void Core::Step(float reqStep)
 
 		ValidateOldContacts();
 		RemoveContacts();
-		SolveContacts();
 		
-			
+		ListContacts();
+		SolveContacts();
 
 		reqStep-= mid;
 
@@ -290,18 +294,23 @@ void Core::Step(float reqStep)
 
 		Dump();
 	DrawContacts();
+	ListContacts();
+
 	m_frameID++;
+}
+
+void Core::ListContacts()
+{
+	std::list<Contact>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+		it->Dump();
 }
 
 void Core::DrawContacts()
 {
-
 	std::list<Contact>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
-	{
-			DebugManager()->DrawSphere(it->pt, 0.02, it->IsSleeping() ? Color(0,0,1,1) : Color(0,1,0,1));	 
-			it->Dump();
-	}
+		DebugManager()->DrawSphere(it->pt, 0.02, it->IsSleeping() ? Color(0,0,1,1) : Color(0,1,0,1));	 
 }
 
 void Core::TownIsSleeping()
@@ -356,12 +365,13 @@ void Core::TownIsSleeping()
 
 void Core::SolveContacts()
 {
+#if DEBUG_STEP
+	Debug() << "Solve contacts num: "<< m_contacts.size();
+#endif
+
 	if (m_contacts.empty())
 		return;
 
-#if DEBUG_STEP
-	Debug() << "Total contacts: "<< m_contacts.Size();
-#endif
 	std::list<Contact>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
 	{
@@ -380,7 +390,6 @@ void Core::SolveContacts()
 			const Vector3f& normal(cntct.n);
 			a->AddImpulse(-accP * normal, cntct.pt);
 			b->AddImpulse(accP * normal, cntct.pt);
-			Debug() << "initial";
 		}
 	}
 
@@ -407,8 +416,8 @@ void Core::SolveContacts()
 			Vector3f v_contact = ((b->m_v + (b->m_w).cross(rBP)) - (a->m_v + (a->m_w).cross(rAP))); 
 				
 #if DEBUG_COLLISIONS
-		qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
-			qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
+		//qDebug() << "COLLISION" << a->m_id << ":" << b->m_id << "numOfPts:" << cntct_cnt;
+			//qDebug() << "pt:"<< cntct.pt << "normal:" << cntct.n << " depth:" << cntct.depth << "v_con:" << v_contact << "v_conN:" << v_contact.dot(cntct.n);
 #endif
 
 			assert(fabs(normal.norm()-1.0f) < 0.001);

@@ -82,9 +82,9 @@ int main(int argc, char *argv[])
   s3->m_id = 3;
 	objcts.push_back(s3);
 
-  Box* s9 = new Box(1.0f, Vector3f(0.1f, 0.1f, 0.1f), false);
+  Box* s9 = new Box(1.0f, Vector3f(0.3f, 0.2f, 0.1f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 0.5f);
-  s9->m_rot = quatFromPYRAngles(45, 45, 0);
+  //s9->m_rot = quatFromPYRAngles(45, 45, 0);
 	qDebug() << s9->m_rot;
   s9->m_id = 9;
 	//s9->m_v = Vector3f(-0.3f, 0.0f, 0.0f);

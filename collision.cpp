@@ -497,8 +497,11 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 		}
 		//else qDebug() << "NOTpass";
 	}
-	//qDebug() << indx;
-	assert(indx >=0 && indx <= 4);
+	if (indx < 0 || indx > 4)
+	{
+		Debug() << "veticies cnt:"<< indx;
+		assert(indx >=0 && indx <= 4);
+	}
 
 	if (3 == indx)
 	{
@@ -753,7 +756,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	{
 		penDepth = std::min(penDepth, -Core::COLLISION_DEPTH_TOLERANCE); 
 
-		//qDebug() << "box-box. penDepth:" << penDepth;
+		qDebug() << "box-box. penDepth:" << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		//DebugManager()->DrawPlane(p.n, p.d);	 

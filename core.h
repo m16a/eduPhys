@@ -13,7 +13,7 @@ struct SRayHit;
 class Core
 {
 public:
-	static const int MAX_COLLISIONS_ITERATIONS = 10;
+	static const int MAX_COLLISIONS_ITERATIONS = 1;
 	static const int	SI_ITERATIONS = 3;
 	static const float COLLISION_DEPTH_TOLERANCE;
 	static const float RESTING_CONTACT_SPEED = 0.05f;	
@@ -31,9 +31,11 @@ public:
 
 	std::vector<IPhysEnt*> m_objects;
 	int m_frameID;
+	int m_substepID;
 	std::list<Contact> m_contacts;
 private:
 	void StepAll(float dt);
+
 	//finds collisions and returns deepest penetration  
 	float FindCollisions(bool updateContacts);
 	
@@ -43,6 +45,7 @@ private:
 	void RemoveContacts();
 	void TownIsSleeping();//deactivate resting bodies
 	void DrawContacts();
+	void ListContacts();
 };
 
 #endif

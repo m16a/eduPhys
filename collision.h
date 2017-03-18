@@ -17,6 +17,7 @@ struct Contact
 	Vector3f n;
 	float depth;
 	int lifeFrameID;
+	int substepID;
 	
 	IPhysEnt* a;
 	IPhysEnt* b;
@@ -28,6 +29,7 @@ struct Contact
 		a = b = 0;	
 		lifeFrameID = -1;
 		accP = 0;
+		substepID = -1;
 	};
 
 	Contact(const Contact& other)
@@ -36,6 +38,7 @@ struct Contact
 		n = other.n;
 		depth = other.depth;
 		lifeFrameID = other.lifeFrameID;
+		substepID = other.substepID;
 		a = other.a;
 		b = other.b;
 		accP = other.accP;
@@ -65,7 +68,7 @@ struct Contact
 
 	void Dump()
 	{
-		Debug() << "c["<<a->m_id << "-" << b->m_id << " pt:" << pt << " n:" << n << " depth:" << depth << " fID:" << lifeFrameID << " accP:" << accP;
+		Debug() << "c["<<a->m_id << "-" << b->m_id << " pt:" << pt << " n:" << n << " depth:" << depth << " fID:" << lifeFrameID << "(" << substepID <<") accP:" << accP;
 	}
 };
 

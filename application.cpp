@@ -303,61 +303,114 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 {
 		const float camSpeed = 0.25f;
 		const float camAngleSpeed = 10.0f * M_PI / 180.0f;
+		if (e->modifiers() & Qt::ShiftModifier)
+		{
+			switch(e->key())
+			{
+				case Qt::Key_Up:
+				{
+					if (m_pSelectedEnt)
+					{
+						m_pSelectedEnt->m_active = true;
+						m_pSelectedEnt->m_v[0] += 0.1;
+					}
+					break;
+				}
+				case Qt::Key_Down:
+				{
+					if (m_pSelectedEnt)
+					{
+						m_pSelectedEnt->m_active = true;
+						m_pSelectedEnt->m_v[0] -= 0.1;
+					}
+					break;
+				}
+				case Qt::Key_Left:
+				{
+					if (m_pSelectedEnt)
+					{
+						m_pSelectedEnt->m_active = true;
+						m_pSelectedEnt->m_v[1] += 0.1;
+					}
+					break;
+				}
+				case Qt::Key_Right:
+				{
+					if (m_pSelectedEnt)
+					{
+						m_pSelectedEnt->m_active = true;
+						m_pSelectedEnt->m_v[1] -= 0.1;
+					}
+					break;
+				}
+			}
+		}
+		else
     switch(e->key())
     {
-			//rotate camera
-      case Qt::Key_Up:
+		//rotate camera
+			case Qt::Key_Up:
 			{
-				m_cameraMoveFlags |= eCMM_PitchUp; 
-        break;
+				if (e->modifiers() & Qt::ShiftModifier)
+				{
+					if (m_pSelectedEnt)
+					{
+						m_pSelectedEnt->m_active = true;
+						m_pSelectedEnt->m_v[0] += 0.1;
+					}
+				
+				}
+				else
+					m_cameraMoveFlags |= eCMM_PitchUp; 
+				break;
 			}
-      case Qt::Key_Down:
-  		{
+			case Qt::Key_Down:
+			{
 				m_cameraMoveFlags |= eCMM_PitchDown; 
-        break;
+				break;
 			}
-      case Qt::Key_Left:
-  		{
+			case Qt::Key_Left:
+			{
 				m_cameraMoveFlags |= eCMM_YawLeft; 
-        break;
+				break;
 			}
-      case Qt::Key_Right:
-   		{
+			case Qt::Key_Right:
+			{
 				m_cameraMoveFlags |= eCMM_YawRight; 
-        break;
+				break;
 			}
-      //  arrows to flight with camera
-      case Qt::Key_W:
+			//  arrows to flight with camera
+			case Qt::Key_W:
 			{
 				m_cameraMoveFlags |= eCMM_Up; 
-        break;
+				break;
 			}
-      case Qt::Key_S:
+			case Qt::Key_S:
 			{
 				m_cameraMoveFlags |= eCMM_Down; 
-        break;
+				break;
 			}
-      case Qt::Key_A:
+			case Qt::Key_A:
 			{
 				m_cameraMoveFlags |= eCMM_Left; 
-        break;
+				break;
 			}
-      case Qt::Key_D:
- 			{
+			case Qt::Key_D:
+			{
 				m_cameraMoveFlags |= eCMM_Right; 
-        break;
+				break;
 			}
-      case Qt::Key_P:
-        m_isSolverStopped = !m_isSolverStopped; 
-        break;
-      case Qt::Key_N:
-        m_solverTimeFlow = SolverForwardTime;
-        m_performPauseStep = true;
-        break;
-      case Qt::Key_B:
-        //m_solverTimeFlow = SolverBackwardTime;
-        //m_performPauseStep = true;
-        break;
+			case Qt::Key_P:
+				m_isSolverStopped = !m_isSolverStopped; 
+				break;
+			case Qt::Key_N:
+				m_solverTimeFlow = SolverForwardTime;
+				m_performPauseStep = true;
+				break;
+			case Qt::Key_B:
+				//m_solverTimeFlow = SolverBackwardTime;
+				//m_performPauseStep = true;
+				break;
 			case Qt::Key_C:
 				{
 					m_core.get()->SerializeToFile("dump");
@@ -370,11 +423,11 @@ void RenderingWidget::keyPressEvent(QKeyEvent* e)
 				}
 			case Qt::Key_Space:
 			{
-        break;
+				break;
 			}
-      default:
-        break;
-    }
+			default:
+				break;
+		}
 
     updateGL();
 }
@@ -444,7 +497,7 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 			case Qt::Key_Space:
 			{
 				static int sIndex = 100;
-				Vector3f pos(Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f));
+				Vector3f pos(Vector3f(0,0,1));//pos(Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f));
 				Vector3f size(Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1));
 				Box* s2 = new Box(1.0f, size, false);
 				s2->m_pos = pos;
@@ -483,7 +536,7 @@ void RenderingWidget::mousePressEvent(QMouseEvent* e)
 			m_pSelectedEnt->m_active = true; 
 
 			m_pSelectedEnt->m_extForce = Vector3f(0.f, 0.f, 0.f); 
-			m_pSelectedEnt->m_isGravity = false;
+			//m_pSelectedEnt->m_isGravity = false;
 
 			qDebug() << "Picked object:" << res.m_pEnt->m_id;
 			m_objMover.OnSelect(m_pSelectedEnt);
@@ -546,8 +599,13 @@ void RenderingWidget::mouseMoveEvent(QMouseEvent* e)
 				time = 0.01;
 			assert(time > 0);
 
-			Vector3f speed = offsetWrld / time;	
-			m_pSelectedEnt->m_v = speed;
+			Vector3f vel = offsetWrld / time;	
+			const float speed = vel.norm();	
+			const float limit = 2.0f;
+			if (speed > limit)
+				vel /= speed / limit;
+
+			m_pSelectedEnt->m_v = vel;
 			/*qDebug() << "move:" << pickedWrld << "->" << newMouseWrld << "dist: " << offsetWrld
 			<< "t: " << time 
 			<< "spd: " << speed;
