@@ -13,7 +13,8 @@
 #define DEBUG_STEP 1
 #define DEBUG_COLLISIONS 1
 
-const float Core::COLLISION_DEPTH_TOLERANCE = 2*1e-3;
+//const float Core::COLLISION_DEPTH_TOLERANCE = 5*1e-3;
+const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-2;
 
 Core::Core()
 {
@@ -223,6 +224,7 @@ void Core::Step(float reqStep)
 
 #if DEBUG_STEP
 		qDebug() << gRed << "subStep[collPath]:" << gReset << m_substepID;
+		Dump();
 #endif
 		m_substepID++;
 
@@ -236,7 +238,7 @@ void Core::Step(float reqStep)
 #endif
 
 		if (startDepth < -COLLISION_DEPTH_TOLERANCE)
-			while (i<MAX_COLLISIONS_ITERATIONS)
+			while (i < MAX_COLLISIONS_ITERATIONS)
 			{
 #if DEBUG_STEP
 				qDebug() << gGreen << "Collison iteration:" << gReset << i << "/" << MAX_COLLISIONS_ITERATIONS;
@@ -276,7 +278,7 @@ void Core::Step(float reqStep)
 		RemoveContacts();
 		
 		ListContacts();
-		SolveContacts();
+		SolveContacts(mid);
 
 		reqStep-= mid;
 
@@ -363,7 +365,7 @@ void Core::TownIsSleeping()
 
 }
 
-void Core::SolveContacts()
+void Core::SolveContacts(float dt)
 {
 #if DEBUG_STEP
 	Debug() << "Solve contacts num: "<< m_contacts.size();
@@ -409,7 +411,6 @@ void Core::SolveContacts()
 		
 		for (int i=0; i<SI_ITERATIONS; ++i) 
 		{
-			float accP = cntct.accP;
 			Vector3f rAP = cntct.pt - a->m_pos;
 			Vector3f rBP = cntct.pt - b->m_pos;
 
@@ -431,9 +432,9 @@ void Core::SolveContacts()
 			Matrix3f invJ1 = rotM1 * a->m_Jinv * rotM1.transpose(); 
 			Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 
-			const float extraVelBias = ERP / 0.01 * cntct.depth;  //TODO:pass time step here
+			const float extraVelBias = ERP / dt * std::min(0.0f, cntct.depth + Core::COLLISION_DEPTH_TOLERANCE); 
 			const float e = 0.6f;//restitution coef
-			const float p = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
+			const float dPn = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
 				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
 															 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
 				);
@@ -452,16 +453,15 @@ void Core::SolveContacts()
 					b->m_active = false;
 				}
 			}
-			const float oldP = accP;
-			accP += p;
-			accP = std::max(0.0f, accP);
-			const float p_to_apply = accP - oldP;
+			const float oldP = cntct.accP;
+			cntct.accP = std::max(0.0f, oldP + dPn);
+			const float p_to_apply = cntct.accP - oldP;
+
 			a->AddImpulse(-p_to_apply * normal, cntct.pt);
 			b->AddImpulse(p_to_apply * normal, cntct.pt);
 				
 			Debug() << "SI:" << i << " p:" << p_to_apply;
 			DebugManager()->DrawVector(cntct.pt, normal, p_to_apply*3);	 
-			cntct.accP = accP;
 		}			
 	}
 }

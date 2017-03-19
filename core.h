@@ -13,11 +13,11 @@ struct SRayHit;
 class Core
 {
 public:
-	static const int MAX_COLLISIONS_ITERATIONS = 1;
-	static const int	SI_ITERATIONS = 3;
+	static const int MAX_COLLISIONS_ITERATIONS = 3;
+	static const int	SI_ITERATIONS = 20;
 	static const float COLLISION_DEPTH_TOLERANCE;
 	static const float RESTING_CONTACT_SPEED = 0.05f;	
-	static const float ERP = 0.5f;	
+	static const float ERP = 0.7f;	
 
 	Core();
 	void Draw();
@@ -39,7 +39,7 @@ private:
 	//finds collisions and returns deepest penetration  
 	float FindCollisions(bool updateContacts);
 	
-	void SolveContacts();
+	void SolveContacts(float dt);
 	void AddContact(const Contact& c);
 	void ValidateOldContacts();
 	void RemoveContacts();

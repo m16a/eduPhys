@@ -756,7 +756,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 	{
 		penDepth = std::min(penDepth, -Core::COLLISION_DEPTH_TOLERANCE); 
 
-		qDebug() << "box-box. penDepth:" << penDepth;
+		qDebug() << "box-box[" << a->m_id << "-" << b->m_id << "] SATdepth:" << penDepth;
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		//DebugManager()->DrawPlane(p.n, p.d);	 
