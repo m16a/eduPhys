@@ -266,13 +266,11 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 {
 	out_plane.n = s;
 
-	Vector3f aWrld = a->m_rot * Vector3f(a->m_size[0]/2,0,0); 
-	Vector3f bWrld = a->m_rot * Vector3f(0,a->m_size[1]/2,0); 
-	Vector3f cWrld = a->m_rot * Vector3f(0,0,a->m_size[2]/2); 
-
 	const Vector3f* bVs;	
 	getBoxVerticies(*a, &bVs);
 	int i,j;
+	
+	/*
 	for (i=j=0; i<8; ++i)
 	{	
 		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
@@ -287,6 +285,17 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 			break;
 		}
 	}
+	*/
+
+	float res = 1000000;
+	for (i=0; i<8; ++i)
+	{	
+		float tmp_d = (bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
+		if (tmp_d < res)
+			res = tmp_d;
+	}
+
+	out_plane.d = res;
 }
 
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
@@ -370,7 +379,10 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 	//qDebug() << out_d << out_s;
 	if (out_d <= 0)
 		return;
+
 	//TODO: check vertex-vertex and vertex-edge cases	
+	qCritical() << "TODO: check vertex-vertex and vertex-edge cases";
+	assert(0);
 }
 
 void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
@@ -490,7 +502,8 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 		float d = p.n[0]*bVs[i][0] + p.n[1]*bVs[i][1] + p.n[2]*bVs[i][2] + p.d;
 		//qDebug() << "test vertex" << bVs[i];
 	//	qDebug() << "d:" << d;
-		if (fabs(d) <= tolerance)
+		//if (fabs(d) <= tolerance)
+		if (d < 0 || d < 0.0001)
 		{
 			out_arr[indx++] = bVs[i];
 			//qDebug() << "pass";
@@ -750,6 +763,9 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 
 	Vector3f separationAxe;
 	float penDepth;
+
+	//TODO:change sepraration axe direction
+	//separation axe is pointed outward *b* (b -> a)
 	boxBoxGetSeparationDirAndDepth(a,b,separationAxe,penDepth);
 	separationAxe.normalized();
 	if (penDepth < 0)
@@ -760,7 +776,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		SPlane p;
 		boxGetSupportPlane(a, separationAxe, p);
 		//DebugManager()->DrawPlane(p.n, p.d);	 
-		//Debug() << "spPlane " << p.n << p.d;
+		Debug() << "spPlane " << p.n << p.d;
 		Vector3f vs1[4];
 		size_t cnt1;
 		getVerticiesOnSupportPlane(a, p, -penDepth*1.1, vs1, cnt1);
@@ -768,7 +784,10 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 
 		Vector3f vs2[4];
 		size_t cnt2;
-		getVerticiesOnSupportPlane(b, p, -penDepth*1.1, vs2, cnt2);
+		SPlane tmp_p = p;
+		tmp_p.n *= -1;
+		getVerticiesOnSupportPlane(b, tmp_p, -penDepth*1.1, vs2, cnt2);
+		qDebug() << "cnt2:" << cnt2;
 		assert(cnt2 > 0 && cnt2 <=	4);
 
 		//qDebug() << "\t" << "id1:" << a->m_id << "(" << cnt1 << ")" << b->m_id << "(" << cnt2 <<")" << "penDepth:" << penDepth;
