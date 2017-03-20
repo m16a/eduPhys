@@ -217,7 +217,7 @@ void RenderingWidget::updateCameraPosDir(float dt)
 void RenderingWidget::updateCore(float dt)
 {
 	const bool fixedStep = true;
-	const float reqStep = 0.010f;
+	const float reqStep = 0.01f;
 
 	static float physSimTime = 0.0f; 
 	static float unperformedStep = 0.0f; 

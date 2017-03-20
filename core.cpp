@@ -13,8 +13,13 @@
 #define DEBUG_STEP 1
 #define DEBUG_COLLISIONS 1
 
-//const float Core::COLLISION_DEPTH_TOLERANCE = 5*1e-3;
+const int Core::MAX_COLLISIONS_ITERATIONS = 10;
+const int	Core::SI_ITERATIONS = 10;
 const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-2;
+//const float Core::COLLISION_DEPTH_TOLERANCE = 5*1e-3;
+const float Core::RESTING_CONTACT_SPEED = 0.05f;	
+const float Core::MIN_STEP = 0.001f;	
+const float Core::ERP = 0.8f;	
 
 Core::Core()
 {
@@ -122,6 +127,9 @@ float Core::FindCollisions(bool updateContacts)
 				cntct.lifeFrameID = m_frameID;
 				cntct.substepID = m_substepID;
 
+				if (c[cnt_indx].depth > 0.0f)
+					continue;
+
 				assert(fabs(cntct.n.norm()-1.0f) < 0.001);
 				Vector3f rAP = cntct.pt - a->m_pos;
 				Vector3f rBP = cntct.pt - b->m_pos;
@@ -137,10 +145,6 @@ float Core::FindCollisions(bool updateContacts)
 					assert(!"Possible missed depth in contact calculation");
 				}
 
-				if (c[cnt_indx].depth < min_depth)
-					if (!isSeparatingContact)
-						min_depth = c[cnt_indx].depth;
-
 				if (isSeparatingContact)
 				{
 #if DEBUG_STEP
@@ -148,6 +152,10 @@ float Core::FindCollisions(bool updateContacts)
 #endif
 					continue;
 				}
+
+				if (c[cnt_indx].depth < min_depth)
+						min_depth = c[cnt_indx].depth;
+
 
 				if (min_depth < res)
 					res = min_depth; 
@@ -211,9 +219,9 @@ void Core::Step(float reqStep)
 	const float fullStep = reqStep;
 	while (reqStep > 0)
 	{
-		if (m_substepID > 5)
+		if (m_substepID > 10)
 		{
-			qCritical() << "Over 5 substeps";
+			qCritical() << "Over 10 substeps";
 			assert(0);
 		}
 
@@ -227,7 +235,7 @@ void Core::Step(float reqStep)
 		Dump();
 #endif
 		m_substepID++;
-
+/*
 		StepAll(reqStep);
 		const float startDepth = FindCollisions(false);
 		float finishDepth = startDepth;
@@ -238,7 +246,7 @@ void Core::Step(float reqStep)
 #endif
 
 		if (startDepth < -COLLISION_DEPTH_TOLERANCE)
-			while (i < MAX_COLLISIONS_ITERATIONS)
+			while (i < MAX_COLLISIONS_ITERATIONS && mid > MIN_STEP)
 			{
 #if DEBUG_STEP
 				qDebug() << gGreen << "Collison iteration:" << gReset << i << "/" << MAX_COLLISIONS_ITERATIONS;
@@ -260,17 +268,19 @@ void Core::Step(float reqStep)
 #endif
 
 				finishDepth = depth;
-				if (depth < 0 && depth >= -COLLISION_DEPTH_TOLERANCE)
-					break;
+
 
 				if (depth >= -COLLISION_DEPTH_TOLERANCE)
-					sStep = mid;
+					break;
 				else
 					fStep = mid;						
 
 				++i;
 			}
-		
+
+		if (reqStep > MIN_STEP)
+			mid = std::max(mid, MIN_STEP);
+*/		
 		StepAll(mid);
 		FindCollisions(true);
 
@@ -283,7 +293,7 @@ void Core::Step(float reqStep)
 		reqStep-= mid;
 
 #if DEBUG_STEP
-		qDebug() << "penetration depthes - start:" << startDepth << "finish:" << finishDepth << "/"<< COLLISION_DEPTH_TOLERANCE;
+		//qDebug() << "penetration depthes - start:" << startDepth << "finish:" << finishDepth << "/"<< COLLISION_DEPTH_TOLERANCE;
 		qDebug() << gRed << "[" << gReset << "impulsePath] performed time:" << mid << "left:" << reqStep << "full:" << fullStep;
 		Dump();
 #endif
