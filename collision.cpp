@@ -287,11 +287,12 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 	}
 	*/
 
-	float res = 1000000;
+	Debug() << "getSpPlane:" << a->m_id << "n:" << s;
+	float res = -1000000;
 	for (i=0; i<8; ++i)
 	{	
-		float tmp_d = (bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
-		if (tmp_d < res)
+		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
+		if (tmp_d > res)
 			res = tmp_d;
 	}
 
@@ -382,7 +383,7 @@ void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s,
 
 	//TODO: check vertex-vertex and vertex-edge cases	
 	qCritical() << "TODO: check vertex-vertex and vertex-edge cases";
-	assert(0);
+	//assert(0);
 }
 
 void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4])
@@ -497,11 +498,12 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 	getBoxVerticies(*b, &bVs);
 	
 	size_t indx = 0;	
+	qDebug() << "N:" << p.d << p.n;
 	for (int i=0; i<8; ++i)
 	{	
 		float d = p.n[0]*bVs[i][0] + p.n[1]*bVs[i][1] + p.n[2]*bVs[i][2] + p.d;
-		//qDebug() << "test vertex" << bVs[i];
-	//	qDebug() << "d:" << d;
+		qDebug() << "test vertex" << bVs[i];
+		qDebug() << "d:" << d;
 		//if (fabs(d) <= tolerance)
 		if (d < 0 || d < 0.0001)
 		{
@@ -786,6 +788,8 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		size_t cnt2;
 		SPlane tmp_p = p;
 		tmp_p.n *= -1;
+		tmp_p.d *= -1;
+
 		getVerticiesOnSupportPlane(b, tmp_p, -penDepth*1.1, vs2, cnt2);
 		qDebug() << "cnt2:" << cnt2;
 		assert(cnt2 > 0 && cnt2 <=	4);

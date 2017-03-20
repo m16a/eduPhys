@@ -14,12 +14,12 @@
 #define DEBUG_COLLISIONS 1
 
 const int Core::MAX_COLLISIONS_ITERATIONS = 10;
-const int	Core::SI_ITERATIONS = 10;
+const int	Core::SI_ITERATIONS = 20;
 const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-2;
 //const float Core::COLLISION_DEPTH_TOLERANCE = 5*1e-3;
 const float Core::RESTING_CONTACT_SPEED = 0.05f;	
 const float Core::MIN_STEP = 0.001f;	
-const float Core::ERP = 0.8f;	
+const float Core::ERP = 0.9f;	
 
 Core::Core()
 {
