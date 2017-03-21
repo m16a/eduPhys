@@ -13,8 +13,8 @@
 #define DEBUG_STEP 1
 #define DEBUG_COLLISIONS 1
 
-const int Core::MAX_COLLISIONS_ITERATIONS = 10;
-const int	Core::SI_ITERATIONS = 20;
+const int	Core::MAX_COLLISIONS_ITERATIONS = 10;
+const int		Core::SI_ITERATIONS = 10;
 const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-3;
 const float Core::RESTING_CONTACT_SPEED = 0.05f;	
 const float Core::MIN_STEP = 0.001f;	
@@ -151,6 +151,13 @@ float Core::FindCollisions(bool updateContacts)
 #if DEBUG_STEP
 					qDebug() << "separating contact was skipped";
 #endif
+					continue;
+				}
+
+				if (c[cnt_indx].depth > 0)
+				{
+					Debug() << "non-penetrating contact was skipped";
+					assert(0);
 					continue;
 				}
 
@@ -311,6 +318,20 @@ void Core::Step(float reqStep)
 	ListContacts();
 
 	m_frameID++;
+	
+
+	//delete fallen objects
+	std::vector<IPhysEnt*>::iterator it = m_objects.begin();
+	while (it != m_objects.end())
+	{
+		if ((*it)->m_pos[2] < -2)
+		{
+			delete (*it);
+			it = m_objects.erase(it);	
+		}
+		else
+			++it;
+	}
 }
 
 void Core::ListContacts()
