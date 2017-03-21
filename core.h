@@ -19,6 +19,8 @@ public:
 	static const float RESTING_CONTACT_SPEED;	
 	static const float MIN_STEP;	
 	static const float ERP;	
+	static const float FIXED_STEP_SIZE;
+	static const float RESTITUTION_COEF;
 
 	Core();
 	void Draw();

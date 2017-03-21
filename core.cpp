@@ -15,11 +15,12 @@
 
 const int Core::MAX_COLLISIONS_ITERATIONS = 10;
 const int	Core::SI_ITERATIONS = 20;
-const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-2;
-//const float Core::COLLISION_DEPTH_TOLERANCE = 5*1e-3;
+const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-3;
 const float Core::RESTING_CONTACT_SPEED = 0.05f;	
 const float Core::MIN_STEP = 0.001f;	
 const float Core::ERP = 0.9f;	
+const float Core::FIXED_STEP_SIZE = 0.01f;
+const float Core::RESTITUTION_COEF = 0.3f;
 
 Core::Core()
 {
@@ -235,7 +236,8 @@ void Core::Step(float reqStep)
 		Dump();
 #endif
 		m_substepID++;
-/*
+
+#if 0
 		StepAll(reqStep);
 		const float startDepth = FindCollisions(false);
 		float finishDepth = startDepth;
@@ -280,7 +282,7 @@ void Core::Step(float reqStep)
 
 		if (reqStep > MIN_STEP)
 			mid = std::max(mid, MIN_STEP);
-*/		
+#endif
 		StepAll(mid);
 		FindCollisions(true);
 
@@ -443,7 +445,7 @@ void Core::SolveContacts(float dt)
 			Matrix3f invJ2 = rotM2 * b->m_Jinv * rotM2.transpose(); 
 
 			const float extraVelBias = ERP / dt * std::min(0.0f, cntct.depth + Core::COLLISION_DEPTH_TOLERANCE); 
-			const float e = 0.6f;//restitution coef
+			const float e = RESTITUTION_COEF;
 			const float dPn = -((1 + e)*v_contact.dot(normal) + extraVelBias) / 
 				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
 															 - (rBPcross*invJ2*rBPcross * normal).dot(normal)

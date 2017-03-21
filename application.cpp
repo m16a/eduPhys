@@ -217,7 +217,6 @@ void RenderingWidget::updateCameraPosDir(float dt)
 void RenderingWidget::updateCore(float dt)
 {
 	const bool fixedStep = true;
-	const float reqStep = 0.01f;
 
 	static float physSimTime = 0.0f; 
 	static float unperformedStep = 0.0f; 
@@ -226,7 +225,7 @@ void RenderingWidget::updateCore(float dt)
 	//Debug() << "fN:" << m_frameNumber << " sT:" << m_physTime << " rT:" << m_realTime << " dt:" << dt << " unperf" << unperformedStep; 
 	if (!m_isSolverStopped || (m_isSolverStopped && m_performPauseStep))
 	{
-		if (unperformedStep > reqStep)
+		if (unperformedStep > Core::FIXED_STEP_SIZE)
 		{
 			Debug() << "fN:" << frameID << " sT:" << m_physTime;
 //			m_core.get()->Dump(9);
@@ -234,7 +233,7 @@ void RenderingWidget::updateCore(float dt)
 			DebugManager()->Clear();
 
 			const float dir = (m_solverTimeFlow == SolverForwardTime) ? 1.0f : -1.0f;
-			const float t = (fixedStep ? reqStep : dt);
+			const float t = (fixedStep ? Core::FIXED_STEP_SIZE : dt);
 
 			const float stepStartTime = clock() / float(CLOCKS_PER_SEC);
 			m_core.get()->Step(dir * t);
@@ -243,10 +242,10 @@ void RenderingWidget::updateCore(float dt)
 
 			m_performPauseStep = false;
 			physSimTime = stepFinishTime - stepStartTime ;
-			if (fixedStep && physSimTime > reqStep)
-				qWarning() << "Can't chase real time. reqStep:" << reqStep << "performedTime:" << physSimTime;
-			m_physTime += fixedStep ? reqStep : dt;
-			unperformedStep -= reqStep;
+			if (fixedStep && physSimTime > Core::FIXED_STEP_SIZE)
+				qWarning() << "Can't chase real time. reqStep:" << Core::FIXED_STEP_SIZE << "performedTime:" << physSimTime;
+			m_physTime += fixedStep ? Core::FIXED_STEP_SIZE : dt;
+			unperformedStep -= Core::FIXED_STEP_SIZE ;
 		}
 		unperformedStep += dt;
 		m_realTime += dt;
@@ -256,8 +255,6 @@ void RenderingWidget::updateCore(float dt)
 		//don't waste CPU on pause
 		usleep(30000);//30ms
 	}
-
-	//drawDebugInfo(dt, std::max(physSimTime, reqStep));
 
 	DebugManager()->Draw();	
 	drawDebugInfo(dt, physSimTime);
