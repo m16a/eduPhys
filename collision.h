@@ -98,7 +98,7 @@ float boxBoxSupportDist(const Box* a, const Vector3f& in_s);
 
 float boxBoxCheckDirection(const Box* a, const Box* b, const Vector3f& in_s);
 
-void boxBoxGetSeparationDirAndDepth(const Box* a, const Box* b, Vector3f& out_s, float& out_d);
+void boxBoxGetSeparationDirAndDepth(Box* a, Box* b, Vector3f& out_s, float& out_d);
 
 void reorderRectVerticies(const Vector3f n, Vector3f out_arr[4]);
 

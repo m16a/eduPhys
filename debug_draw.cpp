@@ -28,7 +28,7 @@ void SDebugPlane::Draw()
 	// now simply draw a quad centered in a arbitrary point of the plane
 	// and large enough to seems a plane
 	Vector3f P0 = -m_n * m_d;        // "arbitrary" point
-	float  f  = 1;  // large enough
+	float  f  = 6;  // large enough
 	Vector3f fu =  u * f;
 	Vector3f fv =  v * f;
 	Vector3f P1 = P0 - fu - fv;
