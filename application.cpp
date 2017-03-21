@@ -495,9 +495,10 @@ void RenderingWidget::keyReleaseEvent(QKeyEvent* e)
 			case Qt::Key_Space:
 			{
 				static int sIndex = 100;
-				Vector3f pos(Vector3f(0,0,1));//pos(Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f));
-				Vector3f size(0.3f, 0.2f, 0.1f);
-				//Vector3f size(Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1));
+				//Vector3f pos(Vector3f(0,0,1));
+				Vector3f pos(Vector3f((rand()%10 - 5) / 5.0, (rand()%10 -5) / 5.0, 1.3f));
+				//Vector3f size(0.3f, 0.2f, 0.1f);
+				Vector3f size(Vector3f(rand() % 3 / 10.0+0.1, rand() % 3 / 10.0 + 0.1, rand() % 3 / 10.0 + 0.1));
 			//	Vector3f size(Vector3f(0.3, 0.1, 0.1));
 				Box* s2 = new Box(1.0f, size, false);
 				s2->m_pos = pos;

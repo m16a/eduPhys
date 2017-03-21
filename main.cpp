@@ -76,12 +76,15 @@ int main(int argc, char *argv[])
 #endif
 
 #if 1
-	// box falls on ground
+	//ground
   Box* s3 = new Box(0.0f, Vector3f(2.5f, 2.5f, 0.1f), true);
-  s3->m_pos = Vector3f(0.0f, 0.0f, 0.0f);
+  s3->m_pos = Vector3f(0.0f, 0.0f, -0.05f);
   s3->m_id = 3;
 	objcts.push_back(s3);
+#endif
 
+#if 0
+	// box falls on ground
   Box* s9 = new Box(1.0f, Vector3f(0.3f, 0.2f, 0.1f), false);
   s9->m_pos = Vector3f(0.0f, 0.0f, 0.5f);
   //s9->m_rot = quatFromPYRAngles(45, 45, 0);
@@ -92,8 +95,107 @@ int main(int argc, char *argv[])
 	
 	s9->m_isGravity = true;
 	objcts.push_back(s9);
-
 #endif
+
+#if 1
+  Box* s9 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s9->m_pos = Vector3f(0.0f, 0.0f, 0.1f);
+  s9->m_id = 9;
+	s9->m_isGravity = true;
+	objcts.push_back(s9);
+
+  Box* s10 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s10->m_pos = Vector3f(0.2f, 0.0f, 0.1f);
+  s10->m_id = 10;
+	s10->m_isGravity = true;
+	objcts.push_back(s10);
+
+  Box* s11 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s11->m_pos = Vector3f(-0.2f, 0.0f, 0.1f);
+  s11->m_id = 11;
+	s11->m_isGravity = true;
+	objcts.push_back(s11);
+
+  Box* s12 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s12->m_pos = Vector3f(-0.4f, 0.0f, 0.1f);
+  s12->m_id = 12;
+	s12->m_isGravity = true;
+	objcts.push_back(s12);
+
+  Box* s13 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s13->m_pos = Vector3f(0.4f, 0.0f, 0.1f);
+  s13->m_id = 13;
+	s13->m_isGravity = true;
+	objcts.push_back(s13);
+
+  Box* s20 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s20->m_pos = Vector3f(0.1f, 0.0f, 0.3f);
+  s20->m_id = 20;
+	s20->m_isGravity = true;
+	objcts.push_back(s20);
+
+  Box* s21 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s21->m_pos = Vector3f(0.3f, 0.0f, 0.3f);
+  s21->m_id = 21;
+	s21->m_isGravity = true;
+	objcts.push_back(s21);
+
+  Box* s22 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s22->m_pos = Vector3f(-0.1f, 0.0f, 0.3f);
+  s22->m_id = 22;
+	s22->m_isGravity = true;
+	objcts.push_back(s22);
+
+  Box* s23 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s23->m_pos = Vector3f(-0.3f, 0.0f, 0.3f);
+  s23->m_id = 23;
+	s23->m_isGravity = true;
+	objcts.push_back(s23);
+
+  Box* s30 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s30->m_pos = Vector3f(0.0f, 0.0f, 0.5f);
+  s30->m_id = 30;
+	s30->m_isGravity = true;
+	objcts.push_back(s30);
+
+  Box* s31 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s31->m_pos = Vector3f(0.2f, 0.0f, 0.5f);
+  s31->m_id = 31;
+	s31->m_isGravity = true;
+	objcts.push_back(s31);
+
+  Box* s32 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s32->m_pos = Vector3f(-0.2f, 0.0f, 0.5f);
+  s32->m_id = 32;
+	s32->m_isGravity = true;
+	objcts.push_back(s32);
+
+  Box* s40 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s40->m_pos = Vector3f(0.1f, 0.0f, 0.7f);
+  s40->m_id = 40;
+	s40->m_isGravity = true;
+	objcts.push_back(s40);
+
+  Box* s41 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s41->m_pos = Vector3f(-0.1f, 0.0f, 0.7f);
+  s41->m_id = 41;
+	s41->m_isGravity = true;
+	objcts.push_back(s41);
+
+  Box* s50 = new Box(1.0f, Vector3f(0.2f, 0.2f, 0.2f), false);
+  s50->m_pos = Vector3f(0.0f, 0.0f, 0.9f);
+  s50->m_id = 50;
+	s50->m_isGravity = true;
+	objcts.push_back(s50);
+
+  Box* s60 = new Box(0.001f, Vector3f(0.3f, 0.3f, 0.3f), false);
+  s60->m_pos = Vector3f(0.0f, 3.0f, 0.3f);
+	s60->m_v = Vector3f(-0.0f, -6.0f, 0.0f);
+  s60->m_id = 60;
+	//s60->m_isGravity = true;
+	objcts.push_back(s60);
+#endif
+
 #if 0
 	//2 box collision
   Box* s3 = new Box(0.0f, Vector3f(0.1f, 1.f, 1.f), true);
