@@ -21,6 +21,7 @@ public:
 	static const float ERP;	
 	static const float FIXED_STEP_SIZE;
 	static const float RESTITUTION_COEF;
+	static const float FRICTION;
 
 	Core();
 	void Draw();

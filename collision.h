@@ -24,11 +24,15 @@ struct Contact
 
 	float accP;
 
+	//friction impulses
+	float accPfr1;
+	float accPfr2;
+
 	Contact():pt(Vector3f(0,0,0)), n(Vector3f(0,0,0)),depth(1000.0f)
 	{
 		a = b = 0;	
 		lifeFrameID = -1;
-		accP = 0;
+		accP = accPfr1 = accPfr2 = 0;
 		substepID = -1;
 	};
 
@@ -42,6 +46,8 @@ struct Contact
 		a = other.a;
 		b = other.b;
 		accP = other.accP;
+		accPfr1 = other.accPfr1;
+		accPfr2 = other.accPfr2;
 	}
 
 	bool IsEqual(const Contact& other)
@@ -68,7 +74,7 @@ struct Contact
 
 	void Dump()
 	{
-		Debug() << "c["<<a->m_id << "-" << b->m_id << " pt:" << pt << " n:" << n << " depth:" << depth << " fID:" << lifeFrameID << "(" << substepID <<") accP:" << accP;
+		Debug() << "c["<<a->m_id << "-" << b->m_id << " pt:" << pt << " n:" << n << " depth:" << depth << " fID:" << lifeFrameID << "(" << substepID <<") accP/fr1/fr2:" << accP << "/" << accPfr1 << "/" << accPfr2;
 	}
 };
 

@@ -124,3 +124,8 @@ std::string VecToStr(const Vector3f& v)
   std::string res = stringStream.str();
 	return res; 
 }
+
+float Clamp(float a, float lo, float hi)
+{
+  return std::max(lo, std::min(a, hi));
+}

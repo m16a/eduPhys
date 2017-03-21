@@ -21,6 +21,10 @@ const float Core::MIN_STEP = 0.001f;
 const float Core::ERP = 0.4f;	
 const float Core::FIXED_STEP_SIZE = 0.01f;
 const float Core::RESTITUTION_COEF = 0.3f;
+const float Core::FRICTION = 5.0f;
+
+const Vector3f kNu1(1.0f, 0.0f, 0.0f);
+const Vector3f kNu2(0.0f, 1.0f, 0.0f);
 
 Core::Core()
 {
@@ -412,6 +416,9 @@ void Core::SolveContacts(float dt)
 	{
 		Contact cntct = *it;	
 
+		IPhysEnt* a = cntct.a;
+		IPhysEnt* b = cntct.b;
+
 		if (cntct.IsSleeping())
 			continue;
 
@@ -420,12 +427,26 @@ void Core::SolveContacts(float dt)
 		float accP = cntct.accP;
 		if (accP > 0.0)
 		{
-			IPhysEnt* a = cntct.a;
-			IPhysEnt* b = cntct.b;
 			const Vector3f& normal(cntct.n);
 			a->AddImpulse(-accP * normal, cntct.pt);
 			b->AddImpulse(accP * normal, cntct.pt);
 		}
+		
+		//choose less paralel to normal vector
+
+		Vector3f tangent1 = kNu1.cross(cntct.n).norm() > kNu2.cross(cntct.n).norm() ? kNu1 : kNu2;
+
+		tangent1 = projectVectorOntoPlane(tangent1, cntct.n, cntct.pt);
+		tangent1.normalize();
+
+		Vector3f tangent2 = tangent1.cross(cntct.n);
+		tangent2.normalize();
+
+		a->AddImpulse(-cntct.accPfr1 * tangent1, cntct.pt);
+		b->AddImpulse(cntct.accPfr1 * tangent1, cntct.pt);
+
+		a->AddImpulse(-cntct.accPfr2 * tangent2, cntct.pt);
+		b->AddImpulse(cntct.accPfr2 * tangent2, cntct.pt);
 	}
 
 	it = m_contacts.begin();
@@ -471,8 +492,7 @@ void Core::SolveContacts(float dt)
 				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * normal).dot(normal)
 															 - (rBPcross*invJ2*rBPcross * normal).dot(normal)
 				);
-			float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
-
+			//float tmp = (invJ2 * rBP.cross(normal).cross(rBP)).dot(normal);
 			//qDebug() << "m16a:" << p << -(1 + e)*v_contact.dot(normal) << a->m_minv <<  b->m_minv << (rAPcross*invJ1*rAPcross * normal).dot(normal) << (rBPcross*invJ2*rBPcross * normal).dot(normal) << tmp;
 			
 			if (0 && v_contact.dot(normal) < RESTING_CONTACT_SPEED)
@@ -486,6 +506,7 @@ void Core::SolveContacts(float dt)
 					b->m_active = false;
 				}
 			}
+
 			const float oldP = cntct.accP;
 			cntct.accP = std::max(0.0f, oldP + dPn);
 			const float p_to_apply = cntct.accP - oldP;
@@ -495,6 +516,45 @@ void Core::SolveContacts(float dt)
 				
 			Debug() << "SI:" << i << " p:" << p_to_apply;
 			DebugManager()->DrawVector(cntct.pt, normal, p_to_apply*3);	 
+
+			//friction
+				
+			//choose less paralel to normal vector
+			Vector3f tangent1 = kNu1.cross(cntct.n).norm() > kNu2.cross(cntct.n).norm() ? kNu1 : kNu2;
+
+			tangent1 = projectVectorOntoPlane(tangent1, cntct.n, cntct.pt);
+			tangent1.normalize();
+
+			Vector3f tangent2 = tangent1.cross(cntct.n);
+			tangent2.normalize();
+
+			const float dPfr1 = -v_contact.dot(tangent1) / 
+				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * tangent1).dot(tangent1)
+															 - (rBPcross*invJ2*rBPcross * tangent1).dot(tangent1)
+				);
+			
+			const float oldPfr1 = cntct.accPfr1;
+			cntct.accPfr1 = Clamp(oldPfr1 + dPfr1, -FRICTION*fabs(p_to_apply), FRICTION*fabs(p_to_apply));
+			const float p_fr1_apply = cntct.accPfr1 - oldPfr1;
+			
+			a->AddImpulse(-p_fr1_apply * tangent1, cntct.pt);
+			b->AddImpulse( p_fr1_apply * tangent1, cntct.pt);
+
+			DebugManager()->DrawVector(cntct.pt, tangent1, p_fr1_apply*3);	 
+
+			const float dPfr2 = -v_contact.dot(tangent2) / 
+				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * tangent2).dot(tangent2)
+															 - (rBPcross*invJ2*rBPcross * tangent2).dot(tangent2)
+				);
+			
+			const float oldPfr2 = cntct.accPfr2;
+			cntct.accPfr2 = Clamp(oldPfr2 + dPfr2, -FRICTION*fabs(p_to_apply), FRICTION*fabs(p_to_apply));
+			const float p_fr2_apply = cntct.accPfr2 - oldPfr2;
+			
+			a->AddImpulse(-p_fr2_apply * tangent2, cntct.pt);
+			b->AddImpulse( p_fr2_apply * tangent2, cntct.pt);
+
+			DebugManager()->DrawVector(cntct.pt, tangent2, p_fr2_apply*3);	 
 		}			
 	}
 }

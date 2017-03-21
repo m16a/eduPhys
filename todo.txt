@@ -1,6 +1,4 @@
 1.Investigate crashes on collision detection
-1.Investigate substep count exceeding
-1.Add friction
 
 2.Joints
 

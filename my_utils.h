@@ -25,6 +25,8 @@ extern Vector3f PYRAnglesFromQuat(Quaternionf& q);
 
 bool isVectorsEqual(const Vector3f a, const Vector3f b, float eps = 0.001f);
 
+float Clamp(float a, float lo, float hi);
+
 std::string VecToStr(const Vector3f& v);
 
 extern const char* gRed;
