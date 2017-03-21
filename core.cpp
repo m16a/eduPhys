@@ -16,12 +16,12 @@
 const int	Core::MAX_COLLISIONS_ITERATIONS = 10;
 const int		Core::SI_ITERATIONS = 10;
 const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-3;
-const float Core::RESTING_CONTACT_SPEED = 0.05f;	
+const float Core::RESTING_CONTACT_SPEED = 0.3f;	
 const float Core::MIN_STEP = 0.001f;	
 const float Core::ERP = 0.4f;	
 const float Core::FIXED_STEP_SIZE = 0.01f;
 const float Core::RESTITUTION_COEF = 0.3f;
-const float Core::FRICTION = 5.0f;
+const float Core::FRICTION = 2.2f;
 
 const Vector3f kNu1(1.0f, 0.0f, 0.0f);
 const Vector3f kNu2(0.0f, 1.0f, 0.0f);
@@ -380,7 +380,7 @@ void Core::TownIsSleeping()
 		Vector3f v_contact = ((c.b->m_v + (c.b->m_w).cross(rBP)) - (c.a->m_v + (c.a->m_w).cross(rAP))); 
 		const float vn = v_contact.dot(v_contact);
 		const bool isRestingContact = fabs(vn) < RESTING_CONTACT_SPEED * RESTING_CONTACT_SPEED;
-		Debug() << "cntct vN:" << vn;
+		Debug() << "cntct vN:" << vn << "/" << RESTING_CONTACT_SPEED * RESTING_CONTACT_SPEED;
 
 		if (!isRestingContact)
 		{
