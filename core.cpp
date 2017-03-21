@@ -18,7 +18,7 @@ const int		Core::SI_ITERATIONS = 10;
 const float Core::COLLISION_DEPTH_TOLERANCE = 1*1e-3;
 const float Core::RESTING_CONTACT_SPEED = 0.05f;	
 const float Core::MIN_STEP = 0.001f;	
-const float Core::ERP = 0.9f;	
+const float Core::ERP = 0.4f;	
 const float Core::FIXED_STEP_SIZE = 0.01f;
 const float Core::RESTITUTION_COEF = 0.3f;
 

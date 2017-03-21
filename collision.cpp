@@ -268,35 +268,15 @@ void boxGetSupportPlane(const Box* a, const Vector3f& s, SPlane& out_plane)
 
 	const Vector3f* bVs;	
 	getBoxVerticies(*a, &bVs);
-	int i,j;
 	
-	/*
-	for (i=j=0; i<8; ++i)
-	{	
-		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
-		for (; j<8; ++j)
-		{
-			if (bVs[j][0]*s[0] + bVs[j][1]*s[1]+bVs[j][2]*s[2] < -tmp_d)
-				break;
-		}
-		if (j == 8)
-		{
-			out_plane.d = tmp_d;
-			break;
-		}
-	}
-	*/
-
 	//Debug() << "getSpPlane:" << a->m_id << "n:" << s;
-	float res = -1000000;
-	for (i=0; i<8; ++i)
+	out_plane.d = -INFINITY;
+	for (int i=0; i<8; ++i)
 	{	
 		float tmp_d = -(bVs[i][0]*s[0] + bVs[i][1]*s[1]+bVs[i][2]*s[2]);
-		if (tmp_d > res)
-			res = tmp_d;
+		if (tmp_d > out_plane.d)
+			out_plane.d = tmp_d;
 	}
-
-	out_plane.d = res;
 }
 
 float boxBoxSupportDist(const Box* a, const Vector3f& in_s)
@@ -505,7 +485,8 @@ void getVerticiesOnSupportPlane(const Box* b, const SPlane& p, float tolerance, 
 		qDebug() << "test vertex" << bVs[i];
 		qDebug() << "d:" << d;
 		//if (fabs(d) <= tolerance)
-		if (d < 0 || d < 0.0001)
+		//if (d < 0 || d < 0.0001)
+		if (d > 0)
 		{
 			out_arr[indx++] = bVs[i];
 			//qDebug() << "pass";
@@ -777,17 +758,20 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		qDebug() << "box-box[" << a->m_id << "-" << b->m_id << "] SATdepth:" << penDepth;
 		SPlane pln1;
 		boxGetSupportPlane(a, separationAxe, pln1);
-		SPlane pln2;
-		boxGetSupportPlane(b, separationAxe, pln2);
-		DebugManager()->DrawPlane(pln1.n, pln1.d);	 
 
-		Debug() << "Ds:" << pln1.d << " " << pln2.d;
-		assert(!"start work from here");
-		//pln1.d = (pln1.d + pln2.d) / 2.0f;
+		SPlane pln2;
+		boxGetSupportPlane(b, -separationAxe, pln2);
+
+		//Debug() << "Ds:" << pln1.d << " " << pln2.d;
+
+		//DebugManager()->DrawPlane(pln1.n, pln1.d);	 
+		//DebugManager()->DrawPlane(pln2.n, pln2.d);	 
+
 		Debug() << "spPlane " << pln1.n << pln1.d;
+
 		Vector3f vs1[4];
 		size_t cnt1;
-		getVerticiesOnSupportPlane(a, pln1, -penDepth*1.1, vs1, cnt1);
+		getVerticiesOnSupportPlane(a, pln2, -penDepth*1.1, vs1, cnt1);
 		qDebug() << "cnt1:" << cnt1;
 		assert(cnt1 > 0 && cnt1 <=4);
 
@@ -797,7 +781,7 @@ void collide(Box* a, Box* b, Contact* c, int& out_size)
 		tmp_p.n *= -1;
 		tmp_p.d *= -1;
 
-		getVerticiesOnSupportPlane(b, tmp_p, -penDepth*1.1, vs2, cnt2);
+		getVerticiesOnSupportPlane(b, pln1, -penDepth*1.1, vs2, cnt2);
 		qDebug() << "cnt2:" << cnt2;
 		assert(cnt2 > 0 && cnt2 <=	4);
 

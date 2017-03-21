@@ -40,7 +40,7 @@ void SDebugPlane::Draw()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBegin(GL_POLYGON);
-	glColor4f(1.0, 0.0, 0.0, 0.1);
+	glColor4f(1.0, 0.0, 0.0, 0.8);
 //	glNormal3f(m_n[0],m_n[1],m_n[2]);
 
 	glVertex3f(P1[0], P1[1], P1[2]);
