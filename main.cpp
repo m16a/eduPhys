@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
   CApplication demo;
   demo.resize(800, 600);
 	demo.move(700, 100);
+
 	std::vector<IPhysEnt*>& objcts = demo.getCore()->m_objects;
   //set phys initial world
 	/*
@@ -188,7 +189,7 @@ int main(int argc, char *argv[])
 	s50->m_isGravity = true;
 	objcts.push_back(s50);
 
-  Box* s60 = new Box(0.001f, Vector3f(0.3f, 0.3f, 0.3f), false);
+  Box* s60 = new Box(0.001f, Vector3f(0.1f, 0.1f, 0.1f), false);
   s60->m_pos = Vector3f(0.0f, 3.0f, 0.3f);
 	s60->m_v = Vector3f(-0.0f, -6.0f, 0.0f);
   s60->m_id = 60;

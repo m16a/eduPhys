@@ -1,13 +1,17 @@
-eduPhys v1.0
+eduPhys v1.1
+
+Simple physical engine for education.
+Current features: fixed step, box-box collision via SAT, sequential impulse, warm starting, ERP, friction, contact sleeping
+Techs: Eigen, OpenGL, cmake, protobuf
 
 Controls:
-P						pause/unpause simulation
-N						perfrom single step in paused mode
-C						save current scene to file
-V						load scene from file
-LMB					select entity
+P			pause/unpause simulation
+N			perfrom single step in paused mode
+C			save current scene to file
+V			load scene from file
+LMB			select entity
 
 Navigation:
 W/A/S/D			move the camera
 Up/Down			camera pitch
-Left/Right	camera yaw
+Left/Right		camera yaw

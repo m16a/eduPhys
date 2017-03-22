@@ -708,7 +708,7 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 		}
 	}
 
-	//no more them 5 contacts can be
+	//no more then 8 contacts can be
 	assert(8 >= out_size);
 	
 	//case when one face is liee completly inside another
@@ -730,7 +730,9 @@ void intersectFaceFace(const Vector3f face1[4], const Vector3f face2[4], const S
 				//DumpAll();
 				//Debug() << "" << prjFace1[i] << prjFace1[(i+1)%4];
 				//Debug() << "" << prjFace2[j] << prjFace2[(j+1)%4];;
-				assert(cnt > 0);
+
+				//TODO: proof assert commenting
+				//assert(cnt > 0);
 				
 				for (int k=0; k<cnt; ++k)
 					out_res[out_size++] = out_vrts[k];

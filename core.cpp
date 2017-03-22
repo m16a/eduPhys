@@ -219,7 +219,14 @@ void Core::RemoveContacts()
 	{
 		Contact& c = (*it);
 		if (c.lifeFrameID != m_frameID || c.substepID != m_substepID)
+		{
+			if (!c.a->m_isStatic)
+				c.a->m_active = true;
+
+			if (!c.b->m_isStatic)
+				c.b->m_active = true;
 			m_contacts.erase(it++);
+		}
 		else
 			++it;
 	}
@@ -515,7 +522,7 @@ void Core::SolveContacts(float dt)
 			b->AddImpulse(p_to_apply * normal, cntct.pt);
 				
 			Debug() << "SI:" << i << " p:" << p_to_apply;
-			DebugManager()->DrawVector(cntct.pt, normal, p_to_apply*3);	 
+		//	DebugManager()->DrawVector(cntct.pt, normal, p_to_apply*3);	 
 
 			//friction
 				
@@ -540,7 +547,7 @@ void Core::SolveContacts(float dt)
 			a->AddImpulse(-p_fr1_apply * tangent1, cntct.pt);
 			b->AddImpulse( p_fr1_apply * tangent1, cntct.pt);
 
-			DebugManager()->DrawVector(cntct.pt, tangent1, p_fr1_apply*3);	 
+		//	DebugManager()->DrawVector(cntct.pt, tangent1, p_fr1_apply*3);	 
 
 			const float dPfr2 = -v_contact.dot(tangent2) / 
 				(a->m_minv + b->m_minv - (rAPcross*invJ1*rAPcross * tangent2).dot(tangent2)
@@ -554,7 +561,7 @@ void Core::SolveContacts(float dt)
 			a->AddImpulse(-p_fr2_apply * tangent2, cntct.pt);
 			b->AddImpulse( p_fr2_apply * tangent2, cntct.pt);
 
-			DebugManager()->DrawVector(cntct.pt, tangent2, p_fr2_apply*3);	 
+		//	DebugManager()->DrawVector(cntct.pt, tangent2, p_fr2_apply*3);	 
 		}			
 	}
 }
