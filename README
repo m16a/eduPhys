@@ -1,5 +1,7 @@
 eduPhys v1.1
 
+Video [https://youtu.be/QGMTB7LUrbk]
+
 Simple physical engine for education.
 Current features: fixed step, box-box collision via SAT, sequential impulse, warm starting, ERP, friction, contact sleeping
 Techs: Eigen, OpenGL, cmake, protobuf
